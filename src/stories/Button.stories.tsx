@@ -21,3 +21,10 @@ export const Primary: Story = {
     text: "Hello world"
   }
 };
+
+export const Secondary: Story = {
+  args: {
+    text: "Hello world",
+    buttonType: 2,
+  }
+};

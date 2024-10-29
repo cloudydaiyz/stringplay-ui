@@ -1,0 +1,31 @@
+.login-logo 
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-2);
+}
+
+.login-logo h1 
+{
+    transition: text-shadow .2s;
+    padding: 0px 16px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    border-radius: 4px;
+    pointer-events: none;
+    line-height: 100%;
+}
+
+.no-service-panel 
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 16px; 
+    font-family: var(--font-1);
+    animation: panel-slide-in .5s ease-in 1 forwards;
+}

@@ -1,18 +1,20 @@
-.body {
+.body 
+{
     transform-origin: 50% 50%;
 }
 
-.on .body {
+.on .body 
+{
     animation: rotate-film-body 1.5s linear infinite running;
 }
 
-/* .on .body  */
-.on:hover .body
+/*.on:hover .body
 {
     animation-play-state: paused;
-}
+}*/
 
-@keyframes rotate-film-body {
+@keyframes rotate-film-body 
+{
     0% { 
         rotate: 0deg;
     }

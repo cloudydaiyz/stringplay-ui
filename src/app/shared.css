@@ -23,7 +23,12 @@
   --black: #222222;
   --white: #FFFFFF;
 
+  --success: #4CAF50;
+  --error: #F44336;
+
   --sh1: 0px 0px 5px rgb(0, 0, 0, .7);
+
+  font-family: var(--font-2);
 }
 
 *, *::before, *::after {
@@ -66,4 +71,16 @@
 
 .read-the-docs {
   color: #888;
+}
+
+@keyframes panel-slide-in {
+  0% {
+      opacity: 0;
+      transform: translateY(8px);
+  }
+
+  100% {
+      opacity: 1;
+      transform: translateY(0px);
+  }
 }

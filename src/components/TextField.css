@@ -1,8 +1,10 @@
-:root {
+:root 
+{
     --hello: "world";
 }
 
-.stringplay-text-field {
+.stringplay-text-field 
+{
     padding: 10px .5rem;
     min-width: 400px;
     font-family: 'Manrope', sans-serif;
@@ -20,7 +22,8 @@
     border-bottom: 3px solid black;
 }
 
-.springplay-text-container::before {
+.springplay-text-container::before 
+{
     content: attr(data-title);
     font-family: var(--font-1);
     font-weight: 500;
@@ -32,9 +35,11 @@
     opacity: 0;
     pointer-events: none;
     transition: all .2s;
+    border-radius: 4px;
 }
 
-.springplay-text-container:has(input:valid)::before {
+.springplay-text-container:has(input:valid)::before
+{
     transform: translate(4px, -50%);
     opacity: 1;
 }

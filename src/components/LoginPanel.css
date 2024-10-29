@@ -1,0 +1,63 @@
+.login-panel h2 
+{
+    font-family: var(--font-1);
+}
+
+.login-panel
+{
+    background-color: white;
+    padding: 2rem;
+    border-radius: 16px; 
+    font-family: var(--font-1);
+    transition: opacity .2s linear, transform .2s linear
+}
+
+.login-panel.inactive
+{
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+.login-panel,
+.login-panel form,
+.login-text-fields
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.login-text-fields
+{
+    margin-bottom: 16px;
+}
+
+.forgot-password 
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-status 
+{
+    animation: login-status .5s ease-in 1 forwards;
+}
+
+.login-status.error
+{
+    color: var(--error);
+}
+
+@keyframes login-status {
+    0% {
+        opacity: 0;
+        transform: translateY(50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}

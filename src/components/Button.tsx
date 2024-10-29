@@ -1,15 +1,18 @@
 // import React from 'react';
-import "../App.css";
+import "../app/shared.css";
 import "./Button.css";
 
 interface ButtonProps {
     buttonType?: number;
+    disabled?: boolean;
     text: string;
+    onSubmit?: React.FormEventHandler<HTMLButtonElement>;
+    onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ buttonType = 1, text }: ButtonProps) => {
+const Button = ({ buttonType = 1, text, disabled = false, onSubmit, onClick }: ButtonProps) => {
   return (
-    <div className={`stringplay-btn v${buttonType}`}>{text}</div>
+    <button className={`stringplay-btn v${buttonType}`} disabled={disabled} onSubmit={onSubmit} onClick={onClick}>{text}</button>
   )
 }
 

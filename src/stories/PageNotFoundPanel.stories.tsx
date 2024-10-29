@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Login from '../components/Login';
+import PageNotFoundPanel from '../components/PageNotFoundPanel';
 
 const meta = {
-  title: 'Components/Login',
+  title: "Components/PageNotFoundPanel",
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  component: Login,
-} satisfies Meta<typeof Login>;
+  component: PageNotFoundPanel,
+} satisfies Meta<typeof PageNotFoundPanel>;
 
 export default meta;
 
