@@ -1,0 +1,40 @@
+:root {
+    --hello: "world";
+}
+
+.stringplay-text-field {
+    padding: 10px .5rem;
+    min-width: 400px;
+    font-family: 'Manrope', sans-serif;
+    border: 1px solid black;
+    border-radius: 8px;
+    font-size: 1rem;
+    position: relative;
+    transition: border-bottom .1s
+}
+
+.stringplay-text-field:focus,
+.stringplay-text-field:valid
+{
+    outline: none;
+    border-bottom: 3px solid black;
+}
+
+.springplay-text-container::before {
+    content: attr(data-title);
+    font-family: var(--font-1);
+    font-weight: 500;
+    position: absolute;
+    z-index: 10;
+    transform: translate(4px, 0%);
+    background-color: white;
+    padding: 0px 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .2s;
+}
+
+.springplay-text-container:has(input:valid)::before {
+    transform: translate(4px, -50%);
+    opacity: 1;
+}

@@ -1,0 +1,40 @@
+.stringplay-btn {
+    background-color: var(--c1);
+    color: white;
+    padding: .75rem 1.5rem;
+    border-radius: 16px;
+    user-select: none;
+    font-family: 'Rubik', 'Nobile', sans-serif;
+    border: 0px solid black;
+    transition: box-shadow .2s, background-color .2s, color .1s;
+    text-align: center;
+}
+
+.stringplay-btn:hover {
+    cursor: pointer;
+}
+
+.stringplay-btn:active {
+    cursor: default;
+}
+
+.stringplay-btn.v1:hover {
+    box-shadow: var(--sh1);
+}
+
+.stringplay-btn.v1:active {
+    color: white;
+}
+
+.stringplay-btn.v2 {
+    background-color: transparent;
+    color: var(--black);
+}
+
+.stringplay-btn.v2:hover {
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.stringplay-btn.v2:active {
+    box-shadow: 0px 0px 5px rgb(0, 0, 0, .5);
+}

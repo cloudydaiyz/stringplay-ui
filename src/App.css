@@ -1,8 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Nobile:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+:root {
+  --font-1: 'Rubik', sans-serif;
+  --font-2: 'Manrope', sans-serif;
+
+  --c1: #243659;
+  --c2: #03A696;
+  --c3: #04BF9D;
+  --c4: #F27457;
+  --c5: #BF665E;
+
+  --g1: #F9FBFA;
+  --g2: #889397;
+
+  --black: #222222;
+  --white: #FFFFFF;
+
+  --sh1: 0px 0px 5px rgb(0, 0, 0, .7);
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .logo {
