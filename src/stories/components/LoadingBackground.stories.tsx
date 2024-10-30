@@ -1,15 +1,38 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import LoadingBackground from '../../components/LoadingBackground';
-import './LoadingBackground.stories.css';
 
 const meta = {
-  title: 'Components/LoadingBackground',
+  title: 'components/LoadingBackground',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  decorators: [(story) => <div className='loading-bg-sample-container'>{story()}</div>],
+  decorators: [(story) => 
+    <div 
+      className='loading-bg-sample-container'
+      style={{
+        width: '400px',
+        height: '400px',
+      }}
+    >
+      {story()}
+    </div>
+  ],
+  args: {
+    // doneLoading: true,
+    // className: 'hi',
+  },
+  argTypes: {
+    doneLoading: { 
+      type: { name: 'boolean' },
+      description: 'True if loading is complete'
+    },
+    className: { 
+      type: { name: 'string' },
+      description: 'Additional classes to add to the background element (the parent of the 2 sliders)'
+    },
+  },
   component: LoadingBackground,
 } satisfies Meta<typeof LoadingBackground>;
 

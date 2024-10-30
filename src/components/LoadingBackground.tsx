@@ -2,6 +2,7 @@ import '../app/shared.css';
 import './LoadingBackground.css';
 
 interface LoadingBackgroundProps {
+    /** Hello world */
     doneLoading?: boolean;
     className?: string;
 }

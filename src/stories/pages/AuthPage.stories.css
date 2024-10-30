@@ -1,5 +1,7 @@
 .auth-page-sample-container 
 {
-    min-width: 1000px;
-    min-height: 1000px;
+    width: 1000px;
+    height: 1000px;
+    position: relative;
+    z-index: 100;
 }

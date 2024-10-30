@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TextField from '../../components/TextField';
+import TextField from '../../components/common/TextField';
 // import { fn } from '@storybook/test';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Components/TextField',
+  title: 'components/common/TextField',
   component: TextField,
   parameters: {
     layout: 'centered',

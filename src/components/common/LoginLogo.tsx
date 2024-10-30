@@ -1,5 +1,5 @@
-import Logo from './svg/Logo'
-import '../app/shared.css'
+import Logo from "../svg/Logo";
+import '../../app/shared.css'
 import './LoginLogo.css'
 
 interface LoginLogoProps {

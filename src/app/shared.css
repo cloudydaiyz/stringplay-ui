@@ -28,6 +28,7 @@
   --error: #F44336;
 
   --sh1: 0px 0px 5px rgb(0, 0, 0, .7);
+  --sh2: 0px 0px 16px rgba(0, 0, 0, .2);
 
   font-family: var(--font-2);
 }

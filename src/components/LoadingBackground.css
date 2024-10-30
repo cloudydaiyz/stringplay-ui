@@ -3,17 +3,17 @@
     position: relative;
     width: 100%;
     height: 100%;
-    transform: translate(-50% -50%);
     overflow: visible;
 }
 
 .loading-bg-left 
 {
+    position: absolute;
     width: 50%;
     height: 100%;
-    position: absolute;
     left: 0;
-    background-color: var(--c1);
+    background-color: var(--g1);
+    box-shadow: var(--sh2);
 }
 
 .loading-bg-left.inactive
@@ -23,11 +23,12 @@
 
 .loading-bg-right
 {
+    position: absolute;
     width: 50%;
     height: 100%;
-    position: absolute;
     left: 50%;
-    background-color: var(--c1);
+    background-color: var(--g1);
+    box-shadow: var(--sh2);
 }
 
 .loading-bg-right.inactive

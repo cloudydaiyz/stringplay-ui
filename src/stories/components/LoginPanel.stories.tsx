@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import LoginPanel from '../../components/LoginPanel';
 
 const meta = {
-  title: 'Components/LoginPanel',
+  title: 'components/LoginPanel',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

@@ -4,12 +4,24 @@ import AuthPage from '../../pages/AuthPage';
 import './AuthPage.stories.css';
 
 const meta = {
-  title: 'Pages/AuthPage',
+  title: 'pages/AuthPage',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  decorators: [(story) => <div className='auth-page-sample-container'>{story()}</div>],
+  decorators: [(story) => 
+    <div 
+      className='auth-page-sample-container'
+      style={{
+        width: '1000px',
+        height: '1000px',
+        position: 'relative',
+        zIndex: '100',
+      }}
+    >
+      {story()}
+    </div>
+  ],
   component: AuthPage,
 } satisfies Meta<typeof AuthPage>;
 

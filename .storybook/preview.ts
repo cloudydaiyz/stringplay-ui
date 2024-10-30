@@ -12,6 +12,11 @@ const preview: Preview = {
       values: [
         { name: 'Dark', value: '#333' }
       ]
+    },
+    options: {
+      storySort: {
+        order: ['components', ['common', 'svg'], 'pages']
+      }
     }
   },
 };

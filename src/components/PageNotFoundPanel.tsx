@@ -1,5 +1,5 @@
 import "./PageNotFoundPanel.css";
-import LoginLogo from './LoginLogo';
+import LoginLogo from './common/LoginLogo';
 
 const PageNotFoundPanel = () => {
   return (

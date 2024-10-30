@@ -1,8 +1,8 @@
 // import { useState } from 'react';
 
-import TextField from "./TextField";
-import Button from "./Button";
-import LoginLogo from "./LoginLogo";
+import TextField from "./common/TextField";
+import Button from "./common/Button";
+import LoginLogo from "./common/LoginLogo";
 
 import "../app/shared.css";
 import "./SignupPanel.css";

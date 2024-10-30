@@ -1,10 +1,14 @@
 import "../app/shared.css";
 import "./NoServicePanel.css";
-import LoginLogo from "./LoginLogo";
+import LoginLogo from "./common/LoginLogo";
 
-const NoServicePanel = () => {
+interface NoServicePanelProps {
+  inactive?: boolean,
+}
+
+const NoServicePanel = ({inactive = false}: NoServicePanelProps) => {
   return (
-    <div className="no-service-panel">
+    <div className={`no-service-panel ${inactive ? "inactive" : ""}`}>
         <LoginLogo />
         <h2>503</h2>
         <h3>Service Unavailable</h3>

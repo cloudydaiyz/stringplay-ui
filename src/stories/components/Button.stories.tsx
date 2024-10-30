@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Button from '../../components/Button';
+import Button from '../../components/common/Button';
 // import { fn } from '@storybook/test';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: 'Components/Button',
+  title: 'components/common/Button',
   component: Button,
   parameters: {
     layout: 'centered',
