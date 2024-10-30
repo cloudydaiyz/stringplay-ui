@@ -1,9 +1,9 @@
-.login-panel h2 
+.signup-panel h2 
 {
     font-family: var(--font-1);
 }
 
-.login-panel
+.signup-panel
 {
     background-color: white;
     padding: 2rem;
@@ -12,18 +12,20 @@
     box-shadow: var(--sh1);
     position: relative;
     z-index: 10;
+    min-width: fit-content;
+    max-width: 50vw;
     transition: opacity .2s linear, transform .2s linear;
 }
 
-.login-panel.inactive
+.signup-panel.inactive
 {
     opacity: 0;
     transform: translateY(16px);
 }
 
-.login-panel,
-.login-panel form,
-.login-text-fields
+.signup-panel,
+.signup-panel form,
+.signup-text-fields
 {
     display: flex;
     flex-direction: column;
@@ -31,7 +33,7 @@
     gap: 16px;
 }
 
-.login-text-fields
+.signup-text-fields
 {
     margin-bottom: 16px;
 }
@@ -43,18 +45,18 @@
     align-items: center;
 }
 
-.login-status 
+.signup-status 
 {
     text-align: center;
-    animation: login-status .5s ease-in 1 forwards;
+    animation: signup-status .5s ease-in 1 forwards;
 }
 
-.login-status.error
+.signup-status.error
 {
     color: var(--error);
 }
 
-@keyframes login-status {
+@keyframes signup-status {
     0% {
         opacity: 0;
         transform: translateY(50%);

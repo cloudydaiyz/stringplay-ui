@@ -1,0 +1,22 @@
+.auth-page
+{
+    padding: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-page-logo
+{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    gap: 16px;
+    z-index: 10;
+}
+
+.auth-page-logo h3
+{
+    color: white;
+}

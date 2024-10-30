@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import LoadingBackground from '../components/LoadingBackground';
+import LoadingBackground from '../../components/LoadingBackground';
+import './LoadingBackground.stories.css';
 
 const meta = {
   title: 'Components/LoadingBackground',

@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: var(--font-2);
 }
 
 .login-logo h1 
@@ -15,6 +14,12 @@
     border-radius: 4px;
     pointer-events: none;
     line-height: 100%;
+    font-family: var(--font-3);
+    font-size: 3rem;
+    background: linear-gradient(to bottom, var(--g1), var(--black) 50%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
 }
 
 .login-logo h1.dark-mode {

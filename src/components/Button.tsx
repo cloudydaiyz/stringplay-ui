@@ -3,7 +3,7 @@ import "../app/shared.css";
 import "./Button.css";
 
 interface ButtonProps {
-    buttonType?: number;
+    buttonType?: 1 | 2;
     disabled?: boolean;
     text: string;
     onSubmit?: React.FormEventHandler<HTMLButtonElement>;

@@ -1,15 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import LoginPanel from '../components/LoginPanel';
+import Logo from '../../components/svg/Logo';
 
 const meta = {
-  title: 'Components/LoginPanel',
+  title: 'Components/Logo',
   tags: ['autodocs'],
+  component: Logo,
   parameters: {
     layout: 'centered',
   },
-  component: LoginPanel,
-} satisfies Meta<typeof LoginPanel>;
+  args: {
+    animated: false,
+  }
+} satisfies Meta<typeof Logo>;
 
 export default meta;
 

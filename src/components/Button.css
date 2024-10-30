@@ -8,7 +8,7 @@
     font-family: 'Rubik', 'Nobile', sans-serif;
     font-size: 1rem;
     border: 0px solid black;
-    transition: box-shadow .2s, background-color .2s, color .1s;
+    transition: box-shadow .3s, background-color .2s, color .1s;
     text-align: center;
 }
 
@@ -29,12 +29,12 @@
 
 .stringplay-btn.v1:not(:disabled):hover 
 {
-    box-shadow: var(--sh1);
+    background-color: rgb(from var(--c1) calc(r - 20) calc(g - 20) calc(b - 20));
 }
 
 .stringplay-btn.v1:not(:disabled):active 
 {
-    color: white;
+    box-shadow: var(--sh1);
 }
 
 .stringplay-btn.v2 

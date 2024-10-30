@@ -24,7 +24,7 @@ const LoginPanel = ({ status = "", inactive = false }: LoginPanelProps) => {
   if(loggingIn) {
     statusEle = <p key={`${Date.now()}`} className="login-status">&nbsp;Verifying your information...</p>;
   } else if(loggedIn) {
-    statusEle = <p key={`${Date.now()}`} className="login-status">&nbsp;Sign in successful!</p>;
+    statusEle = <p key={`${Date.now()}`} className="login-status">&nbsp;Log in successful!</p>;
   } else if(error == 400) {
     statusEle = <p key={`${Date.now()}`} className="login-status error">&nbsp;Login failed.</p>;
   } else if(error == 500) {
@@ -37,7 +37,7 @@ const LoginPanel = ({ status = "", inactive = false }: LoginPanelProps) => {
   const disableInput = loggingIn || loggedIn || error == 503;
   return (
     <div className={`login-panel ${inactive ? "inactive" : ""}`}>
-        <LoginLogo animated={loggingIn && !loggedIn} />
+        <LoginLogo animated={loggingIn && !loggedIn} size="m" />
         <form action="" onSubmit={e => { e.preventDefault() }} noValidate={true}>
           <div className="login-text-fields">
             <TextField title="Username" disabled={disableInput} />

@@ -1,15 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import NoServicePanel from '../components/NoServicePanel';
+import LoginPanel from '../../components/LoginPanel';
 
 const meta = {
-  title: "Components/NoServicePanel",
+  title: 'Components/LoginPanel',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
-  component: NoServicePanel,
-} satisfies Meta<typeof NoServicePanel>;
+  component: LoginPanel,
+} satisfies Meta<typeof LoginPanel>;
 
 export default meta;
 
