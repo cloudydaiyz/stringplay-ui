@@ -28,6 +28,12 @@ const AuthPage = ({ state = "login" }: AuthPageProps) => {
         <div className={`auth-page-loading ${state == "loading" || state == "done-loading" ? state : "inactive"}`}>
             <Logo stroke={false} size="l" animated={state == "loading"} />
             <h3>Loading...</h3>
+            {
+              /** 
+               * Consider using a meter in the future:
+               * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meter 
+               */
+            }
         </div>
     </LoadingBackground>
   )

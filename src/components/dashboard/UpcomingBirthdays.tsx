@@ -11,7 +11,7 @@ interface UpcomingBirthdaysProps {
 
 const UpcomingBirthdays = ({ birthdays = [] }: UpcomingBirthdaysProps) => {
     return (
-        <div className='upcoming-birthdays'>
+        <div className='upcoming-birthdays content-unit'>
             <h3>Upcoming Birthdays</h3>
             <ul>
                 {birthdays.map(b => <li>

@@ -17,10 +17,30 @@ export const Primary: Story = {
   args: {
     birthdays: [
       {
-        firstName: "Kylan",
-        lastName: "Duncan",
+        firstName: "Kylan1",
+        lastName: "Duncan1",
         birthday: new Date()
-      }
+      },
+      {
+        firstName: "Kylan2",
+        lastName: "Duncan2",
+        birthday: new Date()
+      },
+      {
+        firstName: "Kylan3",
+        lastName: "Duncan3",
+        birthday: new Date()
+      },
+      {
+        firstName: "Kylan4",
+        lastName: "Duncan4",
+        birthday: new Date()
+      },
+      {
+        firstName: "Kylan5",
+        lastName: "Duncan5",
+        birthday: new Date()
+      },
     ]
   }
 };

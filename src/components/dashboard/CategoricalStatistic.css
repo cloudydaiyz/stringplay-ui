@@ -1,0 +1,18 @@
+.categorical-statistic
+{
+    width: 400px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.categorical-statistic > .pie-chart
+{
+    flex-grow: 1;
+}
+
+.categorical-statistic h3
+{
+    color: var(--c1);
+}
