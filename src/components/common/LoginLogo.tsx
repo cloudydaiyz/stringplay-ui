@@ -6,12 +6,12 @@ interface LoginLogoProps {
     animated?: boolean;
     darkMode?: boolean;
     name?: string;
-    size?: 's' | 'm' | 'l';
+    size?: 'xs' | 's' | 'm' | 'l';
 }
 
 const LoginLogo = ({ animated = false, darkMode = false, name = "STRINGPLAY", size = 's' }: LoginLogoProps) => {
   return (
-    <div className="login-logo">
+    <div className={`login-logo ${size}`}>
         <Logo animated={animated} stroke={darkMode} size={size} />
         <h1 className={darkMode ? "dark-mode" : ""}>{name}</h1>
     </div>

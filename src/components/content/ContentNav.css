@@ -1,0 +1,18 @@
+.content-nav menu
+{
+    list-style: none;
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+}
+
+.content-nav .content-nav-btn:disabled
+{
+    opacity: 1;
+    color: var(--c1);
+}
+
+.content-nav menu .content-nav-btn
+{
+    opacity: .5;
+}

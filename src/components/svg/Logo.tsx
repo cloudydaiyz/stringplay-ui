@@ -5,11 +5,12 @@ interface LogoProps {
   /** True if the logo is doing the spinning animation */
   animated?: boolean;
   stroke?: boolean;
-  size?: 's' | 'm' | 'l';
+  size?: 'xs' | 's' | 'm' | 'l';
   className?: string;
 }
 
 const sizeMap = {
+  'xs': -68,
   's': 0,
   'm': 100,
   'l': 200,

@@ -8,11 +8,12 @@ interface ButtonProps {
     text: string;
     onSubmit?: React.FormEventHandler<HTMLButtonElement>;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
+    className?: string;
 }
 
-const Button = ({ buttonType = 1, text, disabled = false, onSubmit, onClick }: ButtonProps) => {
+const Button = ({ buttonType = 1, text, disabled = false, onSubmit, onClick, className }: ButtonProps) => {
   return (
-    <button className={`stringplay-btn v${buttonType}`} disabled={disabled} onSubmit={onSubmit} onClick={onClick}>{text}</button>
+    <button className={`stringplay-btn v${buttonType} ${className}`} disabled={disabled} onSubmit={onSubmit} onClick={onClick}>{text}</button>
   )
 }
 

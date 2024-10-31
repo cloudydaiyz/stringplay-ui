@@ -1,18 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Logo from '../../components/svg/Logo';
+import Table from '../../../components/common/Table';
 
 const meta = {
-  title: 'components/svg/Logo',
-  tags: ['autodocs'],
-  component: Logo,
+  title: 'components/common/Table',
   parameters: {
     layout: 'centered',
   },
-  args: {
-    animated: false,
-  }
-} satisfies Meta<typeof Logo>;
+  tags: ['autodocs'],
+  component: Table,
+} satisfies Meta<typeof Table>;
 
 export default meta;
 

@@ -19,10 +19,6 @@ const meta = {
       {story()}
     </div>
   ],
-  args: {
-    // doneLoading: true,
-    // className: 'hi',
-  },
   argTypes: {
     doneLoading: { 
       type: { name: 'boolean' },

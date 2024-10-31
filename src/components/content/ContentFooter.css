@@ -1,0 +1,11 @@
+.app-footer
+{
+    border-top: 1px solid var(--g3);
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-bottom: 48px;
+    width: 100%;
+    font-family: var(--font-2);
+    font-size: 14px;
+    color: var(--c1);
+}

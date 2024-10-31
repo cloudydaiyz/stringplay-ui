@@ -21,7 +21,7 @@
 {
     opacity: 0;
     transform: translateY(16px);
-    /* z-index: -10; */
+    pointer-events: none;
 }
 
 .signup-panel,

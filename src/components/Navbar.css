@@ -1,0 +1,61 @@
+.app-nav
+{
+    padding-top: 64px;
+    padding-bottom: 16px;
+    padding-left: 16px;
+    min-width: 256px;
+    height: 100%;
+    box-shadow: var(--sh2);
+    /* border-right: 1px solid rgb(from var(--c1) r g b / 50%); */
+    border-right: 1px solid var(--c1);
+}
+
+.app-nav menu 
+{
+    list-style: none;
+}
+
+.app-nav button
+{
+    padding: 8px 0px;
+    padding-left: 8px;
+    padding-right: 32px;
+    width: 100%;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+
+    font-family: var(--font-2);
+    font-weight: 500;
+    border: none;
+    background: none;
+
+    fill: var(--c1);
+    color: var(--c1);
+
+    transition: all .3s;
+}
+
+.app-nav button:not(.current):hover
+{
+    background-color: var(--g1);
+    cursor: pointer;
+}
+
+.app-nav button:not(.current):active
+{
+    fill: rgb(from var(--c1) r g b / 50%);
+    color: rgb(from var(--c1) r g b / 50%);
+    cursor: initial;
+}
+
+.app-nav button.current
+{
+    background-color: var(--c1);
+    fill: white;
+    color: white;
+}

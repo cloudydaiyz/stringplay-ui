@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 }
 
 .login-logo h1 
@@ -20,6 +21,23 @@
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+}
+
+.login-logo.xs
+{
+    flex-direction: row;
+    gap: 8px;
+}
+
+.login-logo.xs h1
+{
+    background: none;
+    background-clip: none;
+    color: black;
+    font-size: 32px;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-2px);
 }
 
 .login-logo h1.dark-mode {

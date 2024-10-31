@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import AuthPage from '../../pages/AuthPage';
-import './AuthPage.stories.css';
 
 const meta = {
   title: 'pages/AuthPage',

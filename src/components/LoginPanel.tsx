@@ -40,7 +40,7 @@ const LoginPanel = ({ status = "", inactive = false }: LoginPanelProps) => {
         <LoginLogo animated={loggingIn && !loggedIn} size="m" />
         <form action="" onSubmit={e => { e.preventDefault() }} noValidate={true}>
           <div className="login-text-fields">
-            <TextField title="Username" disabled={disableInput} />
+            <TextField title="Username or Email" disabled={disableInput} />
             <TextField title="Password" type="password" disabled={disableInput} />
           </div>
           <Button text="Log in" disabled={disableInput} />

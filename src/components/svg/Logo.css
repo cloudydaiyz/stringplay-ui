@@ -8,11 +8,6 @@
     animation: rotate-film-body 1.5s linear infinite running;
 }
 
-/*.on:hover .body
-{
-    animation-play-state: paused;
-}*/
-
 @keyframes rotate-film-body 
 {
     0% { 
