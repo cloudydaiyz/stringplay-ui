@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import UpcomingBirthdays from '../../../components/dashboard/UpcomingBirthdays';
 
 const meta = {
-  title: 'components/dashboard/UpcomingBirthdays',
   component: UpcomingBirthdays,
   parameters: {
     layout: 'centered',

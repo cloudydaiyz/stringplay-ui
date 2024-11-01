@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ContentFooter from '../../../components/content/ContentFooter';
+import ContentFooter from '../../../../components/dashboard/layout/ContentFooter';
 
 const meta = {
-  title: 'components/content/ContentFooter',
   parameters: {
     layout: 'centered',
   },

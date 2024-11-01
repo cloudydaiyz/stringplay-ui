@@ -1,10 +1,10 @@
 .categorical-statistic
 {
-    width: 400px;
-    height: 400px;
+    width: 300px;
+    height: 300px;
     display: flex;
     flex-direction: column;
-    text-align: center;
+    text-align: left;
 }
 
 .categorical-statistic > .pie-chart
@@ -15,4 +15,6 @@
 .categorical-statistic h3
 {
     color: var(--c1);
+    font-family: var(--font-1);
+    font-size: 1.25rem;
 }

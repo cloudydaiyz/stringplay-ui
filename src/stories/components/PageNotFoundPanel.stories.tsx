@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import PageNotFoundPanel from '../../components/PageNotFoundPanel';
 
 const meta = {
-  title: "components/PageNotFoundPanel",
+  // title: "components/PageNotFoundPanel",
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

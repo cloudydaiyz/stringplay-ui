@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import NoServicePanel from '../../components/NoServicePanel';
 
 const meta = {
-  title: "components/NoServicePanel",
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

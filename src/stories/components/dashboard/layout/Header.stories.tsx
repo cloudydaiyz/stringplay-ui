@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Header from '../../components/Header';
+import Header from '../../../../components/dashboard/layout/Header';
 
 const meta = {
-  title: 'components/Header',
+  tags: ['autodocs'],
   parameters: {
     layout: 'centered',
   },
@@ -16,7 +16,6 @@ const meta = {
       {story()}
     </div>
   ],
-  tags: ['autodocs'],
   component: Header,
 } satisfies Meta<typeof Header>;
 

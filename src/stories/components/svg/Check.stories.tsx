@@ -1,15 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Table from '../../../components/common/Table';
+import Check from '../../../components/svg/Check';
 
 const meta = {
-  title: 'components/common/Table',
+  tags: ['autodocs'],
+  component: Check,
   parameters: {
     layout: 'centered',
   },
-  tags: ['autodocs'],
-  component: Table,
-} satisfies Meta<typeof Table>;
+} satisfies Meta<typeof Check>;
 
 export default meta;
 

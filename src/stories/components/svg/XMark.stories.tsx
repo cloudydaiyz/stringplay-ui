@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import LoginLogo from '../../../components/common/LoginLogo';
+import XMark from '../../../components/svg/XMark';
 
 const meta = {
   tags: ['autodocs'],
+  component: XMark,
   parameters: {
     layout: 'centered',
   },
-  component: LoginLogo,
-} satisfies Meta<typeof LoginLogo>;
+} satisfies Meta<typeof XMark>;
 
 export default meta;
 

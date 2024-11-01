@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ContentNav from '../../../components/content/ContentNav';
+import ContentNav from '../../../../components/dashboard/layout/ContentNav';
 
 const meta = {
-  title: 'components/content/ContentNav',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

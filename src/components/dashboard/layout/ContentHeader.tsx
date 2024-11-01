@@ -1,4 +1,4 @@
-import '../../app/shared.css';
+import '../../../app/shared.css';
 import './ContentHeader.css';
 
 interface ContentHeaderProps {

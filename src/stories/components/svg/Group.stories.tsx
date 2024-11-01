@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Group from '../../../components/svg/Group';
 
 const meta = {
-  title: 'components/svg/Group',
   tags: ['autodocs'],
   component: Group,
   parameters: {

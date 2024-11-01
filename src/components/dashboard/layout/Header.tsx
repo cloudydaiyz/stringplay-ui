@@ -1,8 +1,8 @@
 // import React from 'react';
 
-import '../app/shared.css';
-import Button from './common/Button';
-import LoginLogo from './common/LoginLogo';
+import '../../../app/shared.css';
+import Button from '../../common/Button';
+import LoginLogo from '../../common/LoginLogo';
 import './Header.css';
 
 interface HeaderProps {

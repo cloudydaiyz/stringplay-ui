@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import Calendar from '../../../components/svg/Calendar';
 
 const meta = {
-  title: 'components/svg/Calendar',
   tags: ['autodocs'],
   component: Calendar,
   parameters: {

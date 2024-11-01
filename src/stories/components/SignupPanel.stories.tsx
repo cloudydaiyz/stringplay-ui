@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import SignupPanel from '../../components/SignupPanel';
 
 const meta = {
-  title: 'components/SignupPanel',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

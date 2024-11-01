@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Navbar, { NavPage } from '../../components/Navbar';
+import Navbar, { NavPage } from '../../../../components/dashboard/layout/Navbar';
 
 const meta = {
-  title: 'components/Navbar',
   parameters: {
     layout: 'centered',
   },

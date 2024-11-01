@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import LoadingBackground from '../../components/LoadingBackground';
 
 const meta = {
-  title: 'components/LoadingBackground',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import AuthPage from '../../pages/AuthPage';
 
 const meta = {
-  title: 'pages/AuthPage',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

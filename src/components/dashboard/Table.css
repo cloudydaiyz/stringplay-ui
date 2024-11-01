@@ -1,0 +1,89 @@
+.app-table
+{
+    max-width: 1000px;
+}
+
+.app-table h3
+{
+    font-size: 1.25rem;
+}
+
+.app-table table
+{
+    border-spacing: 0px 8px;
+    border-collapse: collapse;
+}
+
+.app-table-header
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    width: 100%;
+    min-width: fit-content;
+    font-family: var(--font-1);
+    padding-bottom: 8px;
+    color: var(--c1);
+}
+
+.app-table-header .actions
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-table-header .actions button
+{
+    font-size: .9rem;
+    padding: 4px 16px;
+    border-radius: 4px;
+}
+
+.app-table th, .app-table td
+{
+    min-width: 100px;
+    max-width: 200px;
+    padding-left: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+.app-table th:last-child, .app-table td:last-child
+{
+    padding-right: 16px;
+}
+
+.app-table tbody tr:last-child td:first-child,
+.app-table tbody tr:last-child th:first-child
+{
+    border-bottom-left-radius: 16px;
+}
+
+.app-table tbody tr:last-child td:last-child
+{
+    border-bottom-right-radius: 16px;
+}
+
+.app-table tbody tr,
+.app-table tbody td
+{
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+.app-table tr:nth-child(2n + 1)
+{
+    background-color: var(--g1);
+}
+
+.app-table.content-unit thead tr
+{
+    /* background-color: var(--white); */
+    background-color: var(--c1);
+    color: var(--white);
+    border-top: 1px solid var(--g2);
+    border-bottom: 1px solid var(--g2);
+}

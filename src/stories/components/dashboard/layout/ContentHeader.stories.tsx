@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import ContentHeader from '../../../components/content/ContentHeader';
+import ContentHeader from '../../../../components/dashboard/layout/ContentHeader';
 
 const meta = {
-  title: 'components/content/ContentHeader',
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',

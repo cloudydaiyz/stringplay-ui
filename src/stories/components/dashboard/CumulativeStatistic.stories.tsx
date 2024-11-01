@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CumulativeStatistic from '../../../components/dashboard/CumulativeStatistic';
 
 const meta = {
-  title: 'components/dashboard/CumulativeStatistic',
   component: CumulativeStatistic,
   parameters: {
     layout: 'centered',
@@ -17,6 +16,11 @@ export const Primary: Story = {
   args: {
     accumulator: "total",
     statistic: "days since coding",
-    value: 0
+    value: 0,
+  },
+  argTypes: {
+    value: {
+      // control: false,
+    }
   }
 };

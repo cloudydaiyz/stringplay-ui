@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import '../../app/shared.css';
-import Button from '../common/Button';
+import '../../../app/shared.css';
+import Button from '../../common/Button';
 import './ContentNav.css';
-import Line from '../common/Line';
+import Line from '../../common/Line';
 
 interface ContentNavProps<T extends Record<string, string>> {
   pageIdToTitleMap: {key: keyof T, title: T[string]}[];

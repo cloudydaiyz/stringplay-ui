@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import '../app/shared.css';
+import '../../../app/shared.css';
 import './Navbar.css';
 
-import Calendar from './svg/Calendar';
-import Group from './svg/Group';
-import Home from './svg/Home';
-import Settings from './svg/Settings';
-import User from './svg/User';
+import Calendar from '../../svg/Calendar';
+import Group from '../../svg/Group';
+import Home from '../../svg/Home';
+import Settings from '../../svg/Settings';
+import User from '../../svg/User';
 
 export type NavPage = 'dashboard' | 'troupe' | 'event-log' | 'member-log' | 'settings';
 

@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import CategoricalStatistic from '../../../components/dashboard/CategoricalStatistic';
 
 const meta = {
-  title: 'components/dashboard/CategoricalStatistic',
   component: CategoricalStatistic,
   parameters: {
     layout: 'centered',
