@@ -19,6 +19,17 @@ const meta = {
   ],
   tags: ['autodocs'],
   component: Table,
+  argTypes: {
+    tableData: { control: false },
+    tableHeader: { control: false },
+    modeOverride: {
+      type: {
+        name: 'enum',
+        required: false,
+        value: ['create', 'edit', 'delete']
+      },
+    }
+  },
 } satisfies Meta<typeof Table>;
 
 export default meta;
@@ -59,12 +70,11 @@ export const Default: Story = {
       data: [
         ['John', 'Doe', 4, new Date('8/16/1964'), false],
         ['Jane', 'Doe', 4, new Date('4/12/1964'), true],
-        ['Josh', null, 0, new Date('4/12/2000'), false],
+        ['Josh with a very long name', null, 0, new Date('4/12/2000'), false],
         ['Bean', 'Bag', null, new Date('4/22/2003'), true],
         ['Another', 'Dude', 4, null, false],
         ['Running', null, null, new Date('5/8/2004'), true],
         ['Of', 'Names', null, null, false],
-        ['To', 'Use', 4, new Date('1/1/2000'), false],
         ['To', 'Use', 4, new Date('1/1/2000'), false],
       ],
     }
@@ -104,7 +114,7 @@ export const DefaultNoHeader: Story = {
       data: [
         ['John', 'Doe', 4, new Date('8/16/1964'), false],
         ['Jane', 'Doe', 4, new Date('4/12/1964'), true],
-        ['Josh', null, 0, new Date('4/12/2000'), false],
+        ['Josh with a very long name', null, 0, new Date('4/12/2000'), false],
         ['Bean', 'Bag', null, new Date('4/22/2003'), true],
         ['Another', 'Dude', 4, null, false],
         ['Running', null, null, new Date('5/8/2004'), true],
@@ -158,6 +168,7 @@ export const OneRow: Story = {
   argTypes: {
     tableHeader: { control: false },
     tableData: { control: false },
+    loading: { control: false },
   }
 };
 
@@ -195,6 +206,7 @@ export const OneRowNoHeader: Story = {
   argTypes: {
     tableHeader: { control: false },
     tableData: { control: false },
+    loading: { control: false },
   }
 };
 

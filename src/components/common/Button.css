@@ -10,6 +10,16 @@
     border: 0px solid black;
     transition: box-shadow .3s, background-color .2s, color .1s;
     text-align: center;
+
+    display: flex;
+    align-items: center;
+}
+
+.stringplay-btn span
+{
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .stringplay-btn.v2 

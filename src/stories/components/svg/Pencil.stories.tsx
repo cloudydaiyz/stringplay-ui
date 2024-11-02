@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import PageNotFoundPanel from '../../components/PageNotFoundPanel';
+import Pencil from '../../../components/svg/Pencil';
 
 const meta = {
   tags: ['autodocs'],
+  component: Pencil,
   parameters: {
     layout: 'centered',
   },
-  component: PageNotFoundPanel,
-} satisfies Meta<typeof PageNotFoundPanel>;
+} satisfies Meta<typeof Pencil>;
 
 export default meta;
 

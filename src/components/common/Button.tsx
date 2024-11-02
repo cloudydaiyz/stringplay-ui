@@ -5,7 +5,7 @@ import "./Button.css";
 interface ButtonProps {
     buttonType?: 1 | 2 | 3;
     disabled?: boolean;
-    text: string;
+    text: string | JSX.Element;
     onSubmit?: React.FormEventHandler<HTMLButtonElement>;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     className?: string;

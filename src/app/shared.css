@@ -46,6 +46,7 @@
   box-shadow: var(--sh3);
   border: 1px solid var(--g2);
   border-radius: 16px;
+  background-color: var(--white);
 }
 
 .logo {
@@ -67,6 +68,44 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+/*
+.loading-item .glow-checkbox,
+.loading-item .glow-text span {
+  animation: glow 1.5s ease-in-out infinite;
+  background: #eee;
+  color: transparent;
+  cursor: progress;
+  display: inline-block;
+}
+
+.loading-item .glow-checkbox {
+  margin-right: 16px;
+  width: 12px;
+  height: 12px;
+}
+
+const LoadingRow = (
+  <div className="loading-item">
+    <span className="glow-checkbox" />
+    <span className="glow-text">
+      <span>Loading</span> <span>cool</span> <span>state</span>
+    </span>
+  </div>
+);
+*/
+
+/* animation: glow 1.5s ease-in-out infinite; */
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
   }
 }
 

@@ -29,10 +29,10 @@ export default function ContentNav<T extends Record<string, string>>(
   </>);
 
   return (
-    <nav className='content-nav'>
+    <nav className='content-nav content-unit'>
       <menu>
           {menuItems}
       </menu>
     </nav>
-)
+  );
 }

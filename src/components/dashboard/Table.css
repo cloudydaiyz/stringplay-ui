@@ -12,59 +12,85 @@
 {
     border-spacing: 0px 8px;
     border-collapse: collapse;
+    min-width: 100%;
+}
+
+.app-table.content-unit
+{
+    padding: 0px;
+    overflow: scroll;
 }
 
 .app-table-header
 {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
+    flex-direction: column;
     width: 100%;
     min-width: fit-content;
     font-family: var(--font-1);
-    padding-bottom: 8px;
+    padding: 10px 16px;
     color: var(--c1);
+    fill: var(--c1);
+    border-bottom: 1px solid var(--g2);
 }
 
-.app-table-header .actions
+.app-table .loading span
+{
+    background-color: rgba(0, 0, 0, 0.1);
+    animation: glow 1.5s ease-in-out infinite;
+    max-width: 300px;
+    color: transparent;
+    white-space: nowrap;
+    cursor: progress;
+}
+
+.app-table-header.loading span
+{
+    font-size: 1.25rem;
+}
+
+.app-table-subheader
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+}
+
+.app-table-subheader .actions
 {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.app-table-header .actions button
+.app-table-subheader .actions button
 {
     font-size: .9rem;
-    padding: 4px 16px;
+    padding: 4px 4px;
     border-radius: 4px;
+    color: var(--c1);
+    transition: color .1s, fill .1s;
+}
+
+.app-table-subheader .actions button:hover
+{
+    color: var(--c2);
+    fill: var(--c2);
+}
+
+.app-table-subheader .actions button:active
+{
+    color: rgb(from var(--c2) calc(r + 40) calc(g + 40) calc(b + 40));
+    fill: rgb(from var(--c2) calc(r + 40) calc(g + 40) calc(b + 40));
 }
 
 .app-table th, .app-table td
 {
     min-width: 100px;
     max-width: 200px;
-    padding-left: 16px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding: 4px 16px;
     text-align: left;
-}
-
-.app-table th:last-child, .app-table td:last-child
-{
-    padding-right: 16px;
-}
-
-.app-table tbody tr:last-child td:first-child,
-.app-table tbody tr:last-child th:first-child
-{
-    border-bottom-left-radius: 16px;
-}
-
-.app-table tbody tr:last-child td:last-child
-{
-    border-bottom-right-radius: 16px;
 }
 
 .app-table tbody tr,
@@ -72,6 +98,7 @@
 {
     white-space: nowrap;
     overflow-x: scroll;
+    position: relative;
 }
 
 .app-table tr:nth-child(2n + 1)
@@ -81,9 +108,157 @@
 
 .app-table.content-unit thead tr
 {
-    /* background-color: var(--white); */
     background-color: var(--c1);
     color: var(--white);
-    border-top: 1px solid var(--g2);
     border-bottom: 1px solid var(--g2);
+}
+
+.app-table.content-unit thead th
+{
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.app-table.content-unit.no-header thead tr
+{
+    background-color: var(--white);
+    color: var(--c1);
+    border-bottom: 1px solid var(--g2);
+}
+
+.app-table.content-unit.no-header thead th:not(:last-child)
+{
+    border-right: 1px solid var(--g2);
+}
+
+.app-table.content-unit.one-row tr th:first-child
+{
+    background-color: var(--c1);
+    color: var(--white);
+    border-right: 1px solid var(--g2);
+    width: 1px;
+    max-width: fit-content;
+}
+
+.app-table.content-unit.no-header.one-row tr th:first-child
+{
+    background-color: var(--white);
+    color: var(--c1);
+}
+
+.app-table.content-unit.one-row tr:nth-child(2n) th
+{
+    background-color: rgb(from var(--c1) calc(r - 10) calc(g - 10) calc(b - 10));
+}
+
+.app-table.content-unit.no-header.one-row tr:not(:last-child) th
+{
+    border-bottom: 1px solid var(--g2);
+}
+
+.app-table.content-unit.one-row tr td:not(:last-child)
+{
+    border-right: 1px solid var(--g2);
+}
+
+th, td, tr
+{
+    position: relative;
+}
+
+.app-table.one-row .create-row button
+{
+    width: 100%;
+    text-align: left;
+}
+
+.app-table.one-row .create-row button,
+.app-table.one-row .new-data button
+{
+    fill: var(--c1);
+    background: none;
+    border: none;
+    opacity: .25;
+    transition: opacity .2s;
+}
+
+.app-table.one-row .create-row button:hover,
+.app-table.one-row .new-data button:hover
+{
+    opacity: .5;
+    cursor: pointer;
+}
+
+.app-table.one-row .create-row button:active,
+.app-table.one-row .new-data button:active
+{
+    opacity: 1;
+    cursor: initial;
+}
+
+.app-table .new-data svg
+{
+    fill: var(--c1);
+    margin-right: 8px;
+}
+
+.app-table .new-data input
+{
+    background: none;
+    border: none;
+    font-family: var(--font-2);
+    font-size: 1rem;
+    max-width: 125px;
+    border-bottom: 1px solid var(--c1);
+}
+
+.app-table .new-data input:focus
+{
+    outline: none;
+}
+
+.app-table.one-row .edit-btn
+{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 100%;
+    height: 100%;
+    text-align: right;
+    padding-right: 8px;
+    background: none;
+    border: none;
+}
+
+.app-table.one-row tr .edit-btn svg
+{
+    box-shadow: 0px 0px 5px var(--g1);
+    background-color: var(--g1);
+    opacity: 0;
+}
+
+.app-table.one-row tr:nth-child(2n) .edit-btn svg
+{
+    box-shadow: 0px 0px 5px var(--white);
+    background-color: var(--white);
+}
+
+.app-table.one-row tr .edit-btn:hover
+{
+    cursor: pointer;
+}
+
+.app-table.one-row tr .edit-btn:hover svg
+{
+    opacity: .5;
+}
+
+.app-table.one-row tr .edit-btn:active
+{
+    cursor: initial;
+}
+
+.app-table.one-row tr .edit-btn:active svg
+{
+    opacity: 1;
 }

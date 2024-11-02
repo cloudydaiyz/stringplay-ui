@@ -1,14 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import PageNotFoundPanel from '../../components/PageNotFoundPanel';
+import XCircle from '../../../components/svg/XCircle';
 
 const meta = {
   tags: ['autodocs'],
+  component: XCircle,
   parameters: {
     layout: 'centered',
   },
-  component: PageNotFoundPanel,
-} satisfies Meta<typeof PageNotFoundPanel>;
+} satisfies Meta<typeof XCircle>;
 
 export default meta;
 
