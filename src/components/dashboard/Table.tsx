@@ -1,17 +1,19 @@
-import { useState } from 'react';
 import '../../app/shared.css';
+import './Table.css';
+
 import Button from '../common/Button';
 import Check from '../svg/Check';
 import Edit from '../svg/Edit';
 import Plus from '../svg/Plus';
 import Trash from '../svg/Trash';
-import './Table.css';
-
-import assert from 'assert';
 import ThumbsUp from '../svg/ThumbsUp';
 import XMark from '../svg/XMark';
 import Pencil from '../svg/Pencil';
 import XCircle from '../svg/XCircle';
+import Minus from '../svg/Minus';
+
+import { useState } from 'react';
+import assert from 'assert';
 
 export const PROPERTY_TYPES = [
   "string?", "string!", 
@@ -24,6 +26,31 @@ export const PROPERTY_TYPES = [
 type TableMode = 'create' | 'edit' | 'delete' | null;
 
 type TableDataType = string | boolean | number | Date | null;
+
+/** Converts the data to the corresponding element for the table based on its type */
+function tableDataToElement(data: TableDataType): string | JSX.Element {
+  return data instanceof Date
+    ? `${data.getMonth() + 1}/${data.getDate()}/${data.getFullYear()}`
+    : data === null 
+    ? '\u00A0'
+    : typeof data == 'boolean'
+    ? (data as boolean ? <Check /> : '')
+    : data.toString()
+}
+
+function tableDataToInputValue(type: typeof PROPERTY_TYPES[number], data: TableDataType): string {
+  if((type as string).startsWith('date') && data instanceof Date){
+    if(Number.isNaN(data.getTime())) return "";
+
+    return data.getFullYear() + "-" 
+      + ("0" + (data.getMonth() + 1)).slice(-2) + "-"
+      + ("0" + data.getDate()).slice(-2);
+  } else if(data === null) {
+    return "";
+  }
+
+  return data.toString();
+}
 
 interface TableHeader {
 
@@ -42,13 +69,13 @@ interface TableHeader {
    * Called with a 2D array, with the dimensions of the 1st order array matching
    * the dimensions of the table data. 
    * - If the element of the 1st order array is undefined, it skips over the
-   * row, leaving it unchanged. 
+   *   row, leaving it unchanged. 
    * - If the element of the 1st order array is not undefined, it specifies an array 
-   * matching the dimensions of the corresponding row in the table data. If the element
-   * of the array is undefined, it leaves the item unchanged. Otherwise, it indicates
-   * the new value of the item at the array index.
+   *   matching the dimensions of the corresponding row in the table data. If the element
+   *   of the array is undefined, it leaves the item unchanged. Otherwise, it indicates
+   *   the new value of the item at the array index.
    */
-  onDataUpdate?: (updates: ((TableDataType | undefined)[] | undefined)[]) => Promise<void>;
+  onDataUpdate?: (updates: (TableDataType | undefined)[][]) => Promise<void>;
 
   /** 
    * Called when new rows are requested to be deleted from the table. 
@@ -92,19 +119,26 @@ interface TableHeaderElementProps {
   mode: TableMode;
   setMode: React.Dispatch<React.SetStateAction<TableMode>>;
   newRows: TableDataType[][] | null;
-  updates: ((TableDataType | undefined)[] | undefined)[] | null;
+  updates: (TableDataType | undefined)[][] | null;
   rowsToDelete: boolean[] | null;
   reset: () => void;
 }
 
-function TableHeaderElement({ tableHeader, mode, newRows, setMode, reset }: TableHeaderElementProps) {
+function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rowsToDelete, reset }: TableHeaderElementProps) {
   const performAction = () => {
-    if(mode == 'create' && newRows) {
+    if(tableHeader.onDataCreate && mode == 'create' && newRows) {
       console.log('Creating rows');
       console.log(newRows);
-      tableHeader?.onDataCreate && tableHeader?.onDataCreate(newRows);
+      tableHeader.onDataCreate(newRows).then(reset);
+    } else if(tableHeader.onDataUpdate && mode == 'edit' && updates) {
+      console.log('Performing update');
+      console.log(updates);
+      tableHeader.onDataUpdate(updates).then(reset);
+    } else if(tableHeader.onDataDelete && mode == 'delete' && rowsToDelete) {
+      console.log('Performing deletion');
+      console.log(rowsToDelete);
+      tableHeader.onDataDelete(rowsToDelete).then(reset);
     }
-    reset();
   }
 
   const actions = mode 
@@ -121,18 +155,18 @@ function TableHeaderElement({ tableHeader, mode, newRows, setMode, reset }: Tabl
   return (
     <div className='app-table-header'>
       <div className='app-table-subheader'>
-        <h3>{tableHeader.title}</h3>
+        <h3>{ tableHeader.title }</h3>
         { actions }
       </div>
-      { mode && <p>You are currently in <strong>{mode}</strong> mode.</p> }
+      { mode && <p className='app-table-mode-text'>You are currently in <strong>{mode}</strong> mode.</p> }
     </div>
   );
 }
 
 function LoadingTableBodyElement() {
-  const columnHeaders = Array(5).fill(null).map((_, i) => <th key={i} scope='col'><span>Loading...</span></th>);
-  const rows = Array(7).fill(null).map((_, i) => (
-      <tr key={i}>
+  const columnHeaders = Array(5).fill(null).map((_, r) => <th key={r} scope='col'><span>Loading...</span></th>);
+  const rows = Array(7).fill(null).map((_, c) => (
+      <tr key={c}>
         {
           Array(5).fill(null).map((_, j) => <td key={j}><span>Loading data...</span></td>)
         }
@@ -150,29 +184,19 @@ function LoadingTableBodyElement() {
   );
 }
 
-function tableDataToElement(data: TableDataType): string | JSX.Element {
-  return data instanceof Date 
-    ? `${data.getMonth()}/${data.getDate()}/${data.getFullYear()}`
-    : data === null 
-    ? ""
-    : typeof data == 'boolean'
-    ? (data as boolean ? <Check /> : '')
-    : data.toString()
-}
-
 interface TableBodyElementProps {
   tableData: TableData;
   mode: TableMode;
   newRows: TableDataType[][] | null;
   setNewRows: React.Dispatch<React.SetStateAction<TableDataType[][] | null>>;
-  updates: ((TableDataType | undefined)[] | undefined)[] | null;
-  setUpdates: React.Dispatch<React.SetStateAction<((TableDataType | undefined)[] | undefined)[] | null>>;
+  updates: (TableDataType | undefined)[][] | null;
+  setUpdates: React.Dispatch<React.SetStateAction<(TableDataType | undefined)[][] | null>>;
   rowsToDelete: boolean[] | null;
   setRowsToDelete: React.Dispatch<React.SetStateAction<boolean[] | null>>;
 }
 
-function TableBodyElement({ tableData, mode, newRows, setNewRows }: TableBodyElementProps) {
-  let body;
+function TableBodyElement(props: TableBodyElementProps) {
+  const { tableData, mode, newRows, setNewRows, updates, setUpdates, rowsToDelete, setRowsToDelete } = props;
 
   /** Adds an empty row to the new set of rows */
   const addNewRow = () => {
@@ -182,93 +206,347 @@ function TableBodyElement({ tableData, mode, newRows, setNewRows }: TableBodyEle
     );
   }
 
-  /** Removes the row at specified index from the new set of rows */
+  /** Removes the new row at specified index from the new set of rows */
   const removeNewRow = (index: number) => {
     const newRowsAfterRemove = newRows?.slice() || null;
     newRowsAfterRemove?.splice(index, 1);
     setNewRows(newRowsAfterRemove);
   }
 
+  /** Returns true if the cell at the given dimension is being edited */
+  const isEditingCell = (r: number, c: number) => {
+    return updates !== null && updates[r][c] !== undefined;
+  }
+
+  /** Marks a cell as being edited, and initializes the updates array if it's null. */
+  const markCellEdit = (r: number, c: number, newValue: TableDataType) => {
+
+    // Clone the 2D array of updates, or initialize it if it's not already defined
+    const newUpdates = updates 
+      ? updates.slice() 
+      : Array.from(Array(tableData.data.length), () => Array(tableData.columns.length).fill(undefined));
+    
+    // Update the value
+    newUpdates[r][c] = newValue;
+    setUpdates(newUpdates);
+  }
+
+  /** Unsets the edit at the cell */
+  const cancelCellEdit = (r: number, c: number) => {
+    if(updates && updates[r][c] !== undefined) {
+      const newUpdates = updates.slice();
+      newUpdates[r][c] = undefined;
+      setUpdates(newUpdates);
+    }
+  }
+
+  const isDeletingRow = (r: number) => {
+    return rowsToDelete != null && rowsToDelete[r];
+  }
+
+  const markRowDelete = (r: number) => {
+
+    // Clone the 2D array of deletes, or initialize it if it's not already defined
+    const newRowsToDelete = rowsToDelete 
+      ? rowsToDelete.slice() 
+      : Array(tableData.columns.length).fill(false);
+
+    // Update the value
+    newRowsToDelete[r] = true;
+    setRowsToDelete(newRowsToDelete);
+  }
+
+  const cancelRowDelete = (r: number) => {
+    if(rowsToDelete && rowsToDelete[r] == true) {
+      const newRowsToDelete = rowsToDelete.slice();
+      newRowsToDelete[r] = false;
+      setRowsToDelete(newRowsToDelete);
+    }
+  }
+
+  /** The table body element */
   if(tableData.data.length == 1) {
-    const rows = tableData.data[0].map((item, i) => {
-      const renderedNewRow = mode == 'create' && newRows
-        ? newRows.map((_, j) => <td className='new-data' key={j}>
-              { i == 0 && <button onClick={() => removeNewRow(j)}><XCircle /></button> }
-              <Pencil />
-              {
-                <input 
-                  type={
-                    tableData.columns[i].type.startsWith('number')
-                    ? 'number'
-                    : tableData.columns[i].type.startsWith('date')
-                    ? 'date'
-                    : tableData.columns[i].type.startsWith('boolean')
-                    ? 'checkbox'
-                    : 'text'
-                  } 
-                  value={newRows[j][i]?.toString()}
-                  onInput={(e) => {
-                    if(tableData.columns[i].type.startsWith('string')) {
-                      newRows[j][i] = e.currentTarget.value;
-                    } else if(tableData.columns[i].type.startsWith('number')) {
-                      newRows[j][i] = Number(e.currentTarget.value);
-                    } else if(tableData.columns[i].type.startsWith('boolean')) {
-                      newRows[j][i] = e.currentTarget.value == 'true' ? true : false;
-                    } else {
-                      newRows[j][i] = new Date(e.currentTarget.value);
-                    }
-                  }}
-                />
+    const rows = tableData.data[0].map((item, c) => {
+
+      /** The current element in the row to be displayed */
+      let currentElement: JSX.Element;
+      if(isEditingCell(0, c)) {
+        currentElement = <td className='edit-cell'>
+          <button onClick={() => cancelCellEdit(0, c)}><XCircle /></button>
+          <Pencil />
+          <input 
+            type={
+              tableData.columns[c].type.startsWith('number')
+              ? 'number'
+              : tableData.columns[c].type.startsWith('date')
+              ? 'date'
+              : tableData.columns[c].type.startsWith('boolean')
+              ? 'checkbox'
+              : 'text'
+            } 
+            defaultValue={
+              updates?.[0][c] !== undefined 
+                ? tableDataToInputValue(tableData.columns[c].type, updates![0][c]!)
+                : tableDataToInputValue(tableData.columns[c].type, tableData.data[0][c])
+            }
+            defaultChecked={ tableData.data[0][c] as boolean }
+            onChange={(e) => {
+              if(e.currentTarget.value === "") {
+                markCellEdit(0, c, null);
+              } else if(tableData.columns[c].type.startsWith('number')) {
+                markCellEdit(0, c, Number(e.currentTarget.value));
+              } else if(tableData.columns[c].type.startsWith('boolean')) {
+                markCellEdit(0, c, e.currentTarget.checked);
+              } else if(tableData.columns[c].type.startsWith('date')) {
+                markCellEdit(0, c, new Date(e.currentTarget.value));
+              } else {
+                markCellEdit(0, c, e.currentTarget.value);
               }
-          </td>
-        )
+            }}
+          />
+        </td>
+      } else if(isDeletingRow(0)) {
+        currentElement = <td className='delete-cell'>
+          { c == 0 && <button onClick={() => cancelRowDelete(0)}><XCircle /></button> }
+          <Trash />
+          <span>{ tableDataToElement(item) }</span>
+        </td>
+      } else {
+        currentElement = <td>
+          <span>{ tableDataToElement(item) }</span>
+          { 
+            // Render the edit button in edit mode
+            mode == 'edit' 
+              && <button 
+                className='edit-btn'
+                onClick={() => { markCellEdit(0, c, tableData.data[0][c]!) }}
+              >
+                <Edit />
+              </button>
+          }
+          {
+            // Render the delete button in delete mode
+            mode == 'delete'
+              && <button
+                className='delete-btn'
+                onClick={() => { markRowDelete(0) }}
+              >
+                <Minus />
+              </button>
+          }
+        </td>
+      }
+
+      /** 
+       * If in create mode, this represents the new values to create in the same 
+       * column as the current element. 
+       */
+      const renderedNewRowElements = mode == 'create' && newRows
+        ? newRows.map((_, r) => <td className='new-data' key={r}>
+          { c == 0 && <button onClick={() => removeNewRow(r)}><XCircle /></button> }
+          <Pencil />
+          {
+            <input 
+              type={
+                tableData.columns[c].type.startsWith('number')
+                ? 'number'
+                : tableData.columns[c].type.startsWith('date')
+                ? 'date'
+                : tableData.columns[c].type.startsWith('boolean')
+                ? 'checkbox'
+                : 'text'
+              }
+              onChange={(e) => {
+                const newRowsUpdate = newRows.slice();
+                if(e.currentTarget.value === "") {
+                  newRowsUpdate[r][c] = null;
+                } else if(tableData.columns[c].type.startsWith('number')) {
+                  newRowsUpdate[r][c] = Number(e.currentTarget.value);
+                } else if(tableData.columns[c].type.startsWith('boolean')) {
+                  newRowsUpdate[r][c] = e.currentTarget.checked;
+                } else if(tableData.columns[c].type.startsWith('date')) {
+                  newRowsUpdate[r][c] = new Date(e.currentTarget.value);
+                } else {
+                  newRowsUpdate[r][c] = e.currentTarget.value;
+                }
+                setNewRows(newRowsUpdate);
+              }}
+            />
+          }
+        </td>)
         : null;
 
       return (
-        <tr key={i}>
-          <th scope='row'>{ tableData.columns[i].title }</th>
-          <td>
-            { tableDataToElement(item) }
-            { mode == 'edit' && <button className='edit-btn'><Edit /></button>}
-          </td>
-          { renderedNewRow }
+        <tr key={c}>
+          <th scope='row'>{ tableData.columns[c].title }</th>
+          { currentElement }
+          { renderedNewRowElements }
           {
             mode == 'create'
             && <td className='create-row'>
-              {/* Confusing, I know. But the first index of all the rows technically specify the columns. */}
-              { i == 0 && <button onClick={() => addNewRow()}><Plus /></button> }
+              {/* The first index of all the rows specify the columns. */}
+              { c == 0 && <button onClick={() => addNewRow()}><Plus /></button> }
             </td>
           }
         </tr>
       );
     });
 
-    body = <table>
-      <tbody>
-        {rows}
-      </tbody>
-    </table>;
-  } else {
-    const columnHeaders = <tr>
-      { tableData.columns.map((c, i) => <th key={i} scope='col'>{c.title}</th>) }
-    </tr>;
-
-    const rows = tableData.data.map((row, i) => <tr key={i}>
-      {
-        row.map((item, i) => <td key={i}>{tableDataToElement(item)}</td>)
-      }
-    </tr>);
-
-    body = <table>
-      <thead>{columnHeaders}</thead>
-      <tbody>{rows}</tbody>
-    </table>;
+    return (
+      <table>
+        <tbody>{rows}</tbody>
+      </table>
+    );
   }
 
-  return body;
+  const columnHeaders = <tr>
+    { tableData.columns.map((item, c) => <th key={c} scope='col'>{item.title}</th>) }
+  </tr>
+
+  const rows = tableData.data.map((row, r) => {
+    const elements = row.map((item, c) => {
+      if(isEditingCell(r, c)) {
+        return <td className='edit-cell' key={c}>
+          <button onClick={() => cancelCellEdit(r, c)}><XCircle /></button>
+          <Pencil />
+          <input 
+            type={
+              tableData.columns[c].type.startsWith('number')
+              ? 'number'
+              : tableData.columns[c].type.startsWith('date')
+              ? 'date'
+              : tableData.columns[c].type.startsWith('boolean')
+              ? 'checkbox'
+              : 'text'
+            } 
+            defaultValue={
+              updates?.[r][c] !== undefined 
+                ? tableDataToInputValue(tableData.columns[c].type, updates![r][c]!)
+                : tableDataToInputValue(tableData.columns[c].type, tableData.data[r][c])
+            }
+            defaultChecked={ tableData.data[r][c] as boolean }
+            onChange={(e) => {
+              if(e.currentTarget.value === "") {
+                markCellEdit(r, c, null);
+              } else if(tableData.columns[c].type.startsWith('number')) {
+                markCellEdit(r, c, Number(e.currentTarget.value));
+              } else if(tableData.columns[c].type.startsWith('boolean')) {
+                markCellEdit(r, c, e.currentTarget.checked);
+              } else if(tableData.columns[c].type.startsWith('date')) {
+                markCellEdit(r, c, new Date(e.currentTarget.value));
+              } else {
+                markCellEdit(r, c, e.currentTarget.value);
+              }
+            }}
+          />
+        </td>
+      } else if(isDeletingRow(r)) {
+        return <td className='delete-cell' key={c}>
+          { c == 0 && <button onClick={() => cancelRowDelete(r)}><XCircle /></button> }
+          <Trash />
+          <span>{ tableDataToElement(item) }</span>
+        </td>
+      }
+
+      return <td key={c}>
+        <span>{ tableDataToElement(item) }</span>
+        { 
+          // Render the edit button in edit mode
+          mode == 'edit' 
+            && <button 
+              className='edit-btn'
+              onClick={() => { markCellEdit(r, c, tableData.data[r][c]!) }}
+            >
+              <Edit />
+            </button>
+        }
+        {
+          // Render the delete button in delete mode
+          mode == 'delete'
+            && <button
+              className='delete-btn'
+              onClick={() => {
+                console.log('Time to delete');
+                markRowDelete(r);
+              }}
+            >
+              <Minus />
+            </button>
+        }
+      </td>
+    });
+
+    return (
+      <tr key={r}>
+        {elements}
+      </tr>
+    );
+  });
+
+  const renderedNewRows = mode == 'create' && newRows
+    ? newRows.map((row, r) => {
+      const elements = row.map((_, c) => <td className='new-data' key={c}>
+        { c == 0 && <button onClick={() => removeNewRow(r)}><XCircle /></button> }
+        <Pencil />
+        {
+          <input 
+            type={
+              tableData.columns[c].type.startsWith('number')
+              ? 'number'
+              : tableData.columns[c].type.startsWith('date')
+              ? 'date'
+              : tableData.columns[c].type.startsWith('boolean')
+              ? 'checkbox'
+              : 'text'
+            } 
+            onChange={(e) => {
+              const newRowsUpdate = newRows.slice();
+              if(e.currentTarget.value === "") {
+                newRowsUpdate[r][c] = null;
+              } else if(tableData.columns[c].type.startsWith('number')) {
+                newRowsUpdate[r][c] = Number(e.currentTarget.value);
+              } else if(tableData.columns[c].type.startsWith('boolean')) {
+                newRowsUpdate[r][c] = e.currentTarget.checked;
+              } else if(tableData.columns[c].type.startsWith('date')) {
+                newRowsUpdate[r][c] = new Date(e.currentTarget.value);
+              } else {
+                newRowsUpdate[r][c] = e.currentTarget.value;
+              }
+              setNewRows(newRowsUpdate);
+            }}
+          />
+        }
+      </td>);
+      
+      return (
+        <tr key={r + tableData.data.length}>
+          {elements}
+        </tr>
+      );
+    })
+    : null;
+
+  return (
+    <table>
+      <thead>{columnHeaders}</thead>
+      <tbody>
+        {rows} 
+        {renderedNewRows}
+        {
+          mode == 'create'
+          && <tr>
+            <td className='create-row'>
+              {/* The first index of all the rows specify the columns. */}
+              <button onClick={() => addNewRow()}><Plus /></button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  );
 }
 
-interface TableProps {
+export interface TableProps {
 
   /** True if this table is loading. If loading, no given table data will be displayed. */
   loading?: boolean;
@@ -281,17 +559,21 @@ interface TableProps {
 
   /** Overrides the current mode of the table */
   modeOverride?: TableMode;
+
+  /** The maximum number of columns for the table */
+  maxCols?: number;
 }
 
-const Table = ({ loading = false, tableHeader, tableData, modeOverride }: TableProps) => {
+const Table = ({ loading = false, tableHeader, tableData, modeOverride, maxCols }: TableProps) => {
   const [mode, setMode] = useState<TableMode>(null);
   const [newRows, setNewRows] = useState<TableDataType[][] | null>(null);
-  const [updates, setUpdates] = useState<((TableDataType | undefined)[] | undefined)[] | null>(null);
+  const [updates, setUpdates] = useState<(TableDataType | undefined)[][] | null>(null);
   const [rowsToDelete, setRowsToDelete] = useState<boolean[] | null>(null);
-  assert(loading || tableData.columns.length > 0);
 
   const reset = () => {
     setNewRows(null);
+    setUpdates(null);
+    setRowsToDelete(null);
     setMode(null);
   }
 
@@ -324,15 +606,21 @@ const Table = ({ loading = false, tableHeader, tableData, modeOverride }: TableP
 
   return (
     <div 
-      className={`
-        app-table 
-        content-unit 
-        ${ !header ? 'no-header' : ''} 
-        ${ tableData.data.length == 1 ? 'one-row' : ''}
-      `}
+      className={
+        "app-table "
+        + "content-unit " 
+        + `${ !header ? 'no-header' : ''} ` 
+        + `${ tableData.data.length == 1 ? 'one-row' : ''} `
+      }
+
+      style={{
+        "--max-cols": maxCols
+      } as React.CSSProperties}
     >
       { header }
+      <div className="app-table-body">
         { body }
+      </div>
     </div>
   );
 }

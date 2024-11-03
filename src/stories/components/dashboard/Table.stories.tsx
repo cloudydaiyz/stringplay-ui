@@ -1,7 +1,45 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
-import Table from '../../../components/dashboard/Table';
+import Table, { TableProps } from '../../../components/dashboard/Table';
+import { useState } from 'react';
+
+const renderTable = (args: TableProps) => {
+  const [data, setData] = useState(args.tableData.data);
+  const [loading, setLoading] = useState(args.loading);
+
+  if(args.tableHeader) {
+    args.tableHeader = {
+      ...args.tableHeader,
+      onDataCreate: async (newRows) => {
+        const newData = data.slice().concat(newRows);
+        setLoading(true);
+        setTimeout(() => { setData(newData); setLoading(false) }, 4000);
+      },
+      onDataDelete: async (rowsToDelete) => {
+        const newData = data.slice();
+        for(let i = newData.length - 1; i >= 0; i--) {
+          if(rowsToDelete[i]) newData.splice(i, 1);
+        }
+        setLoading(true);
+        setTimeout(() => { setData(newData); setLoading(false) }, 4000);
+      },
+      onDataUpdate: async (updates) => {
+        const newData = data.slice();
+        updates.forEach((row, r) => {
+          row.forEach((update, c) => {
+            if(update !== undefined) newData[r][c] = update;
+          });
+        });
+        setLoading(true);
+        setTimeout(() => { setData(newData); setLoading(false) }, 4000);
+      }
+    }
+  }
+
+  return (
+    <Table {...args} tableData={{ ...args.tableData, data }} loading={loading} />
+  );
+}
 
 const meta = {
   parameters: {
@@ -19,6 +57,11 @@ const meta = {
   ],
   tags: ['autodocs'],
   component: Table,
+  render: renderTable,
+  args: {
+    maxCols: 5,
+    loading: false,
+  },
   argTypes: {
     tableData: { control: false },
     tableHeader: { control: false },
@@ -40,9 +83,6 @@ export const Default: Story = {
   args: {
     tableHeader: {
       title: "Member Information",
-      onDataCreate: fn(),
-      onDataDelete: fn(),
-      onDataUpdate: fn(),
     },
     tableData: {
       columns: [
@@ -79,10 +119,6 @@ export const Default: Story = {
       ],
     }
   },
-  argTypes: {
-    // tableHeader: { control: false },
-    // tableData: { control: false },
-  }
 };
 
 export const DefaultNoHeader: Story = {
@@ -133,9 +169,6 @@ export const OneRow: Story = {
   args: {
     tableHeader: {
       title: "Member Information",
-      onDataCreate: fn(),
-      onDataDelete: fn(),
-      onDataUpdate: fn(),
     },
     tableData: {
       columns: [
@@ -157,11 +190,11 @@ export const OneRow: Story = {
         },
         {
           title: "isInteresting",
-          type: "boolean!",
+          type: "boolean?",
         },
       ],
       data: [
-        ['John', 'Doe', 4, new Date('8/16/1964'), false]
+        ['John', 'Doe', 4, new Date('8/16/1964'), null]
       ],
     }
   },
@@ -224,7 +257,3 @@ export const Loading: Story = {
     tableData: { control: false },
   }
 };
-
-// One row
-// Multiple rows
-// Loading

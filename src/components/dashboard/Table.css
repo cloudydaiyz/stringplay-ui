@@ -1,6 +1,10 @@
 .app-table
 {
-    max-width: 1000px;
+    width: fit-content;
+    min-width: 400px;
+    width: 100%;
+    max-width: calc(var(--max-cols) * 200px);
+    overflow: hidden;
 }
 
 .app-table h3
@@ -12,13 +16,23 @@
 {
     border-spacing: 0px 8px;
     border-collapse: collapse;
-    min-width: 100%;
+    width: 100%;
+    border-bottom: 1px solid var(--g2);
+}
+
+.app-table.no-header table
+{
+    border-top: 1px solid var(--g2);
 }
 
 .app-table.content-unit
 {
     padding: 0px;
-    overflow: scroll;
+}
+
+.app-table.no-header
+{
+    padding-top: 16px;
 }
 
 .app-table-header
@@ -87,10 +101,10 @@
 
 .app-table th, .app-table td
 {
-    min-width: 100px;
-    max-width: 200px;
+    width: 200px;
     padding: 4px 16px;
     text-align: left;
+    font-size: .9rem;
 }
 
 .app-table tbody tr,
@@ -99,6 +113,11 @@
     white-space: nowrap;
     overflow-x: scroll;
     position: relative;
+}
+
+.app-table tbody td span
+{
+    height: 100%;
 }
 
 .app-table tr:nth-child(2n + 1)
@@ -136,8 +155,7 @@
     background-color: var(--c1);
     color: var(--white);
     border-right: 1px solid var(--g2);
-    width: 1px;
-    max-width: fit-content;
+    width: 200px;
 }
 
 .app-table.content-unit.no-header.one-row tr th:first-child
@@ -166,58 +184,71 @@ th, td, tr
     position: relative;
 }
 
-.app-table.one-row .create-row button
+.app-table .create-row button
 {
     width: 100%;
-    text-align: left;
+    text-align: center;
 }
 
-.app-table.one-row .create-row button,
-.app-table.one-row .new-data button
+.app-table .create-row button,
+.app-table .new-data button,
+.app-table .edit-cell button,
+.app-table .delete-cell button
 {
     fill: var(--c1);
     background: none;
     border: none;
     opacity: .25;
     transition: opacity .2s;
+    width: fit-content;
+    height: 20px;
 }
 
-.app-table.one-row .create-row button:hover,
-.app-table.one-row .new-data button:hover
+.app-table .create-row button:hover,
+.app-table .new-data button:hover,
+.app-table .edit-cell button:hover,
+.app-table .delete-cell button:hover
 {
     opacity: .5;
     cursor: pointer;
 }
 
-.app-table.one-row .create-row button:active,
-.app-table.one-row .new-data button:active
+.app-table .create-row button:active,
+.app-table .new-data button:active,
+.app-table .edit-cell button:active,
+.app-table .delete-cell button:active
 {
     opacity: 1;
     cursor: initial;
 }
 
-.app-table .new-data svg
+.app-table .new-data svg,
+.app-table .edit-cell svg,
+.app-table .delete-cell svg
 {
     fill: var(--c1);
-    margin-right: 8px;
+    animation: fade-in .2s linear forwards;
 }
 
-.app-table .new-data input
+.app-table .new-data input,
+.app-table .edit-cell input
 {
     background: none;
     border: none;
     font-family: var(--font-2);
-    font-size: 1rem;
+    font-size: .9rem;
     max-width: 125px;
     border-bottom: 1px solid var(--c1);
 }
 
-.app-table .new-data input:focus
+.app-table .new-data input:focus,
+.app-table .edit-cell input
 {
     outline: none;
 }
 
-.app-table.one-row .edit-btn
+.app-table .edit-btn,
+.app-table .delete-btn
 {
     position: absolute;
     left: 0%;
@@ -230,35 +261,77 @@ th, td, tr
     border: none;
 }
 
-.app-table.one-row tr .edit-btn svg
+.app-table tr .edit-btn svg,
+.app-table tr .delete-btn svg
 {
     box-shadow: 0px 0px 5px var(--g1);
     background-color: var(--g1);
+    fill: var(--c1);
     opacity: 0;
 }
 
-.app-table.one-row tr:nth-child(2n) .edit-btn svg
+.app-table tr:nth-child(2n) .edit-btn svg,
+.app-table tr:nth-child(2n) .delete-btn svg
 {
     box-shadow: 0px 0px 5px var(--white);
     background-color: var(--white);
 }
 
-.app-table.one-row tr .edit-btn:hover
+.app-table tr .edit-btn:hover,
+.app-table tr .delete-btn:hover
 {
     cursor: pointer;
 }
 
-.app-table.one-row tr .edit-btn:hover svg
+.app-table tr .edit-btn:hover svg,
+.app-table tr .delete-btn:hover svg
 {
     opacity: .5;
 }
 
-.app-table.one-row tr .edit-btn:active
+.app-table tr .edit-btn:active,
+.app-table tr .delete-btn:active
 {
     cursor: initial;
 }
 
-.app-table.one-row tr .edit-btn:active svg
+.app-table tr .edit-btn:active svg,
+.app-table tr .delete-btn:active svg
 {
     opacity: 1;
+}
+
+.app-table tr td
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.app-table.one-row tr td svg
+{
+    border-collapse: initial;
+}
+
+.app-table tr
+{
+    display: flex;
+}
+
+.app-table-body
+{
+    padding-bottom: 16px;
+    overflow: scroll;
+}
+
+.app-table-mode-text
+{
+    font-size: .9rem;
+    animation: fade-in .2s linear forwards;
+}
+
+@keyframes fade-in
+{
+    0% { opacity: 0 }
+    100% { opacity: 1 }
 }
