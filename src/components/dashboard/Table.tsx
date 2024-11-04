@@ -13,7 +13,6 @@ import XCircle from '../svg/XCircle';
 import Minus from '../svg/Minus';
 
 import { useState } from 'react';
-import assert from 'assert';
 
 export const PROPERTY_TYPES = [
   "string?", "string!", 
@@ -163,16 +162,49 @@ function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rows
   );
 }
 
-function LoadingTableBodyElement() {
-  const columnHeaders = Array(5).fill(null).map((_, r) => <th key={r} scope='col'><span>Loading...</span></th>);
-  const rows = Array(7).fill(null).map((_, c) => (
+interface LoadingTableBodyElementProps {
+  tableData?: TableData;
+  newRows: TableDataType[][] | null;
+}
+
+function LoadingTableBodyElement({ tableData, newRows }: LoadingTableBodyElementProps) {
+  const numRows = tableData?.data?.length;
+  const numCols = tableData?.columns?.length;
+
+  if(numRows === 1) {
+    const rows = tableData!.data[0].map((_, c) => (
       <tr key={c}>
-        {
-          Array(5).fill(null).map((_, j) => <td key={j}><span>Loading data...</span></td>)
-        }
+        <th scope='row'><span>Loading...</span></th>
+        <td><span>Loading...</span></td>
+        { newRows?.map(() => <td className='new-data'><span>Loading...</span></td>) }
       </tr>
-    )
-  );
+    ));
+
+    return (
+      <table className='loading'>
+        <tbody>{ rows }</tbody>
+      </table>
+    );
+  }
+
+  const columnHeaders = Array(numCols || 5).fill(null).map((_, r) => (
+    <th key={r} scope='col'>
+      <span>Loading...</span>
+    </th>
+  ));
+
+  const rows = Array((numRows || 7) + (newRows?.length || 0)).fill(null).map((_, c) => (
+    <tr key={c}>
+      {
+        Array(numCols || 5).fill(null).map((_, j) => (
+          <td key={j}>
+            <span>Loading data...</span>
+          </td>
+        ))
+      }
+    </tr>
+  ));
+
 
   return (
     <table className='loading'>
@@ -240,10 +272,12 @@ function TableBodyElement(props: TableBodyElementProps) {
     }
   }
 
+  /** True if the row is marked for deletion */
   const isDeletingRow = (r: number) => {
     return rowsToDelete != null && rowsToDelete[r];
   }
 
+  /** Marks the row for deletion */
   const markRowDelete = (r: number) => {
 
     // Clone the 2D array of deletes, or initialize it if it's not already defined
@@ -256,6 +290,7 @@ function TableBodyElement(props: TableBodyElementProps) {
     setRowsToDelete(newRowsToDelete);
   }
 
+  /** Unmarks the row for deletion */
   const cancelRowDelete = (r: number) => {
     if(rowsToDelete && rowsToDelete[r] == true) {
       const newRowsToDelete = rowsToDelete.slice();
@@ -264,7 +299,7 @@ function TableBodyElement(props: TableBodyElementProps) {
     }
   }
 
-  /** The table body element */
+  // The table body element
   if(tableData.data.length == 1) {
     const rows = tableData.data[0].map((item, c) => {
 
@@ -551,6 +586,9 @@ export interface TableProps {
   /** True if this table is loading. If loading, no given table data will be displayed. */
   loading?: boolean;
 
+  /** True if the loading element should match the given table data (and header) */
+  useDataWhileLoading?: boolean;
+
   /** Header data for the table (title and action buttons) */
   tableHeader?: TableHeader;
 
@@ -564,7 +602,7 @@ export interface TableProps {
   maxCols?: number;
 }
 
-const Table = ({ loading = false, tableHeader, tableData, modeOverride, maxCols }: TableProps) => {
+const Table = ({ loading = false, useDataWhileLoading = false, tableHeader, tableData, modeOverride, maxCols }: TableProps) => {
   const [mode, setMode] = useState<TableMode>(null);
   const [newRows, setNewRows] = useState<TableDataType[][] | null>(null);
   const [updates, setUpdates] = useState<(TableDataType | undefined)[][] | null>(null);
@@ -577,7 +615,7 @@ const Table = ({ loading = false, tableHeader, tableData, modeOverride, maxCols 
     setMode(null);
   }
 
-  const header = loading
+  const header = loading && !useDataWhileLoading
     ? <LoadingTableHeaderElement />
     : tableHeader 
     ? <TableHeaderElement 
@@ -592,7 +630,10 @@ const Table = ({ loading = false, tableHeader, tableData, modeOverride, maxCols 
     : null;
 
   const body = loading 
-    ? <LoadingTableBodyElement /> 
+    ? <LoadingTableBodyElement
+        tableData={useDataWhileLoading ? tableData : undefined}
+        newRows={useDataWhileLoading ? newRows : null}
+      /> 
     : <TableBodyElement 
         tableData={tableData} 
         mode={mode == null && modeOverride != undefined ? modeOverride : mode}

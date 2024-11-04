@@ -61,6 +61,7 @@ const meta = {
   args: {
     maxCols: 5,
     loading: false,
+    useDataWhileLoading: true,
   },
   argTypes: {
     tableData: { control: false },
@@ -250,7 +251,8 @@ export const Loading: Story = {
     tableData: {
       columns: [],
       data: [],
-    }
+    },
+    useDataWhileLoading: false,
   },
   argTypes: {
     tableHeader: { control: false },
