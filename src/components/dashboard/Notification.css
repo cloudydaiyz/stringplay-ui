@@ -1,0 +1,59 @@
+.app-notification
+{
+    display: flex;
+    gap: 8px;
+    max-width: 1000px;
+    color: var(--white);
+    fill: var(--white);
+    box-shadow: none;
+    border-color: transparent;
+}
+
+.app-notification.content-unit.info
+{
+    background-color: rgb(from darkblue r g b / 50%);
+}
+
+.app-notification.content-unit.warning
+{
+    background-color: rgb(from rgb(213, 139, 0) r g b / 50%);
+}
+
+.app-notification.content-unit.error
+{
+    background-color: rgb(from rgb(204, 0, 0) r g b / 50%);
+}
+
+.app-notification-icon
+{
+    width: 32px;
+    height: 32px;
+}
+
+.app-notification > p
+{
+    padding-top: 4px;
+    font-size: 1rem;
+}
+
+.app-notification > button
+{
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--white);
+    fill: var(--white);
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+}
+
+.app-notification.done
+{
+    animation: disappear .3s linear forwards;
+}
+
+@keyframes disappear {
+    0% { opacity: 1 }
+    100% { opacity: 0; display: none }
+}

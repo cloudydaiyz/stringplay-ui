@@ -187,16 +187,16 @@ function LoadingTableBodyElement({ tableData, newRows }: LoadingTableBodyElement
     );
   }
 
-  const columnHeaders = Array(numCols || 5).fill(null).map((_, r) => (
+  const columnHeaders = Array(numCols !== undefined ? numCols : 5).fill(null).map((_, r) => (
     <th key={r} scope='col'>
       <span>Loading...</span>
     </th>
   ));
 
-  const rows = Array((numRows || 7) + (newRows?.length || 0)).fill(null).map((_, c) => (
+  const rows = Array((numRows !== undefined ? numRows : 7) + (newRows?.length || 0)).fill(null).map((_, c) => (
     <tr key={c}>
       {
-        Array(numCols || 5).fill(null).map((_, j) => (
+        Array(numCols !== undefined ? numCols : 5).fill(null).map((_, j) => (
           <td key={j}>
             <span>Loading data...</span>
           </td>
@@ -619,7 +619,11 @@ const Table = ({ loading = false, useDataWhileLoading = false, tableHeader, tabl
     ? <LoadingTableHeaderElement />
     : tableHeader 
     ? <TableHeaderElement 
-        tableHeader={tableHeader} 
+        tableHeader={
+          loading 
+          ? { title: tableHeader.title } 
+          : tableHeader
+        } 
         mode={mode == null && modeOverride != undefined ? modeOverride : mode} 
         setMode={setMode}
         newRows={newRows}

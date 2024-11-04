@@ -15,7 +15,7 @@ const UpcomingBirthdays = ({ birthdays = [] }: UpcomingBirthdaysProps) => {
             <h3>Upcoming Birthdays</h3>
             <ul>
                 {birthdays.map(b => <li>
-                    <p>{`${b.firstName} ${b.lastName} (${b.birthday.getMonth()}/${b.birthday.getDate()})`}</p>
+                    <p>{`${b.firstName} ${b.lastName}`} <strong>{`(${b.birthday.getMonth()}/${b.birthday.getDate()})`}</strong></p>
                 </li>)}
             </ul>
         </div>

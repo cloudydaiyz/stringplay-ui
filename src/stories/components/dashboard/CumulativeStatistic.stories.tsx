@@ -18,9 +18,4 @@ export const Primary: Story = {
     statistic: "days since coding",
     value: 0,
   },
-  argTypes: {
-    value: {
-      // control: false,
-    }
-  }
 };
