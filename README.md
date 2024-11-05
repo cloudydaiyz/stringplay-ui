@@ -17,3 +17,15 @@ This repository provides the frontend for the stringplay project. For other rele
 - [`stringplay`](https://github.com/cloudydaiyz/stringplay) (Main)
 - [`stringplay-core`](https://github.com/cloudydaiyz/stringplay-core) (Backend)
 - [`stringplay-cloud`](https://github.com/cloudydaiyz/stringplay-cloud) (Cloud)
+
+## Installation
+
+Make sure that Node.js version 20.0.0 or higher is installed on your device. 
+
+1. Run `npm install` to install dependencies for the root package.
+
+2. Run `npm run build` to build static files in the `/dist` directory which serves files at the root directory (`/`).
+
+## Environment Variables
+
+## Commands

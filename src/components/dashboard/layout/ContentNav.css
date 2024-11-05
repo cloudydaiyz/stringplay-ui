@@ -8,12 +8,24 @@
 
 .content-nav .content-nav-btn
 {
-    opacity: .5;
+    color: rgb(from var(--c1) r g b / 50%);
+    /* color: rgb(from var(--c2) r g b / 50%); */
     font-size: .9rem;
+    transition: all .3s;
 }
+
+.content-nav .content-nav-btn:not(:disabled):hover
+{
+    /* color: var(--c2); */
+    color: var(--c1);
+    /* fill: var(--c2); */
+    fill: var(--c1);
+}
+
 
 .content-nav .content-nav-btn:disabled
 {
     opacity: 1;
-    color: var(--c1);
+    /* color: var(--c1); */
+    color: var(--c2);
 }

@@ -2,11 +2,13 @@
 {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    /* align-items: flex-end; */
+    align-items: center;
     font-family: var(--font-2);
     color: var(--c1);
     font-size: 1rem;
     margin-top: 2rem;
+    gap: 16px;
 }
 
 .content-header h2

@@ -1,0 +1,17 @@
+.console-vert
+{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100vh;
+    min-width: 768px;
+}
+
+.console-hori
+{
+    display: flex;
+    position: relative;
+    height: 1px;
+    flex-grow: 1;
+    flex-shrink: 1;
+}

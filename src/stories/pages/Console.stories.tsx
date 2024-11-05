@@ -7,6 +7,7 @@ const meta = {
   parameters: {
     layout: 'centered',
   },
+  decorators: [(story) => <div style={{height:'fit-content', width:'1200px'}}>{story()}</div>],
   component: Console,
 } satisfies Meta<typeof Console>;
 

@@ -5,9 +5,8 @@
     padding-left: 16px;
     min-width: 256px;
     height: 100%;
-    box-shadow: var(--sh2);
-    /* border-right: 1px solid rgb(from var(--c1) r g b / 50%); */
     border-right: 1px solid var(--c1);
+    align-self: flex-start;
 }
 
 .app-nav menu 
@@ -43,14 +42,22 @@
 
 .app-nav button:not(.current):hover
 {
-    background-color: var(--g1);
+    /* background-color: var(--g1); */
+    /* color: var(--c2); */
+    color: var(--white);
+    /* fill: var(--c2); */
+    fill: var(--white);
+    background-color: rgb(from var(--c1) r g b / 50%);
     cursor: pointer;
 }
 
 .app-nav button:not(.current):active
 {
-    fill: rgb(from var(--c1) r g b / 50%);
-    color: rgb(from var(--c1) r g b / 50%);
+    /* fill: rgb(from var(--c1) r g b / 50%); */
+    fill: var(--white);
+    /* color: rgb(from var(--c1) r g b / 50%); */
+    color: var(--white);
+    background-color: rgb(from var(--c1) r g b / 25%);
     cursor: initial;
 }
 

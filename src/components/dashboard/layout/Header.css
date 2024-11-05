@@ -5,9 +5,10 @@
     align-items: center;
     width: 100%;
     padding: 16px;
-    box-shadow: var(--sh2);
+    /* box-shadow: var(--sh2); */
     font-family: var(--font-1);
     font-size: 1rem;
+    background-color: var(--white);
     color: var(--c1);
     /* border-bottom: 1px solid rgb(from var(--c1) r g b / 50%); */
     border-bottom: 1px solid var(--c1);
