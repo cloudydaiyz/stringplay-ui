@@ -12,13 +12,13 @@ export type NavPage = 'dashboard' | 'troupe' | 'event-log' | 'member-log' | 'set
 
 interface NavbarProps {
     initialPage: NavPage,
-    onNavigate: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, setPage: React.Dispatch<React.SetStateAction<NavPage>>) => void;
+    onNavigate: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, page: NavPage, setPage: React.Dispatch<React.SetStateAction<NavPage>>) => void;
 }
 
 const Navbar = ({ initialPage = 'dashboard', onNavigate }: NavbarProps) => {
   const [page, setPage] = useState<NavPage>(initialPage);
 
-  const sections = {
+  const sections: Record<NavPage, JSX.Element> = {
     dashboard: <><Home />Dashboard</>,
     troupe: <><Group />Troupe</>,
     'event-log': <><Calendar />Event Log</>,
@@ -31,7 +31,7 @@ const Navbar = ({ initialPage = 'dashboard', onNavigate }: NavbarProps) => {
     const item = sections[section as keyof typeof sections];
     menuItems.push(<li key={section}>
       <button 
-        onClick={(e) => onNavigate(e, setPage)} 
+        onClick={(e) => onNavigate(e, section as NavPage, setPage)} 
         className={page == section ? 'current' : ''} 
         data-page={section}
       >

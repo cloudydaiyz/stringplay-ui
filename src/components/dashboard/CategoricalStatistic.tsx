@@ -1,7 +1,7 @@
 import '../../app/shared.css';
 import './CategoricalStatistic.css';
 
-import { ResponsiveContainer, Pie, PieChart, Sector, Legend, Tooltip, Cell } from 'recharts';
+import { ResponsiveContainer, Pie, PieChart, Sector, Tooltip, Cell } from 'recharts';
 import { PieSectorDataItem, PieLabel } from 'recharts/types/polar/Pie';
 import { useState } from 'react';
 
@@ -98,7 +98,7 @@ const CategoricalStatistic = ({ data, title }: CategoricalStatisticProps) => {
               }
             </Pie>
             <Tooltip />
-            <Legend verticalAlign="top" height={36} style={{fontSize:'.8rem'}}/>
+            {/* <Legend verticalAlign="top" height={36} style={{fontSize:'.8rem'}}/> */}
           </PieChart>
         </ResponsiveContainer>
       </div>

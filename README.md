@@ -14,9 +14,8 @@
 
 This repository provides the frontend for the stringplay project. For other relevant repositories, check out the following links:
 
-- [`stringplay`](https://github.com/cloudydaiyz/stringplay) (Main)
+- [`stringplay`](https://github.com/cloudydaiyz/stringplay) (Orchestration)
 - [`stringplay-core`](https://github.com/cloudydaiyz/stringplay-core) (Backend)
-- [`stringplay-cloud`](https://github.com/cloudydaiyz/stringplay-cloud) (Cloud)
 
 ## Installation
 

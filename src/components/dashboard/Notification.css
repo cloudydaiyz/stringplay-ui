@@ -9,6 +9,12 @@
     border-color: transparent;
 }
 
+.app-notification-icon svg
+{
+    width: 32px !important;
+    height: 32px !important;
+}
+
 .app-notification.content-unit.info
 {
     background-color: rgb(from darkblue r g b / 50%);
@@ -17,6 +23,11 @@
 .app-notification.content-unit.warning
 {
     background-color: rgb(from rgb(213, 139, 0) r g b / 50%);
+}
+
+.app-notification.content-unit.success
+{
+    background-color: rgb(from darkgreen r g b / 50%);
 }
 
 .app-notification.content-unit.error

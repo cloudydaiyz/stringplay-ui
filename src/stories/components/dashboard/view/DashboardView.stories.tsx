@@ -3,7 +3,7 @@ import DashboardView from '../../../../components/dashboard/view/DashboardView';
 
 const meta = {
   component: DashboardView,
-  decorators: [(story) => <div style={{width:'800px'}}>
+  decorators: [(story) => <div style={{width:'800px', minHeight:'100vh'}}>
     {story()}
   </div>],
   tags: ['autodocs'],

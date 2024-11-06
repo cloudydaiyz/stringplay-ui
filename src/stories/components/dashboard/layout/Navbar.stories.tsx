@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Navbar, { NavPage } from '../../../../components/dashboard/layout/Navbar';
+import Navbar from '../../../../components/dashboard/layout/Navbar';
 
 const meta = {
   parameters: {
@@ -9,8 +9,8 @@ const meta = {
   tags: ['autodocs'],
   component: Navbar,
   args: {
-    onNavigate: (event, setPage) => {
-      setPage(event.currentTarget.dataset.page as NavPage);
+    onNavigate: (_, page, setPage) => {
+      setPage(page);
     }
   }
 } satisfies Meta<typeof Navbar>;

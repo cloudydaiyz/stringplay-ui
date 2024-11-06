@@ -134,3 +134,39 @@ const LoadingRow = (
       transform: translateY(0px);
   }
 }
+
+.content-view
+{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    background-color: var(--g1);
+    flex-grow: 1;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.content-inner-view
+{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 32px;
+}
+
+.content-notifications
+{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: -20px;
+}
+
+.content-stats
+{
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
