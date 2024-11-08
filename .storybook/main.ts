@@ -8,12 +8,13 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
     "@storybook/addon-backgrounds",
-    // "@storybook/addon-actions",
     "@storybook/addon-console",
+    "msw-storybook-addon",
   ],
   framework: {
     name: "@storybook/react-vite",
     options: {},
   },
+  staticDirs: ['../public']
 };
 export default config;

@@ -335,3 +335,17 @@ th, td, tr
     0% { opacity: 0 }
     100% { opacity: 1 }
 }
+
+.app-table-body td span:has(svg)
+{
+    width: 10px;
+    height: 10px;
+    position: relative;
+
+    svg {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        translate: -50% -50%;
+    }
+}

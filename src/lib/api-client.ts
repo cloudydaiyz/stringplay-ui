@@ -1,9 +1,9 @@
 import { StringplayApiClient } from '@cloudydaiyz/stringplay-client';
 import { Attendee, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
-import { useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { API_CLIENT_URL, DEFAULT_TROUPE_ID } from './constants';
 
-const api = new StringplayApiClient();
-const DEFAULT_TROUPE_ID = "me";
+export const api = new StringplayApiClient(API_CLIENT_URL);
 
 export function useClient() {
     const [dashboard, setDashboard] = useState<TroupeDashboard | undefined>(undefined);
@@ -24,7 +24,7 @@ export function useClient() {
         });
     }
 
-    const getConsoleData = apiCall(
+    const getConsoleData = () => apiCall(
         api.getConsoleData(DEFAULT_TROUPE_ID).then(d => { 
             setDashboard(d.data.dashboard);
             setTroupe(d.data.troupe);
@@ -36,11 +36,14 @@ export function useClient() {
         })
     );
 
+    /** Get the initial console data */
+    useEffect(() => getConsoleData(), []);
+
     return { 
         apiCall, 
         lastUpdated,
-        getConsoleData,
         loading,
+        getConsoleData,
         dashboard, setDashboard,
         troupe, setTroupe,
         eventTypes, setEventTypes,
@@ -49,10 +52,12 @@ export function useClient() {
     };
 }
 
-export function useTroupe() {
-    const { apiCall, troupe, setTroupe } = useClient();
+export const ApiClientContext = createContext(useClient());
 
-    const getTroupe = apiCall(
+export function useTroupe() {
+    const { apiCall, troupe, setTroupe } = useContext(ApiClientContext);
+
+    const getTroupe = () => apiCall(
         api.getTroupe(DEFAULT_TROUPE_ID).then(d => {
             setTroupe(d.data);
         }).catch(() => {
@@ -60,7 +65,7 @@ export function useTroupe() {
         })
     );
 
-    const updateTroupe = (request: UpdateTroupeRequest) => apiCall(
+    const updateTroupe = () => (request: UpdateTroupeRequest) => apiCall(
         api.updateTroupe(DEFAULT_TROUPE_ID, request).then(d => {
             setTroupe(d.data);
         }).catch(() => {
@@ -72,7 +77,7 @@ export function useTroupe() {
 }
 
 export function useEvents() {
-    const { apiCall, events, setEvents } = useClient();
+    const { apiCall, events, setEvents } = useContext(ApiClientContext);
 
     const createEvent = (request: CreateEventRequest) => apiCall(
         api.createEvent(DEFAULT_TROUPE_ID, request).then(d => {
@@ -82,7 +87,7 @@ export function useEvents() {
         })
     );
 
-    const getEvents = apiCall(
+    const getEvents = () => apiCall(
         api.getEvents(DEFAULT_TROUPE_ID).then(d => {
             setEvents(d.data);
         }).catch(() => {
@@ -110,7 +115,7 @@ export function useEvents() {
 }
 
 export function useEventTypes() {
-    const { apiCall, eventTypes, setEventTypes } = useClient();
+    const { apiCall, eventTypes, setEventTypes } = useContext(ApiClientContext);
 
     const createEventType = (request: CreateEventTypeRequest) => apiCall(
         api.createEventType(DEFAULT_TROUPE_ID, request).then(d => {
@@ -120,7 +125,7 @@ export function useEventTypes() {
         })
     );
 
-    const getEventTypes = apiCall(
+    const getEventTypes = () => apiCall(
         api.getEventTypes(DEFAULT_TROUPE_ID).then(d => {
             setEventTypes(d.data);
         }).catch(() => {
@@ -148,7 +153,7 @@ export function useEventTypes() {
 }
 
 export function useAttendees() {
-    const { apiCall, attendees, setAttendees } = useClient();
+    const { apiCall, attendees, setAttendees } = useContext(ApiClientContext);
 
     const createMember = (request: CreateMemberRequest) => apiCall(
         api.createMember(DEFAULT_TROUPE_ID, request).then(d => {
@@ -158,7 +163,7 @@ export function useAttendees() {
         })
     );
 
-    const getAttendees = apiCall(
+    const getAttendees = () => apiCall(
         api.getAttendees(DEFAULT_TROUPE_ID).then(d => {
             setAttendees(d.data)
         }).catch(() => {
