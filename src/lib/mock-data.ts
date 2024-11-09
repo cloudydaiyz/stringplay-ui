@@ -596,3 +596,59 @@ export const onlyEventTypesConfig: ConsoleData = {
     "events": [],
     "attendees": []
 };
+
+export const mockUpcomingBirthdays = [
+    {
+        firstName: "Kylan",
+        lastName: "Duncan",
+        birthday: new Date(),
+    },
+    {
+        firstName: "Kylan",
+        lastName: "Duncan",
+        birthday: new Date(),
+    },
+    {
+        firstName: "Kylan",
+        lastName: "Duncan",
+        birthday: new Date(),
+    },
+    {
+        firstName: "Kylan",
+        lastName: "Duncan",
+        birthday: new Date(),
+    },
+    {
+        firstName: "Kylan",
+        lastName: "Duncan",
+        birthday: new Date(),
+    },
+];
+
+export const mockCategoricalStatistics1 = [
+    {name: 'person 1', value: 10},
+    {name: 'person 2', value: 10},
+    {name: 'person 3', value: 10},
+    {name: 'person 4', value: 10},
+    {name: 'person 5', value: 10},
+    {name: 'person 6', value: 10},
+    {name: 'person 7', value: 10},
+    {name: 'person 8', value: 10},
+];
+
+export const mockCategoricalStatistics2 = [
+    {name: 'person 1', value: 10},
+    {name: 'person 2', value: 10},
+    {name: 'person 3', value: 10},
+];
+
+export const mockEventTypeTable = [
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+    ["Hello", 123, 123, 123],
+];

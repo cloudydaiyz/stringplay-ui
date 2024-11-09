@@ -259,3 +259,42 @@ export const Loading: Story = {
     tableData: { control: false },
   }
 };
+
+export const Empty: Story = {
+  name: 'Empty',
+  args: {
+    tableHeader: {
+      title: "Member Information",
+    },
+    tableData: {
+      columns: [
+        {
+          title: "First Name",
+          type: "string!",
+        },
+        {
+          title: "Last Name",
+          type: "string?",
+        },
+        {
+          title: "# of children",
+          type: "number?",
+        },
+        {
+          title: "Birthday",
+          type: "date?",
+        },
+        {
+          title: "isInteresting",
+          type: "boolean!",
+        },
+      ],
+      data: [],
+    }
+  },
+  argTypes: {
+    tableHeader: { control: false },
+    tableData: { control: false },
+    loading: { control: false },
+  }
+};

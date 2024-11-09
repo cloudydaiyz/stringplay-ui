@@ -14,8 +14,8 @@ function generateRandomColor(): string {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-interface CategoricalStatisticProps {
-  data: {
+export interface CategoricalStatisticProps {
+  data?: {
     name: string,
     value: number,
   }[];
@@ -23,15 +23,26 @@ interface CategoricalStatisticProps {
   loading: boolean,
 }
 
-const CategoricalStatistic = ({ data = [], title, loading }: CategoricalStatisticProps) => {
+const CategoricalStatistic = ({ data, title, loading }: CategoricalStatisticProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
 
   if(loading) {
     return (
       <div className='categorical-statistic content-unit loading'>
-        <h3><span>{title}</span></h3>
+        <h3>{title}</h3>
       </div>
     )
+  }
+
+  if(!data || data.length == 0) {
+    return (
+      <div className='categorical-statistic content-unit'>
+        <h3>{title}</h3>
+        <div className='pie-chart no-data'>
+          <p>No data available</p>
+        </div>
+      </div>
+    );
   }
 
   const RADIAN = Math.PI / 180;

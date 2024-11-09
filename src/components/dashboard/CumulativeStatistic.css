@@ -9,7 +9,6 @@
     flex-basis: 175px;
     height: 175px;
     overflow: hidden;
-    text-align: center;
 }
 
 .cumulative-statistic h3
@@ -17,12 +16,14 @@
     font-family: var(--font-1);
     font-size: 1.25rem;
     color: var(--c1);
+    margin-bottom: 4px;
 }
 
 .cumulative-statistic h4
 {
     font-size: 1rem;
     /* margin-bottom: 1rem; */
+    line-height: 110%;
     color: var(--c1);
 }
 
@@ -44,4 +45,5 @@
     color: var(--black);
     font-family: var(--font-2);
     flex-grow: 1;
+    text-align: center;
 }

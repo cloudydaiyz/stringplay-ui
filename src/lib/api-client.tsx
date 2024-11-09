@@ -72,6 +72,11 @@ export function useClientContext(): ReturnType<typeof useClient> {
     return client;
 }
 
+export function useMetadata() {
+    const { lastUpdated, loading } = useClientContext();
+    return { lastUpdated, loading };
+}
+
 export function useTroupe() {
     const { apiCall, troupe, dashboard, setTroupe } = useClientContext();
 

@@ -12,6 +12,14 @@
     flex-grow: 1;
 }
 
+.categorical-statistic > .pie-chart.no-data
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .categorical-statistic h3
 {
     color: var(--c1);

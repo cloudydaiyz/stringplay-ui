@@ -10,7 +10,7 @@ import Check from '../svg/Check';
 
 import { useState } from 'react';
 
-interface NotificationProps {
+export interface NotificationProps {
     notificationType: 'info' | 'warning' | 'error' | 'success';
     text: string;
 }

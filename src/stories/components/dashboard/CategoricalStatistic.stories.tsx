@@ -48,3 +48,11 @@ export const Loading: Story = {
     loading: true,
   }
 };
+
+export const Empty: Story = {
+  args: {
+    data: [],
+    title: "Categorical Statistic",
+    loading: false,
+  }
+};

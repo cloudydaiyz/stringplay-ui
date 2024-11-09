@@ -28,7 +28,7 @@ const UpcomingBirthdays = ({ birthdays = [], loading, useDataWhileLoading = fals
 
         return (
             <div className='upcoming-birthdays content-unit loading'>
-                <h3><span>Upcoming Birthdays</span></h3>
+                <h3>Upcoming Birthdays</h3>
                 <ul>
                     {birthdays.map(b => <li>
                         <p><span>{`${b.firstName} ${b.lastName}`} {`(${b.birthday.getMonth()}/${b.birthday.getDate()})`}</span></p>
@@ -41,11 +41,19 @@ const UpcomingBirthdays = ({ birthdays = [], loading, useDataWhileLoading = fals
     return (
         <div className='upcoming-birthdays content-unit'>
             <h3>Upcoming Birthdays</h3>
-            <ul>
-                {birthdays.map(b => <li>
-                    <p>{`${b.firstName} ${b.lastName}`} <strong>{`(${b.birthday.getMonth()}/${b.birthday.getDate()})`}</strong></p>
-                </li>)}
-            </ul>
+                {
+                    birthdays.length == 0
+                    ? <div style={{display: 'flex', justifyContent:'center', alignItems:'center', height:'200px', width:'100%'}}>
+                        <p>No data available</p>
+                    </div>
+                    : <ul>
+                        {
+                            birthdays.map(b => <li>
+                                <p>{`${b.firstName} ${b.lastName}`} <strong>{`(${b.birthday.getMonth()}/${b.birthday.getDate()})`}</strong></p>
+                            </li>)
+                        }
+                    </ul>
+                }
         </div>
     )
 }

@@ -120,10 +120,11 @@ interface TableHeaderElementProps {
   newRows: TableDataType[][] | null;
   updates: (TableDataType | undefined)[][] | null;
   rowsToDelete: boolean[] | null;
+  empty: boolean;
   reset: () => void;
 }
 
-function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rowsToDelete, reset }: TableHeaderElementProps) {
+function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rowsToDelete, reset, empty = false }: TableHeaderElementProps) {
   const performAction = () => {
     if(tableHeader.onDataCreate && mode == 'create' && newRows) {
       console.log('Creating rows');
@@ -147,8 +148,8 @@ function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rows
     </div>
     : <div className='actions'>
       {tableHeader.onDataCreate && <Button text={<span><Plus />NEW</span>} onClick={() => setMode('create')} buttonType={2} />}
-      {tableHeader.onDataUpdate && <Button text={<span><Edit />EDIT</span>} onClick={() => setMode('edit')} buttonType={2} />}
-      {tableHeader.onDataDelete && <Button text={<span><Trash />DELETE</span>} onClick={() => setMode('delete')} buttonType={2} />}
+      {!empty && tableHeader.onDataUpdate && <Button text={<span><Edit />EDIT</span>} onClick={() => setMode('edit')} buttonType={2} />}
+      {!empty && tableHeader.onDataDelete && <Button text={<span><Trash />DELETE</span>} onClick={() => setMode('delete')} buttonType={2} />}
     </div>
 
   return (
@@ -193,7 +194,7 @@ function LoadingTableBodyElement({ tableData, newRows }: LoadingTableBodyElement
     </th>
   ));
 
-  const rows = Array((numRows !== undefined ? numRows : 7) + (newRows?.length || 0)).fill(null).map((_, c) => (
+  const rows = Array((numRows !== undefined && numRows > 0 ? numRows : 7) + (newRows?.length || 0)).fill(null).map((_, c) => (
     <tr key={c}>
       {
         Array(numCols !== undefined ? numCols : 5).fill(null).map((_, j) => (
@@ -204,7 +205,6 @@ function LoadingTableBodyElement({ tableData, newRows }: LoadingTableBodyElement
       }
     </tr>
   ));
-
 
   return (
     <table className='loading'>
@@ -300,6 +300,82 @@ function TableBodyElement(props: TableBodyElementProps) {
   }
 
   // The table body element
+  if(tableData.data.length == 0) {
+    if(tableData.columns.length == 0) {
+      throw new Error("Invalid state: table cannot have 0 columns and no data")
+    }
+
+    const columnHeaders = <tr>
+      { tableData.columns.map((item, c) => <th key={c} scope='col'>{item.title}</th>) }
+    </tr>;
+
+    /** 
+       * If in create mode, this represents the new values to create in the same 
+       * column as the current element. 
+       */
+    const renderedNewRowElements = mode == 'create' && newRows
+    ? newRows.map((_, r) => <tr key={r}>
+      {
+        tableData.columns.map((_, c) => (
+          <td className='new-data' key={r}>
+            { c == 0 && <button onClick={() => removeNewRow(r)}><XCircle /></button> }
+            <Pencil />
+            {
+              <input 
+                type={
+                  tableData.columns[c].type.startsWith('number')
+                  ? 'number'
+                  : tableData.columns[c].type.startsWith('date')
+                  ? 'date'
+                  : tableData.columns[c].type.startsWith('boolean')
+                  ? 'checkbox'
+                  : 'text'
+                }
+                onChange={(e) => {
+                  const newRowsUpdate = newRows.slice();
+                  if(e.currentTarget.value === "") {
+                    newRowsUpdate[r][c] = null;
+                  } else if(tableData.columns[c].type.startsWith('number')) {
+                    newRowsUpdate[r][c] = Number(e.currentTarget.value);
+                  } else if(tableData.columns[c].type.startsWith('boolean')) {
+                    newRowsUpdate[r][c] = e.currentTarget.checked;
+                  } else if(tableData.columns[c].type.startsWith('date')) {
+                    newRowsUpdate[r][c] = new Date(e.currentTarget.value);
+                  } else {
+                    newRowsUpdate[r][c] = e.currentTarget.value;
+                  }
+                  setNewRows(newRowsUpdate);
+                }}
+              />
+            }
+          </td>
+        ))
+      }
+    </tr>)
+    : null;
+
+    return (
+      <table>
+        <thead>{ columnHeaders }</thead>
+        <tbody>
+          { renderedNewRowElements }
+          {
+            mode == 'create'
+            ? <tr key={newRows?.length || 0}>
+              <td className='create-row'>
+                {/* The first index of all the rows specify the columns. */}
+                { <button onClick={() => addNewRow()}><Plus /></button> }
+              </td>
+            </tr>
+            : <td colSpan={tableData.columns.length} style={{textAlign:'center', height:'200px'}}>
+              No data available
+            </td>
+          }
+        </tbody>
+      </table>
+    )
+  }
+  
   if(tableData.data.length == 1) {
     const rows = tableData.data[0].map((item, c) => {
 
@@ -436,7 +512,7 @@ function TableBodyElement(props: TableBodyElementProps) {
 
   const columnHeaders = <tr>
     { tableData.columns.map((item, c) => <th key={c} scope='col'>{item.title}</th>) }
-  </tr>
+  </tr>;
 
   const rows = tableData.data.map((row, r) => {
     const elements = row.map((item, c) => {
@@ -630,6 +706,7 @@ const Table = ({ loading = false, useDataWhileLoading = false, tableHeader, tabl
         updates={updates}
         rowsToDelete={rowsToDelete}
         reset={reset}
+        empty={tableData.data.length == 0}
       />
     : null;
 

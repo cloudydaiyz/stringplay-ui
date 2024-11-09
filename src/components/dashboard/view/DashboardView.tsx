@@ -1,138 +1,186 @@
 import '../../../app/shared.css';
 import './DashboardView.css';
 
-import CategoricalStatistic from '../CategoricalStatistic';
+import CategoricalStatistic, { CategoricalStatisticProps } from '../CategoricalStatistic';
 import CumulativeStatistic from '../CumulativeStatistic';
 import ContentFooter from '../layout/ContentFooter';
 import ContentHeader from '../layout/ContentHeader';
 import Table from '../Table';
 import UpcomingBirthdays from '../UpcomingBirthdays';
-import { useClient, useTroupe } from '../../../lib/api-client';
+import { useClient, useMetadata } from '../../../lib/api-client';
+import { defaultConfig } from '../../../lib/mock-data';
+import { TroupeDashboard } from '@cloudydaiyz/stringplay-core/types/api';
 
 const DashboardView = () => {
+    const { lastUpdated, loading } = useMetadata();
     const { dashboard } = useClient();
+
+    const upcomingBirthdays = <UpcomingBirthdays 
+        birthdays={
+            !loading && !dashboard 
+            ? defaultConfig.dashboard.upcomingBirthdays.members.map(m => ({
+                firstName: m.firstName,
+                lastName: m.lastName,
+                birthday: new Date(m.birthday),
+            }))
+            : dashboard?.upcomingBirthdays.members.map(m => ({
+                firstName: m.firstName,
+                lastName: m.lastName,
+                birthday: new Date(m.birthday),
+            }))
+        }
+        loading={loading}
+        useDataWhileLoading={dashboard && loading}
+    />;
+    
+    const cumulativeStatistics = <div className='dashboard-cumulative'>
+        <CumulativeStatistic 
+            accumulator='total' 
+            statistic='members' 
+            value={
+                !loading && !dashboard
+                ? defaultConfig.dashboard.totalMembers
+                : dashboard?.totalMembers
+            } 
+            loading={loading} 
+            useDataWhileLoading={dashboard && loading} 
+        />
+        <CumulativeStatistic 
+            accumulator='total' 
+            statistic='attendees' 
+            value={
+                !loading && !dashboard
+                ? defaultConfig.dashboard.totalAttendees
+                : dashboard?.totalAttendees
+            } 
+            loading={loading} 
+            useDataWhileLoading={dashboard && loading} 
+        />
+        <CumulativeStatistic 
+            accumulator='total' 
+            statistic='events' 
+            value={
+                !loading && !dashboard
+                ? defaultConfig.dashboard.totalEvents
+                : dashboard?.totalEvents
+            } 
+            loading={loading} 
+            useDataWhileLoading={dashboard && loading} 
+        />
+        <CumulativeStatistic 
+            accumulator='total' 
+            statistic='event types' 
+            value={
+                !loading && !dashboard
+                ? defaultConfig.dashboard.totalEventTypes
+                : dashboard?.totalEventTypes
+            } 
+            loading={loading} 
+            useDataWhileLoading={dashboard && loading} 
+        />
+        <CumulativeStatistic 
+            accumulator='average' 
+            statistic='attendees per event' 
+            value={
+                !loading && !dashboard
+                ? defaultConfig.dashboard.avgAttendeesPerEvent
+                : dashboard?.avgAttendeesPerEvent
+            } 
+            loading={loading} 
+            useDataWhileLoading={dashboard && loading} 
+        />
+    </div>;
+
+    /** Converts entity data to data parsable by the `CategoricalStatistics` component */
+    function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercentageByEventType'] | undefined): CategoricalStatisticProps['data'] | undefined {
+        if(!percentagesObj) return undefined;
+
+        const data: CategoricalStatisticProps['data'] = [];
+        for(const id in data) {
+            data.push({
+                name: percentagesObj[id].title,
+                value: percentagesObj[id].value,
+            });
+        }
+        return data;
+    }
+
+    const categoricalStatistics = <div className="dashboard-categorical">
+        <CategoricalStatistic
+            data={
+                !loading && !dashboard
+                ? convertCategoricalData(defaultConfig.dashboard.attendeePercentageByEventType)!
+                // : mockCategoricalStatistics1
+                : convertCategoricalData(dashboard?.attendeePercentageByEventType)
+            }
+            title='% of attendees by Event Type'
+            loading={loading}
+        />
+        <CategoricalStatistic
+            data={
+                !loading && !dashboard
+                ? convertCategoricalData(defaultConfig.dashboard.eventPercentageByEventType)!
+                // : mockCategoricalStatistics2
+                : convertCategoricalData(dashboard?.eventPercentageByEventType)
+            }
+            title='% of events by Event Type'
+            loading={loading}
+        />
+    </div>;
+    
+    /** Converts entity data to data parsable by the `Table` component */
+    function getEventTypeTableData(dashboard: TroupeDashboard | undefined) {
+        return dashboard 
+        ? Object.keys(dashboard.totalAttendeesByEventType).map(key => [
+            dashboard.totalEventsByEventType[key].title,
+            dashboard.totalEventsByEventType[key].value,
+            dashboard.totalAttendeesByEventType[key].value,
+            dashboard.avgAttendeesByEventType[key].value,
+        ])
+        : [];
+    }
+
+    let eventTypeTable = <Table 
+        tableData={{
+            columns: [
+                {
+                    title: 'Event Type',
+                    type: 'string!',
+                },
+                {
+                    title: 'Total Events',
+                    type: 'number!',
+                },
+                {
+                    title: 'Total Attendees',
+                    type: 'number!',
+                },
+                {
+                    title: 'Average Attendees',
+                    type: 'number!',
+                },
+            ],
+            data: !loading && !dashboard
+                ? getEventTypeTableData(defaultConfig.dashboard)
+                // : mockEventTypeTable
+                : getEventTypeTableData(dashboard),
+        }}
+        loading={loading}
+        useDataWhileLoading={dashboard && loading} 
+    />;
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title='Dashboard' />
-                {/* <ContentHeader title={ dashboard ? dashboard.troupeId : 'Dashboard' } /> */}
+                <ContentHeader title="Dashboard" lastUpdated={lastUpdated} />
                 <div className='content-notifications'>
                     {/* <Notification notificationType='info' text="Hello world" /> */}
                 </div>
                 <div className='content-stats'>
-                    <UpcomingBirthdays
-                        birthdays={[
-                            {
-                                firstName: "Kylan",
-                                lastName: "Duncan",
-                                birthday: new Date(),
-                            },
-                            {
-                                firstName: "Kylan",
-                                lastName: "Duncan",
-                                birthday: new Date(),
-                            },
-                            {
-                                firstName: "Kylan",
-                                lastName: "Duncan",
-                                birthday: new Date(),
-                            },
-                            {
-                                firstName: "Kylan",
-                                lastName: "Duncan",
-                                birthday: new Date(),
-                            },
-                            {
-                                firstName: "Kylan",
-                                lastName: "Duncan",
-                                birthday: new Date(),
-                            },
-                        ]}
-                        loading={false}
-                    />
-                    <div className='dashboard-cumulative'>
-                        <CumulativeStatistic accumulator='total' statistic='blah' value={6} loading={false} />
-                        <CumulativeStatistic accumulator='total' statistic='blah' value={6} loading={false} />
-                        <CumulativeStatistic accumulator='total' statistic='blah' value={6} loading={false} />
-                        <CumulativeStatistic accumulator='total' statistic='blah' value={6} loading={false} />
-                        <CumulativeStatistic accumulator='total' statistic='blah' value={6} loading={false} />
-                    </div>
-                    <div className="dashboard-categorical">
-                        <CategoricalStatistic
-                            data={[
-                                {name: 'person 1', value: 10},
-                                {name: 'person 2', value: 10},
-                                {name: 'person 3', value: 10},
-                                {name: 'person 4', value: 10},
-                                {name: 'person 5', value: 10},
-                                {name: 'person 6', value: 10},
-                                {name: 'person 7', value: 10},
-                                {name: 'person 8', value: 10},
-                            ]}
-                            title='statistic 1'
-                            loading={false}
-                        />
-                        <CategoricalStatistic
-                            data={[
-                                {name: 'person 1', value: 10},
-                                {name: 'person 2', value: 10},
-                                {name: 'person 3', value: 10},
-                            ]}
-                            title='statistic 2'
-                            loading={false}
-                        />
-                        <CategoricalStatistic
-                            data={[
-                                {name: 'person 1', value: 10},
-                                {name: 'person 2', value: 10},
-                                {name: 'person 3', value: 10},
-                                {name: 'person 4', value: 10},
-                                {name: 'person 5', value: 10},
-                                {name: 'person 6', value: 10},
-                                {name: 'person 7', value: 10},
-                            ]}
-                            title='statistic 3'
-                            loading={false}
-                        />
-                        <CategoricalStatistic
-                            data={[
-                                {name: 'person 1', value: 10},
-                                {name: 'person 2', value: 10},
-                                {name: 'person 3', value: 10},
-                                {name: 'person 4', value: 10},
-                                {name: 'person 5', value: 10},
-                            ]}
-                            title='statistic 4'
-                            loading={false}
-                        />
-                    </div>
-                    <Table
-                        tableData={{
-                            columns: [
-                                {
-                                    title: "Hello world",
-                                    type: "string!",
-                                },
-                                {
-                                    title: "Hello world",
-                                    type: "number!",
-                                },
-                                {
-                                    title: "Hello world",
-                                    type: "boolean!",
-                                },
-                            ],
-                            data: [
-                                ["Hello", 123, true],
-                                ["Hello", 123, true],
-                                ["Hello", 123, true],
-                                ["Hello", 123, true],
-                                ["Hello", 123, true],
-                                ["Hello", 123, true],
-                            ]
-                        }}
-                    />
+                    { upcomingBirthdays }
+                    { cumulativeStatistics }
+                    { categoricalStatistics }
+                    { eventTypeTable }
                 </div>
             </div>
             <ContentFooter />
