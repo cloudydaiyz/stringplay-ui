@@ -6,6 +6,7 @@ import { API_CLIENT_URL, DEFAULT_TROUPE_ID } from './constants';
 export const api = new StringplayApiClient(API_CLIENT_URL);
 
 export function useClient() {
+    // Invariant: `dashboard`, `troupe`, `eventTypes`, `attendees`, `events`, and `lastUpdated` are only undefined on initial page load.
     const [dashboard, setDashboard] = useState<TroupeDashboard | undefined>(undefined);
     const [troupe, setTroupe] = useState<Troupe | undefined>(undefined);
     const [eventTypes, setEventTypes] = useState<EventType[] | undefined>(undefined);
@@ -52,10 +53,27 @@ export function useClient() {
     };
 }
 
-export const ApiClientContext = createContext(useClient());
+export const ApiClientContext = createContext<ReturnType<typeof useClient> | undefined>(undefined);
+
+export const ApiClientProvider = ({ children }: { children: React.ReactNode }) => {
+    const client = useClient();
+    return (
+        <ApiClientContext.Provider value={client}>
+            {children}
+        </ApiClientContext.Provider>
+    );
+}
+
+export function useClientContext(): ReturnType<typeof useClient> {
+    const client = useContext(ApiClientContext);
+    if(client === undefined) {
+        throw new Error("Invalid state. Make sure that you're using `ApiClientProvider` correctly.");
+    }
+    return client;
+}
 
 export function useTroupe() {
-    const { apiCall, troupe, setTroupe } = useContext(ApiClientContext);
+    const { apiCall, troupe, dashboard, setTroupe } = useClientContext();
 
     const getTroupe = () => apiCall(
         api.getTroupe(DEFAULT_TROUPE_ID).then(d => {
@@ -65,7 +83,7 @@ export function useTroupe() {
         })
     );
 
-    const updateTroupe = () => (request: UpdateTroupeRequest) => apiCall(
+    const updateTroupe = (request: UpdateTroupeRequest) => apiCall(
         api.updateTroupe(DEFAULT_TROUPE_ID, request).then(d => {
             setTroupe(d.data);
         }).catch(() => {
@@ -73,11 +91,11 @@ export function useTroupe() {
         })
     );
 
-    return { troupe, getTroupe, updateTroupe };
+    return { troupe, dashboard, getTroupe, updateTroupe };
 }
 
 export function useEvents() {
-    const { apiCall, events, setEvents } = useContext(ApiClientContext);
+    const { apiCall, events, setEvents } = useClientContext();
 
     const createEvent = (request: CreateEventRequest) => apiCall(
         api.createEvent(DEFAULT_TROUPE_ID, request).then(d => {
@@ -115,7 +133,7 @@ export function useEvents() {
 }
 
 export function useEventTypes() {
-    const { apiCall, eventTypes, setEventTypes } = useContext(ApiClientContext);
+    const { apiCall, eventTypes, setEventTypes } = useClientContext();
 
     const createEventType = (request: CreateEventTypeRequest) => apiCall(
         api.createEventType(DEFAULT_TROUPE_ID, request).then(d => {
@@ -153,7 +171,7 @@ export function useEventTypes() {
 }
 
 export function useAttendees() {
-    const { apiCall, attendees, setAttendees } = useContext(ApiClientContext);
+    const { apiCall, attendees, setAttendees } = useClientContext();
 
     const createMember = (request: CreateMemberRequest) => apiCall(
         api.createMember(DEFAULT_TROUPE_ID, request).then(d => {

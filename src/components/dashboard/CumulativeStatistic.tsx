@@ -6,9 +6,10 @@ interface CumulativeStatisticProps {
   statistic: string;
   value: number;
   loading: boolean;
+  useDataWhileLoading?: boolean;
 }
 
-const CumulativeStatistic = ({ accumulator, statistic, value = 0, loading }: CumulativeStatisticProps) => {
+const CumulativeStatistic = ({ accumulator, statistic, value = 0, loading, useDataWhileLoading = false }: CumulativeStatisticProps) => {
   return (
     <div className={`cumulative-statistic content-unit ${loading && 'loading'}`}>
         {
@@ -17,7 +18,7 @@ const CumulativeStatistic = ({ accumulator, statistic, value = 0, loading }: Cum
             <h3><span>{accumulator == "total" ? "Total" : "Average"}</span></h3>
             <h4><span>{statistic.trim().toLowerCase()}</span></h4>
             <div>
-              <p><span>{12345}</span></p>
+              <p><span>{ useDataWhileLoading ? value : 12345 }</span></p>
             </div>
           </>
           : <>
