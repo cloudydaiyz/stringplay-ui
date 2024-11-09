@@ -7,6 +7,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  argTypes: {
+    loading: { control: false },
+  }
 } satisfies Meta<typeof UpcomingBirthdays>;
 
 export default meta;
@@ -40,6 +43,13 @@ export const Primary: Story = {
         lastName: "Duncan5",
         birthday: new Date()
       },
-    ]
+    ],
+    loading: false,
+  }
+};
+
+export const Loading: Story = { 
+  args: {
+    loading: true,
   }
 };

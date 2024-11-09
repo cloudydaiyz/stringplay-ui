@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SettingsView from '../../../../components/dashboard/view/SettingsView';
+import { mockGetConsoleData } from '../../../../lib/api-client.mock';
 
 const meta = {
   component: SettingsView,
@@ -7,6 +8,13 @@ const meta = {
     {story()}
   </div>],
   tags: ['autodocs'],
+  parameters: {
+    msw: {
+      handlers: [
+        mockGetConsoleData,
+      ],
+    }
+  },
 } satisfies Meta<typeof SettingsView>;
 
 export default meta;

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MemberLogView from '../../../../components/dashboard/view/MemberLogView';
+import { mockCreateMember, mockDeleteMember, mockGetAttendees, mockGetConsoleData, mockUpdateMember } from '../../../../lib/api-client.mock';
 
 const meta = {
   component: MemberLogView,
@@ -7,6 +8,17 @@ const meta = {
     {story()}
   </div>],
   tags: ['autodocs'],
+  parameters: {
+    msw: {
+      handlers: [
+        mockGetConsoleData,
+        mockCreateMember,
+        mockGetAttendees,
+        mockUpdateMember,
+        mockDeleteMember,
+      ],
+    }
+  },
 } satisfies Meta<typeof MemberLogView>;
 
 export default meta;

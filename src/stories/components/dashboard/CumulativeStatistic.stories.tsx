@@ -7,6 +7,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  argTypes: {
+    loading: { control: false }
+  }
 } satisfies Meta<typeof CumulativeStatistic>;
 
 export default meta;
@@ -17,5 +20,15 @@ export const Primary: Story = {
     accumulator: "total",
     statistic: "days since coding",
     value: 0,
+    loading: false,
+  },
+};
+
+export const Loading: Story = { 
+  args: {
+    accumulator: "total",
+    statistic: "days since coding",
+    value: 0,
+    loading: true,
   },
 };

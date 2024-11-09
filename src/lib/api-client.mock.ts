@@ -1,18 +1,17 @@
-// Defines handlers to mocks the remote calls to the API from the API client, 
-// integrating functionality with MSW
+// Defines handlers to mocks the remote calls to the API from the API client, integrating functionality with MSW
 
 import { http, HttpResponse, delay } from 'msw';
-import { Attendee, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, Paths, PublicEvent, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
-import { populateConfigAsOneConsole, defaultConfig } from '@cloudydaiyz/stringplay-core/test-config';
+import { Attendee, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import path from "path";
 import { API_CLIENT_URL } from './constants';
+import { defaultConfig } from './mock-data';
 
 type ParsedPathParams = { [param: string]: string };
 
-const mockConsole = populateConfigAsOneConsole(defaultConfig, "A", false);
+const mockConsole = defaultConfig;
 
 export const mockGetConsoleData = () => http.get(
-    path.join(API_CLIENT_URL, Paths.Console), 
+    path.join(API_CLIENT_URL, "/t/:troupeId/console"), 
     async () => {
         await delay(800);
         return HttpResponse.json(mockConsole);
@@ -20,14 +19,14 @@ export const mockGetConsoleData = () => http.get(
 );
 
 export const mockGetTroupe = () => http.get(
-    path.join(API_CLIENT_URL, Paths.Troupe),
+    path.join(API_CLIENT_URL, "/t/:troupeId"),
     async () => {
         return HttpResponse.json(mockConsole.troupe);
     }
 );
 
 export const mockUpdateTroupe = () => http.put(
-    path.join(API_CLIENT_URL, Paths.Troupe),
+    path.join(API_CLIENT_URL, "/t/:troupeId"),
     async ({ request }) => {
         const body = await request.json() as UpdateTroupeRequest;
         if(body.name) mockConsole.troupe.name = body.name;
@@ -65,7 +64,7 @@ export const mockUpdateTroupe = () => http.put(
 );
 
 export const mockCreateEvent = () => http.post(
-    path.join(API_CLIENT_URL, Paths.Events),
+    path.join(API_CLIENT_URL, "/t/:troupeId/e"),
     async ({ request }) => {
         const body = await request.json() as CreateEventRequest;
         const newEvent: PublicEvent = {
@@ -88,14 +87,14 @@ export const mockCreateEvent = () => http.post(
 );
 
 export const mockGetEvents = () => http.get(
-    path.join(API_CLIENT_URL, Paths.Events),
+    path.join(API_CLIENT_URL, "/t/:troupeId/e"),
     async () => {
         return HttpResponse.json(mockConsole.events);
     }
 );
 
 export const mockUpdateEvent = () => http.put(
-    path.join(API_CLIENT_URL, Paths.Event),
+    path.join(API_CLIENT_URL, "/t/:troupeId/e/:eventId"),
     async ({ params, request }) => {
         const { eventId } = params as ParsedPathParams;
         const body = await request.json() as UpdateEventRequest;
@@ -114,7 +113,7 @@ export const mockUpdateEvent = () => http.put(
 );
 
 export const mockDeleteEvent = () => http.delete(
-    path.join(API_CLIENT_URL, Paths.Event),
+    path.join(API_CLIENT_URL, "/t/:troupeId/e/:eventId"),
     async ({ params }) => {
         const { eventId } = params as ParsedPathParams;
         mockConsole.events = mockConsole.events.filter(e => e.id != eventId);
@@ -122,7 +121,7 @@ export const mockDeleteEvent = () => http.delete(
 );
 
 export const mockCreateEventType = () => http.post(
-    path.join(API_CLIENT_URL, Paths.EventTypes),
+    path.join(API_CLIENT_URL, "/t/:troupeId/et"),
     async ({ request }) => {
         const body = await request.json() as CreateEventTypeRequest;
         const newEventType: EventType = {
@@ -139,14 +138,14 @@ export const mockCreateEventType = () => http.post(
 );
 
 export const mockGetEventTypes = () => http.get(
-    path.join(API_CLIENT_URL, Paths.EventTypes),
+    path.join(API_CLIENT_URL, "/t/:troupeId/et"),
     async () => {
         return HttpResponse.json(mockConsole.eventTypes);
     }
 );
 
 export const mockUpdateEventType = () => http.put(
-    path.join(API_CLIENT_URL, Paths.EventType),
+    path.join(API_CLIENT_URL, "/t/:troupeId/et/:eventTypeId"),
     async ({ params, request }) => {
         const { eventTypeId } = params as ParsedPathParams;
         const body = await request.json() as UpdateEventTypeRequest;
@@ -168,7 +167,7 @@ export const mockUpdateEventType = () => http.put(
 );
 
 export const mockDeleteEventType = () => http.delete(
-    path.join(API_CLIENT_URL, Paths.EventType),
+    path.join(API_CLIENT_URL, "/t/:troupeId/et/:eventTypeId"),
     async ({ params }) => {
         const { eventTypeId } = params as ParsedPathParams;
         mockConsole.eventTypes = mockConsole.eventTypes.filter(et => et.id != eventTypeId);
@@ -176,7 +175,7 @@ export const mockDeleteEventType = () => http.delete(
 );
 
 export const mockCreateMember = () => http.post(
-    path.join(API_CLIENT_URL, Paths.Audience),
+    path.join(API_CLIENT_URL, "/t/:troupeId/m"),
     async ({ request }) => {
         const body = await request.json() as CreateMemberRequest;
         const properties = {} as Attendee['properties'];
@@ -203,14 +202,14 @@ export const mockCreateMember = () => http.post(
 );
 
 export const mockGetAttendees = () => http.get(
-    path.join(API_CLIENT_URL, Paths.Attendees),
+    path.join(API_CLIENT_URL, "/t/:troupeId/a"),
     async () => {
         return HttpResponse.json(mockConsole.attendees);
     }
 )
 
 export const mockUpdateMember = () => http.put(
-    path.join(API_CLIENT_URL, Paths.Member),
+    path.join(API_CLIENT_URL, "/t/:troupeId/m/:memberId"),
     async ({ params, request }) => {
         const { memberId } = params as ParsedPathParams;
         const body = await request.json() as UpdateMemberRequest;
@@ -245,7 +244,7 @@ export const mockUpdateMember = () => http.put(
 );
 
 export const mockDeleteMember = () => http.delete(
-    path.join(API_CLIENT_URL, Paths.Member),
+    path.join(API_CLIENT_URL, "/t/:troupeId/m/:memberId"),
     async ({ params }) => {
         const { memberId } = params as ParsedPathParams;
         mockConsole.attendees = mockConsole.attendees.filter(m => m.id != memberId);

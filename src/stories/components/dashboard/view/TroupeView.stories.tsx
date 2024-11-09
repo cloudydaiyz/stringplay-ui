@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TroupeView from '../../../../components/dashboard/view/TroupeView';
+import { mockGetConsoleData, mockGetTroupe, mockUpdateTroupe } from '../../../../lib/api-client.mock';
 
 const meta = {
   component: TroupeView,
@@ -7,6 +8,15 @@ const meta = {
     {story()}
   </div>],
   tags: ['autodocs'],
+  parameters: {
+    msw: {
+      handlers: [
+        mockGetConsoleData,
+        mockGetTroupe,
+        mockUpdateTroupe,
+      ],
+    }
+  },
 } satisfies Meta<typeof TroupeView>;
 
 export default meta;

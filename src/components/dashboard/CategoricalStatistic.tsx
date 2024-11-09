@@ -20,10 +20,20 @@ interface CategoricalStatisticProps {
     value: number,
   }[];
   title: string,
+  loading: boolean,
 }
 
-const CategoricalStatistic = ({ data, title }: CategoricalStatisticProps) => {
+const CategoricalStatistic = ({ data = [], title, loading }: CategoricalStatisticProps) => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
+
+  if(loading) {
+    return (
+      <div className='categorical-statistic content-unit loading'>
+        <h3><span>{title}</span></h3>
+      </div>
+    )
+  }
+
   const RADIAN = Math.PI / 180;
 
   if(COLORS.length < data.length) {

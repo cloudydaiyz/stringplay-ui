@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DashboardView from '../../../../components/dashboard/view/DashboardView';
+import { mockGetConsoleData } from '../../../../lib/api-client.mock';
 
 const meta = {
   component: DashboardView,
@@ -7,6 +8,13 @@ const meta = {
     {story()}
   </div>],
   tags: ['autodocs'],
+  parameters: {
+    msw: {
+      handlers: [
+        mockGetConsoleData,
+      ],
+    }
+  },
 } satisfies Meta<typeof DashboardView>;
 
 export default meta;

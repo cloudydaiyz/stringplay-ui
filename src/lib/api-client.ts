@@ -1,5 +1,5 @@
 import { StringplayApiClient } from '@cloudydaiyz/stringplay-client';
-import { Attendee, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
+import type { Attendee, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { API_CLIENT_URL, DEFAULT_TROUPE_ID } from './constants';
 

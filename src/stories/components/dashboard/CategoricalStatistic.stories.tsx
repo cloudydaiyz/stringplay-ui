@@ -7,6 +7,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  argTypes: {
+    loading: { control: false },
+  }
 } satisfies Meta<typeof CategoricalStatistic>;
 
 export default meta;
@@ -24,6 +27,24 @@ export const Primary: Story = {
         value: 92,
       },
     ],
-    title: "Categorical Statistic"
+    title: "Categorical Statistic",
+    loading: false,
+  }
+};
+
+export const Loading: Story = {
+  args: {
+    data: [
+      {
+        name: "hi1",
+        value: 90,
+      },
+      {
+        name: "hi2",
+        value: 92,
+      },
+    ],
+    title: "Categorical Statistic",
+    loading: true,
   }
 };
