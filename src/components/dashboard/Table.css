@@ -231,6 +231,14 @@ th, td, tr
     border-bottom: 1px solid var(--c1);
 }
 
+.app-table .new-data input.invalid,
+.app-table .edit-cell input.invalid
+{
+    border-bottom-color: var(--error);
+    color: var(--error);
+    fill: var(--error);
+}
+
 .app-table .new-data input:focus,
 .app-table .edit-cell input
 {

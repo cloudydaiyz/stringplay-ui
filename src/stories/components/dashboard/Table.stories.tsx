@@ -90,18 +90,22 @@ export const Default: Story = {
         {
           title: "First Name",
           type: "string!",
+          disableUpdate: true,
         },
         {
           title: "Last Name",
           type: "string?",
+          disableUpdate: true,
         },
         {
           title: "# of children",
           type: "number?",
+          disableUpdate: true,
+          disableDelete: true,
         },
         {
           title: "Birthday",
-          type: "date?",
+          type: "date!",
         },
         {
           title: "isInteresting",
@@ -118,6 +122,7 @@ export const Default: Story = {
         ['Of', 'Names', null, null, false],
         ['To', 'Use', 4, new Date('1/1/2000'), false],
       ],
+      immutableRows: [true],
     }
   },
 };

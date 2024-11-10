@@ -28,13 +28,17 @@ const SettingsView = () => {
                                 title: "Sync Lock",
                                 type: "boolean!",
                             },
+                            {
+                                title: "Birthday Freq.",
+                                type: "string!",
+                            },
                         ],
                         data: [
-                            ["https://google.com", "AA", true],
-                        ]
+                            ["https://google.com", "AA", true, "monthly"],
+                        ],
                     }}
                     tableHeader={{
-                        title: "Settings"
+                        title: "Settings",
                     }}
                 />
             </div>

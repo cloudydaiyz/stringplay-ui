@@ -12,7 +12,7 @@ import Pencil from '../svg/Pencil';
 import XCircle from '../svg/XCircle';
 import Minus from '../svg/Minus';
 
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 export const PROPERTY_TYPES = [
   "string?", "string!", 
@@ -81,6 +81,12 @@ interface TableHeader {
    * Called with the indicies of rows to delete from the table.
    */
   onDataDelete?: (rowsToDelete: boolean[]) => Promise<void>;
+
+  /** Called on successful operation */
+  onSuccess?: () => void;
+
+  /** Called on failed operation */
+  onError?: () => void;
 }
 
 /** Information about the data to display for the table */
@@ -93,8 +99,8 @@ interface TableData {
   columns: {
     title: string;
     type: typeof PROPERTY_TYPES[number];
-    canUpdate?: boolean;
-    canDelete?: boolean;
+    disableUpdate?: boolean;
+    disableDelete?: boolean;
   }[];
 
   /** 
@@ -103,6 +109,70 @@ interface TableData {
    * of `columns`.
    */
   data: TableDataType[][];
+
+  /** Rows that cannot be changed (updated/deleted) */
+  immutableRows?: boolean[];
+
+  /** Callback that validates data in the table on update */
+  validateData?: (data: TableDataType, r: number, c: number) => boolean;
+}
+
+function useInvalidCells() {
+  const [invalidCells, setInvalidCells] = useState<boolean[][]>([]);
+
+  function getNumInvalidCells() {
+    let num = 0;
+    for(const row of invalidCells) {
+      if(row) {
+        for(const cell of row) {
+          if(cell) num++;
+        }
+      }
+    }
+    return num;
+  }
+
+  function setInvalidCell(r: number, c: number) {
+    console.log('setting invalid cell');
+    const newInvalidCells = invalidCells.map(r => r.slice());
+    if(!newInvalidCells[r]) newInvalidCells[r] = [];
+    newInvalidCells[r][c] = true;
+    setInvalidCells(newInvalidCells);
+  }
+
+  function unsetInvalidCell(r: number, c: number) {
+    console.log('unsetting invalid cell');
+    if(invalidCells[r]?.[c]) {
+      const newInvalidCells = invalidCells.map(r => r.slice());
+      newInvalidCells[r][c] = false;
+      setInvalidCells(newInvalidCells);
+    }
+  }
+
+  function resetInvalidCells() {
+    setInvalidCells([]);
+  }
+
+  return { invalidCells, getNumInvalidCells, setInvalidCell, unsetInvalidCell, resetInvalidCells };
+}
+
+const CellValidityContext = createContext<ReturnType<typeof useInvalidCells> | undefined>(undefined);
+
+const CellValidityProvider = ({ children }: { children: React.ReactNode }) => {
+  const cellValidityOps = useInvalidCells();
+  return (
+    <CellValidityContext.Provider value={cellValidityOps}>
+      { children }
+    </CellValidityContext.Provider>
+  );
+}
+
+export function useCellValidityContext(): ReturnType<typeof useInvalidCells> {
+  const cellValidityOps = useContext(CellValidityContext);
+  if(cellValidityOps === undefined) {
+      throw new Error("Invalid state. Make sure that you're using `CellValidityContext` correctly.");
+  }
+  return cellValidityOps;
 }
 
 function LoadingTableHeaderElement() {
@@ -125,26 +195,39 @@ interface TableHeaderElementProps {
 }
 
 function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rowsToDelete, reset, empty = false }: TableHeaderElementProps) {
+  const { resetInvalidCells, getNumInvalidCells } = useCellValidityContext();
+
   const performAction = () => {
+    if(getNumInvalidCells() > 0) return;
+
     if(tableHeader.onDataCreate && mode == 'create' && newRows) {
       console.log('Creating rows');
       console.log(newRows);
-      tableHeader.onDataCreate(newRows).then(reset);
+
+      tableHeader.onDataCreate(newRows)
+        .catch(() => tableHeader.onError?.())
+        .then(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
     } else if(tableHeader.onDataUpdate && mode == 'edit' && updates) {
       console.log('Performing update');
       console.log(updates);
-      tableHeader.onDataUpdate(updates).then(reset);
+
+      tableHeader.onDataUpdate(updates)
+        .catch(() => tableHeader.onError?.())
+        .then(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
     } else if(tableHeader.onDataDelete && mode == 'delete' && rowsToDelete) {
       console.log('Performing deletion');
       console.log(rowsToDelete);
-      tableHeader.onDataDelete(rowsToDelete).then(reset);
+
+      tableHeader.onDataDelete(rowsToDelete)
+        .catch(() => tableHeader.onError?.())
+        .then(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
     }
   }
 
   const actions = mode 
     ? <div className='actions'>
       {tableHeader.onDataCreate && <Button text={<span><ThumbsUp />CONFIRM</span>} onClick={performAction} buttonType={2} />}
-      {tableHeader.onDataUpdate && <Button text={<span><XMark />CANCEL</span>} onClick={reset} buttonType={2} />}
+      {tableHeader.onDataUpdate && <Button text={<span><XMark />CANCEL</span>} onClick={() => {resetInvalidCells(); reset()}} buttonType={2} />}
     </div>
     : <div className='actions'>
       {tableHeader.onDataCreate && <Button text={<span><Plus />NEW</span>} onClick={() => setMode('create')} buttonType={2} />}
@@ -229,6 +312,7 @@ interface TableBodyElementProps {
 
 function TableBodyElement(props: TableBodyElementProps) {
   const { tableData, mode, newRows, setNewRows, updates, setUpdates, rowsToDelete, setRowsToDelete } = props;
+  const { invalidCells, setInvalidCell, unsetInvalidCell } = useCellValidityContext();
 
   /** Adds an empty row to the new set of rows */
   const addNewRow = () => {
@@ -332,8 +416,10 @@ function TableBodyElement(props: TableBodyElementProps) {
                   : 'text'
                 }
                 onChange={(e) => {
+                  let invalid = false;
                   const newRowsUpdate = newRows.slice();
-                  if(e.currentTarget.value === "") {
+                  if(e.currentTarget.value === "" && !tableData.columns[c].type.startsWith('boolean')) {
+                    invalid = tableData.columns[c].disableDelete === true || tableData.columns[c].type.endsWith('!');
                     newRowsUpdate[r][c] = null;
                   } else if(tableData.columns[c].type.startsWith('number')) {
                     newRowsUpdate[r][c] = Number(e.currentTarget.value);
@@ -344,8 +430,18 @@ function TableBodyElement(props: TableBodyElementProps) {
                   } else {
                     newRowsUpdate[r][c] = e.currentTarget.value;
                   }
+                  invalid = invalid 
+                    || (
+                      tableData.validateData 
+                      ? tableData.validateData(newRowsUpdate[r][c], r, c)
+                      : false
+                    );
+
+                  if(!invalid && invalidCells[r]?.[c]) unsetInvalidCell(r, c);
+                  if(invalid && !invalidCells[r]?.[c]) setInvalidCell(r, c);
                   setNewRows(newRowsUpdate);
                 }}
+                className={ invalidCells[r]?.[c] ? 'invalid' : '' }
               />
             }
           </td>
@@ -402,18 +498,32 @@ function TableBodyElement(props: TableBodyElementProps) {
             }
             defaultChecked={ tableData.data[0][c] as boolean }
             onChange={(e) => {
-              if(e.currentTarget.value === "") {
-                markCellEdit(0, c, null);
+              let invalid = false;
+              let newValue: TableDataType;
+              if(e.currentTarget.value === "" && !tableData.columns[c].type.startsWith('boolean')) {
+                invalid = tableData.columns[c].disableDelete === true || tableData.columns[c].type.endsWith('!');
+                newValue = null;
               } else if(tableData.columns[c].type.startsWith('number')) {
-                markCellEdit(0, c, Number(e.currentTarget.value));
+                newValue = Number(e.currentTarget.value);
               } else if(tableData.columns[c].type.startsWith('boolean')) {
-                markCellEdit(0, c, e.currentTarget.checked);
+                newValue = e.currentTarget.checked;
               } else if(tableData.columns[c].type.startsWith('date')) {
-                markCellEdit(0, c, new Date(e.currentTarget.value));
+                newValue = new Date(e.currentTarget.value);
               } else {
-                markCellEdit(0, c, e.currentTarget.value);
+                newValue = e.currentTarget.value;
               }
+              markCellEdit(0, c, newValue);
+              invalid = invalid 
+                || (
+                  tableData.validateData 
+                  ? tableData.validateData(newValue, 0, c)
+                  : false
+                );
+
+              if(!invalid && invalidCells[0]?.[c]) unsetInvalidCell(0, c);
+              if(invalid && !invalidCells[0]?.[c]) setInvalidCell(0, c);
             }}
+            className={ invalidCells[0]?.[c] ? 'invalid' : '' }
           />
         </td>
       } else if(isDeletingRow(0)) {
@@ -427,7 +537,7 @@ function TableBodyElement(props: TableBodyElementProps) {
           <span>{ tableDataToElement(item) }</span>
           { 
             // Render the edit button in edit mode
-            mode == 'edit' 
+            mode == 'edit' && !tableData.columns[c].disableUpdate && !tableData.immutableRows?.[0]
               && <button 
                 className='edit-btn'
                 onClick={() => { markCellEdit(0, c, tableData.data[0][c]!) }}
@@ -437,7 +547,7 @@ function TableBodyElement(props: TableBodyElementProps) {
           }
           {
             // Render the delete button in delete mode
-            mode == 'delete'
+            mode == 'delete' && !tableData.immutableRows?.[0]
               && <button
                 className='delete-btn'
                 onClick={() => { markRowDelete(0) }}
@@ -468,8 +578,10 @@ function TableBodyElement(props: TableBodyElementProps) {
                 : 'text'
               }
               onChange={(e) => {
+                let invalid = false;
                 const newRowsUpdate = newRows.slice();
-                if(e.currentTarget.value === "") {
+                if(e.currentTarget.value === "" && !tableData.columns[c].type.startsWith('boolean')) {
+                  invalid = tableData.columns[c].disableDelete === true || tableData.columns[c].type.endsWith('!');
                   newRowsUpdate[r][c] = null;
                 } else if(tableData.columns[c].type.startsWith('number')) {
                   newRowsUpdate[r][c] = Number(e.currentTarget.value);
@@ -480,8 +592,18 @@ function TableBodyElement(props: TableBodyElementProps) {
                 } else {
                   newRowsUpdate[r][c] = e.currentTarget.value;
                 }
+                invalid = invalid 
+                  || (
+                    tableData.validateData 
+                    ? tableData.validateData(newRowsUpdate[r + tableData.data.length][c], r, c)
+                    : false
+                  );
+
+                if(!invalid && invalidCells[r + tableData.data.length]?.[c]) unsetInvalidCell(r + tableData.data.length, c);
+                if(invalid && !invalidCells[r + tableData.data.length]?.[c]) setInvalidCell(r + tableData.data.length, c);
                 setNewRows(newRowsUpdate);
               }}
+              className={ invalidCells[r + tableData.data.length]?.[c] ? 'invalid' : '' }
             />
           }
         </td>)
@@ -537,18 +659,32 @@ function TableBodyElement(props: TableBodyElementProps) {
             }
             defaultChecked={ tableData.data[r][c] as boolean }
             onChange={(e) => {
-              if(e.currentTarget.value === "") {
-                markCellEdit(r, c, null);
+              let invalid = false;
+              let newValue: TableDataType;
+              if(e.currentTarget.value === "" && !tableData.columns[c].type.startsWith('boolean')) {
+                invalid = tableData.columns[c].disableDelete === true || tableData.columns[c].type.endsWith('!');
+                newValue = null;
               } else if(tableData.columns[c].type.startsWith('number')) {
-                markCellEdit(r, c, Number(e.currentTarget.value));
+                newValue = Number(e.currentTarget.value);
               } else if(tableData.columns[c].type.startsWith('boolean')) {
-                markCellEdit(r, c, e.currentTarget.checked);
+                newValue = e.currentTarget.checked;
               } else if(tableData.columns[c].type.startsWith('date')) {
-                markCellEdit(r, c, new Date(e.currentTarget.value));
+                newValue = new Date(e.currentTarget.value);
               } else {
-                markCellEdit(r, c, e.currentTarget.value);
+                newValue = e.currentTarget.value;
               }
+              markCellEdit(r, c, newValue);
+              invalid = invalid 
+                || (
+                  tableData.validateData 
+                  ? tableData.validateData(newValue, r, c)
+                  : false
+                );
+
+              if(!invalid && invalidCells[r]?.[c]) unsetInvalidCell(r, c);
+              if(invalid && !invalidCells[r]?.[c]) setInvalidCell(r, c);
             }}
+            className={ invalidCells[r]?.[c] ? 'invalid' : '' }
           />
         </td>
       } else if(isDeletingRow(r)) {
@@ -563,7 +699,7 @@ function TableBodyElement(props: TableBodyElementProps) {
         <span>{ tableDataToElement(item) }</span>
         { 
           // Render the edit button in edit mode
-          mode == 'edit' 
+          mode == 'edit' && !tableData.columns[c].disableUpdate && !tableData.immutableRows?.[r]
             && <button 
               className='edit-btn'
               onClick={() => { markCellEdit(r, c, tableData.data[r][c]!) }}
@@ -573,7 +709,7 @@ function TableBodyElement(props: TableBodyElementProps) {
         }
         {
           // Render the delete button in delete mode
-          mode == 'delete'
+          mode == 'delete' && !tableData.immutableRows?.[r]
             && <button
               className='delete-btn'
               onClick={() => {
@@ -611,8 +747,10 @@ function TableBodyElement(props: TableBodyElementProps) {
               : 'text'
             } 
             onChange={(e) => {
+              let invalid = false;
               const newRowsUpdate = newRows.slice();
-              if(e.currentTarget.value === "") {
+              if(e.currentTarget.value === "" && !tableData.columns[c].type.startsWith('boolean')) {
+                invalid = tableData.columns[c].disableDelete === true || tableData.columns[c].type.endsWith('!');
                 newRowsUpdate[r][c] = null;
               } else if(tableData.columns[c].type.startsWith('number')) {
                 newRowsUpdate[r][c] = Number(e.currentTarget.value);
@@ -623,8 +761,18 @@ function TableBodyElement(props: TableBodyElementProps) {
               } else {
                 newRowsUpdate[r][c] = e.currentTarget.value;
               }
+              invalid = invalid 
+                || (
+                  tableData.validateData 
+                  ? tableData.validateData(newRowsUpdate[r][c], r + tableData.data.length, c)
+                  : false
+                );
+              
+              if(!invalid && invalidCells[r + tableData.data.length]?.[c]) unsetInvalidCell(r + tableData.data.length, c);
+              if(invalid && !invalidCells[r + tableData.data.length]?.[c]) setInvalidCell(r + tableData.data.length, c);
               setNewRows(newRowsUpdate);
             }}
+            className={ invalidCells[r + tableData.data.length]?.[c] ? 'invalid' : '' }
           />
         }
       </td>);
@@ -739,10 +887,12 @@ const Table = ({ loading = false, useDataWhileLoading = false, tableHeader, tabl
         "--max-cols": maxCols
       } as React.CSSProperties}
     >
-      { header }
-      <div className="app-table-body">
-        { body }
-      </div>
+      <CellValidityProvider>
+        { header }
+        <div className="app-table-body">
+          { body }
+        </div>
+      </CellValidityProvider>
     </div>
   );
 }
