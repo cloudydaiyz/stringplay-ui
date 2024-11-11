@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MemberLogView from '../../../../components/dashboard/view/MemberLogView';
-import { mockCreateMember, mockDeleteMember, mockGetAttendees, mockGetConsoleData, mockUpdateMember } from '../../../../lib/api-client.mock';
+import { mockCreateMembers, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockUpdateMembers } from '../../../../lib/api-client.mock';
 
 const meta = {
   component: MemberLogView,
@@ -12,10 +12,10 @@ const meta = {
     msw: {
       handlers: [
         mockGetConsoleData(),
-        mockCreateMember(),
+        mockCreateMembers(),
         mockGetAttendees(),
-        mockUpdateMember(),
-        mockDeleteMember(),
+        mockUpdateMembers(),
+        mockDeleteMembers(),
       ],
     }
   },

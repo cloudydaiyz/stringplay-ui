@@ -104,6 +104,7 @@ export function useEvents() {
 
     const createEvents = (requests: CreateEventRequest[]) => {
         console.log('creating events');
+        console.log(api);
         return apiCall(
             api.createEvents(DEFAULT_TROUPE_ID, requests).then(d => {
                 console.log('create');
