@@ -1,12 +1,10 @@
 // Defines handlers to mocks the remote calls to the API from the API client, integrating functionality with MSW
 
 import { http, HttpResponse, delay } from 'msw';
-import type { Attendee, ConsoleData, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
+import type { Attendee, BulkUpdateEventRequest, BulkUpdateEventResponse, BulkUpdateEventTypeRequest, BulkUpdateEventTypeResponse, BulkUpdateMemberRequest, BulkUpdateMemberResponse, ConsoleData, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import { API_CLIENT_URL } from './constants';
 import { defaultConfig } from './mock-data';
 import { api } from './api-client';
-
-type ParsedPathParams = { [param: string]: string };
 
 function getUrl(uri: string, path: string) {
     return (new URL(path, uri)).href;
@@ -69,27 +67,30 @@ export const mockUpdateTroupe = (mockData: ConsoleData = defaultMockConsole) => 
     }
 );
 
-export const mockCreateEvent = (mockData: ConsoleData = defaultMockConsole) => http.post(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/e"),
+export const mockCreateEvents = (mockData: ConsoleData = defaultMockConsole) => http.post(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/e/bulk"),
     async ({ request }) => {
         console.log('mocking')
-        const body = await request.json() as CreateEventRequest;
-        const newEvent: PublicEvent = {
-            id: Date.now().toString(16),
-            troupeId: mockData.troupe.id,
-            lastUpdated: (new Date()).toISOString(),
-            title: body.title,
-            source: '',
-            synchronizedSource: '',
-            sourceUri: body.sourceUri,
-            synchronizedSourceUri: '',
-            startDate: body.startDate,
-            fieldToPropertyMap: {},
-            synchronizedFieldToPropertyMap: {},
-            value: body.value || 0,
-        };
-        mockData.events.push(newEvent);
-        return HttpResponse.json(newEvent);
+        const body = await request.json() as CreateEventRequest[];
+        const newEvents = body.map(item => {
+            const event: PublicEvent = {
+                id: Date.now().toString(16),
+                troupeId: mockData.troupe.id,
+                lastUpdated: (new Date()).toISOString(),
+                title: item.title,
+                source: '',
+                synchronizedSource: '',
+                sourceUri: item.sourceUri,
+                synchronizedSourceUri: '',
+                startDate: item.startDate,
+                fieldToPropertyMap: {},
+                synchronizedFieldToPropertyMap: {},
+                value: item.value || 0,
+            };
+            mockData.events.push(event);
+            return event;
+        });
+        return HttpResponse.json(newEvents);
     }
 );
 
@@ -100,47 +101,54 @@ export const mockGetEvents = (mockData: ConsoleData = defaultMockConsole) => htt
     }
 );
 
-export const mockUpdateEvent = (mockData: ConsoleData = defaultMockConsole) => http.put(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/e/:eventId"),
-    async ({ params, request }) => {
-        const { eventId } = params as ParsedPathParams;
-        const body = await request.json() as UpdateEventRequest;
-        const event = mockData.events.find(e => e.id == eventId);
-        if(!event) {
-            throw new Error('mockUpdateEvent: Invalid event');
-        }
-
-        if(body.eventTypeId) event.eventTypeId = body.eventTypeId;
-        if(body.sourceUri) event.sourceUri = body.sourceUri;
-        if(body.startDate) event.startDate = body.startDate;
-        if(body.title) event.title = body.title;
-        if(body.value) event.value = body.value;
-        return HttpResponse.json(event);
-    }
-);
-
-export const mockDeleteEvent = (mockData: ConsoleData = defaultMockConsole) => http.delete(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/e/:eventId"),
-    async ({ params }) => {
-        const { eventId } = params as ParsedPathParams;
-        mockData.events = mockData.events.filter(e => e.id != eventId);
-    }
-);
-
-export const mockCreateEventType = (mockData: ConsoleData = defaultMockConsole) => http.post(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/et"),
+export const mockUpdateEvents = (mockData: ConsoleData = defaultMockConsole) => http.put(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/e/bulk"),
     async ({ request }) => {
-        const body = await request.json() as CreateEventTypeRequest;
-        const newEventType: EventType = {
-            id: Date.now().toString(16),
-            lastUpdated: (new Date()).toISOString(),
-            title: body.title,
-            value: body.value,
-            sourceFolderUris: body.sourceFolderUris,
-            synchronizedSourceFolderUris: [],
-        };
-        mockData.eventTypes.push(newEventType);
-        return HttpResponse.json(mockData);
+        const body = await request.json() as BulkUpdateEventRequest;
+        const updates = {} as BulkUpdateEventResponse;
+        for(const id in body) {
+            const event = mockData.events.find(e => e.id == id);
+            if(!event) {
+                console.error(`mockUpdateEvent: Invalid event ${id}, skipping`);
+                continue;
+            }
+    
+            if(body[id].eventTypeId) event.eventTypeId = body[id].eventTypeId;
+            if(body[id].sourceUri) event.sourceUri = body[id].sourceUri;
+            if(body[id].startDate) event.startDate = body[id].startDate;
+            if(body[id].title) event.title = body[id].title;
+            if(body[id].value) event.value = body[id].value;
+            updates[id] = event;
+        }
+        return HttpResponse.json(updates);
+    }
+);
+
+export const mockDeleteEvents = (mockData: ConsoleData = defaultMockConsole) => http.delete(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/e/bulk/delete"),
+    async ({ request }) => {
+        const body = await request.json() as string[];
+        mockData.events = mockData.events.filter(e => !body.includes(e.id));
+    }
+);
+
+export const mockCreateEventTypes = (mockData: ConsoleData = defaultMockConsole) => http.post(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/et/bulk"),
+    async ({ request }) => {
+        const body = await request.json() as CreateEventTypeRequest[];
+        const newEventTypes = body.map(item => {
+            const newEventType: EventType = {
+                id: Date.now().toString(16),
+                lastUpdated: (new Date()).toISOString(),
+                title: item.title,
+                value: item.value,
+                sourceFolderUris: item.sourceFolderUris,
+                synchronizedSourceFolderUris: [],
+            };
+            mockData.eventTypes.push(newEventType);
+            return newEventType;
+        });
+        return HttpResponse.json(newEventTypes);
     }
 );
 
@@ -151,60 +159,67 @@ export const mockGetEventTypes = (mockData: ConsoleData = defaultMockConsole) =>
     }
 );
 
-export const mockUpdateEventType = (mockData: ConsoleData = defaultMockConsole) => http.put(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/et/:eventTypeId"),
-    async ({ params, request }) => {
-        const { eventTypeId } = params as ParsedPathParams;
-        const body = await request.json() as UpdateEventTypeRequest;
-        const eventType = mockData.eventTypes.find(et => et.id == eventTypeId);
-        if(!eventType) {
-            throw new Error('mockUpdateEventType: Invalid event type');
-        }
-
-        if(body.title) eventType.title = body.title;
-        if(body.value) eventType.value = body.value;
-        if(body.addSourceFolderUris) {
-            eventType.sourceFolderUris.push(...body.addSourceFolderUris);
-        }
-        if(body.removeSourceFolderUris) {
-            eventType.sourceFolderUris.filter(uri => !body.removeSourceFolderUris!.includes(uri));
-        }
-        return HttpResponse.json(eventType);
-    }
-);
-
-export const mockDeleteEventType = (mockData: ConsoleData = defaultMockConsole) => http.delete(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/et/:eventTypeId"),
-    async ({ params }) => {
-        const { eventTypeId } = params as ParsedPathParams;
-        mockData.eventTypes = mockData.eventTypes.filter(et => et.id != eventTypeId);
-    }
-);
-
-export const mockCreateMember = (mockData: ConsoleData = defaultMockConsole) => http.post(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/m"),
+export const mockUpdateEventTypes = (mockData: ConsoleData = defaultMockConsole) => http.put(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/et/bulk"),
     async ({ request }) => {
-        const body = await request.json() as CreateMemberRequest;
-        const properties = {} as Attendee['properties'];
-        for(const property in body.properties) {
-            properties[property] = {
-                value: body.properties[property],
-                override: true,
-            };
+        const body = await request.json() as BulkUpdateEventTypeRequest;
+        const updates = {} as BulkUpdateEventTypeResponse;
+        for(const id in body) {
+            const eventType = mockData.eventTypes.find(et => et.id == id);
+            if(!eventType) {
+                console.error(`mockUpdateEventType: Invalid event ${id}, skipping type`);
+                continue;
+            }
+    
+            if(body[id].title) eventType.title = body[id].title;
+            if(body[id].value) eventType.value = body[id].value;
+            if(body[id].addSourceFolderUris) {
+                eventType.sourceFolderUris.push(...body[id].addSourceFolderUris);
+            }
+            if(body[id].removeSourceFolderUris) {
+                eventType.sourceFolderUris.filter(uri => !body[id].removeSourceFolderUris!.includes(uri));
+            }
+            updates[id] = eventType;
         }
+        return HttpResponse.json(updates);
+    }
+);
 
-        const newMember: Attendee = {
-            id: Date.now().toString(16),
-            troupeId: mockData.troupe.id,
-            lastUpdated: (new Date()).toISOString(),
-            points: {
-                'Total': 0,
-            },
-            properties,
-            eventsAttended: [],
-        };
-        mockData.attendees.push(newMember);
-        return HttpResponse.json(newMember);
+export const mockDeleteEventTypes = (mockData: ConsoleData = defaultMockConsole) => http.delete(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/et/bulk/delete"),
+    async ({ request }) => {
+        const body = await request.json() as string[];
+        mockData.eventTypes = mockData.eventTypes.filter(e => !body.includes(e.id));
+    }
+);
+
+export const mockCreateMembers = (mockData: ConsoleData = defaultMockConsole) => http.post(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/m/bulk"),
+    async ({ request }) => {
+        const body = await request.json() as CreateMemberRequest[];
+        const newMembers = body.map(item => {
+            const properties = {} as Attendee['properties'];
+            for(const property in item.properties) {
+                properties[property] = {
+                    value: item.properties[property],
+                    override: true,
+                };
+            }
+    
+            const newMember: Attendee = {
+                id: Date.now().toString(16),
+                troupeId: mockData.troupe.id,
+                lastUpdated: (new Date()).toISOString(),
+                points: {
+                    'Total': 0,
+                },
+                properties,
+                eventsAttended: [],
+            };
+            mockData.attendees.push(newMember);
+            return newMember;
+        });
+        return HttpResponse.json(newMembers);
     }
 );
 
@@ -215,45 +230,48 @@ export const mockGetAttendees = (mockData: ConsoleData = defaultMockConsole) => 
     }
 )
 
-export const mockUpdateMember = (mockData: ConsoleData = defaultMockConsole) => http.put(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/m/:memberId"),
-    async ({ params, request }) => {
-        const { memberId } = params as ParsedPathParams;
-        const body = await request.json() as UpdateMemberRequest;
-        const member = mockData.attendees.find(m => m.id == memberId);
-        if(!member) {
-            throw new Error('mockUpdateMember: Invalid event');
-        }
-
-        for(const property in body.updateProperties) {
-            const value = body.updateProperties[property].value;
-            const override = body.updateProperties[property].override;
-            if(property in member.properties) {
-                if(value) member.properties[property].value = value;
-                if(override) member.properties[property].override = override;
-            } else {
-                if(!value) {
-                    throw new Error('mockUpdateMember: Invalid properties');
+export const mockUpdateMembers = (mockData: ConsoleData = defaultMockConsole) => http.put(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/m/bulk"),
+    async ({ request }) => {
+        const body = await request.json() as BulkUpdateMemberRequest;
+        const updates = {} as BulkUpdateMemberResponse;
+        for(const id in body) {
+            const member = mockData.attendees.find(m => m.id == id);
+            if(!member) {
+                console.error(`mockUpdateMember: Invalid member ${id}, skipping member`);
+                continue;
+            }
+    
+            for(const property in body[id].updateProperties) {
+                const value = body[id].updateProperties[property].value;
+                const override = body[id].updateProperties[property].override;
+                if(property in member.properties) {
+                    if(value) member.properties[property].value = value;
+                    if(override) member.properties[property].override = override;
+                } else {
+                    if(!value) {
+                        throw new Error(`mockUpdateMember: Invalid property for member ${id}`);
+                    }
+                    member.properties[property] = {
+                        value,
+                        override: override || false,
+                    }
                 }
-                member.properties[property] = {
-                    value,
-                    override: override || false,
-                }
+            }
+    
+            for(const property of body[id].removeProperties || []) {
+                delete member.properties[property];
             }
         }
 
-        for(const property of body.removeProperties || []) {
-            delete member.properties[property];
-        }
-
-        return HttpResponse.json(member);
+        return HttpResponse.json(updates);
     }
 );
 
-export const mockDeleteMember = (mockData: ConsoleData = defaultMockConsole) => http.delete(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/m/:memberId"),
-    async ({ params }) => {
-        const { memberId } = params as ParsedPathParams;
-        mockData.attendees = mockData.attendees.filter(m => m.id != memberId);
+export const mockDeleteMembers = (mockData: ConsoleData = defaultMockConsole) => http.delete(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/m/bulk/delete"),
+    async ({ request }) => {
+        const body = await request.json() as string[];
+        mockData.attendees = mockData.attendees.filter(m => !body.includes(m.id));
     }
 );

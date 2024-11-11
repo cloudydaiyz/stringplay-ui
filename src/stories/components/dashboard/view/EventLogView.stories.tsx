@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import EventLogView from '../../../../components/dashboard/view/EventLogView';
-import { mockCreateEvent, mockCreateEventType, mockDeleteEvent, mockDeleteEventType, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockUpdateEvent, mockUpdateEventType } from '../../../../lib/api-client.mock';
+import { mockCreateEvents, mockCreateEventTypes, mockDeleteEvents, mockDeleteEventTypes, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockUpdateEvents, mockUpdateEventTypes } from '../../../../lib/api-client.mock';
 import { ApiClientProvider } from '../../../../lib/api-client';
 
 const meta = {
@@ -17,14 +17,14 @@ const meta = {
     msw: {
       handlers: [
         mockGetConsoleData(),
-        mockCreateEvent(),
+        mockCreateEvents(),
         mockGetEvents(),
-        mockUpdateEvent(),
-        mockDeleteEvent(),
-        mockCreateEventType(),
+        mockUpdateEvents(),
+        mockDeleteEvents(),
+        mockCreateEventTypes(),
         mockGetEventTypes(),
-        mockUpdateEventType(),
-        mockDeleteEventType(),
+        mockUpdateEventTypes(),
+        mockDeleteEventTypes(),
       ],
     }
   },

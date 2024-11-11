@@ -213,7 +213,7 @@ export function useAttendees() {
 
     const deleteMembers = (memberIds: string[]) => apiCall(
         api.deleteMembers(DEFAULT_TROUPE_ID, memberIds).then(() => {
-            setAttendees(attendees?.filter(a => memberIds.includes(a.id)));
+            setAttendees(attendees?.filter(a => !memberIds.includes(a.id)));
         }).catch(() => {
             // show error notification 
         })
