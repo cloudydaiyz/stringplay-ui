@@ -652,3 +652,11 @@ export const mockEventTypeTable = [
     ["Hello", 123, 123, 123],
     ["Hello", 123, 123, 123],
 ];
+
+export const mockEventLogEventTypesTableData = [
+    ["A", "General Meeting", 1],
+    ["B", "Social", 2],
+    ["C", "Technical Workshop", 3],
+    ["D", "Corporate", 2],
+    ["E", "Outreach", 3],
+]

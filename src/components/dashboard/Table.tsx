@@ -12,7 +12,8 @@ import Pencil from '../svg/Pencil';
 import XCircle from '../svg/XCircle';
 import Minus from '../svg/Minus';
 
-import { createContext, useContext, useState } from 'react';
+import { useState } from 'react';
+import { useCellValidityContext, CellValidityProvider } from '../../lib/cell-validity';
 
 export const PROPERTY_TYPES = [
   "string?", "string!", 
@@ -117,64 +118,6 @@ interface TableData {
   validateData?: (data: TableDataType, r: number, c: number) => boolean;
 }
 
-function useInvalidCells() {
-  const [invalidCells, setInvalidCells] = useState<boolean[][]>([]);
-
-  function getNumInvalidCells() {
-    let num = 0;
-    for(const row of invalidCells) {
-      if(row) {
-        for(const cell of row) {
-          if(cell) num++;
-        }
-      }
-    }
-    return num;
-  }
-
-  function setInvalidCell(r: number, c: number) {
-    console.log('setting invalid cell');
-    const newInvalidCells = invalidCells.map(r => r.slice());
-    if(!newInvalidCells[r]) newInvalidCells[r] = [];
-    newInvalidCells[r][c] = true;
-    setInvalidCells(newInvalidCells);
-  }
-
-  function unsetInvalidCell(r: number, c: number) {
-    console.log('unsetting invalid cell');
-    if(invalidCells[r]?.[c]) {
-      const newInvalidCells = invalidCells.map(r => r.slice());
-      newInvalidCells[r][c] = false;
-      setInvalidCells(newInvalidCells);
-    }
-  }
-
-  function resetInvalidCells() {
-    setInvalidCells([]);
-  }
-
-  return { invalidCells, getNumInvalidCells, setInvalidCell, unsetInvalidCell, resetInvalidCells };
-}
-
-const CellValidityContext = createContext<ReturnType<typeof useInvalidCells> | undefined>(undefined);
-
-const CellValidityProvider = ({ children }: { children: React.ReactNode }) => {
-  const cellValidityOps = useInvalidCells();
-  return (
-    <CellValidityContext.Provider value={cellValidityOps}>
-      { children }
-    </CellValidityContext.Provider>
-  );
-}
-
-export function useCellValidityContext(): ReturnType<typeof useInvalidCells> {
-  const cellValidityOps = useContext(CellValidityContext);
-  if(cellValidityOps === undefined) {
-      throw new Error("Invalid state. Make sure that you're using `CellValidityContext` correctly.");
-  }
-  return cellValidityOps;
-}
-
 function LoadingTableHeaderElement() {
   return (
     <div className='app-table-header loading'>
@@ -205,22 +148,25 @@ function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rows
       console.log(newRows);
 
       tableHeader.onDataCreate(newRows)
-        .catch(() => tableHeader.onError?.())
-        .then(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
+        .then(() => tableHeader.onSuccess?.())
+        .catch((err) => { tableHeader.onError?.(); console.log('error:', err) })
+        .finally(() => { reset(); resetInvalidCells() });
     } else if(tableHeader.onDataUpdate && mode == 'edit' && updates) {
       console.log('Performing update');
       console.log(updates);
 
       tableHeader.onDataUpdate(updates)
+        .then(() => tableHeader.onSuccess?.())
         .catch(() => tableHeader.onError?.())
-        .then(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
+        .finally(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
     } else if(tableHeader.onDataDelete && mode == 'delete' && rowsToDelete) {
       console.log('Performing deletion');
       console.log(rowsToDelete);
 
       tableHeader.onDataDelete(rowsToDelete)
+        .then(() => tableHeader.onSuccess?.())
         .catch(() => tableHeader.onError?.())
-        .then(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
+        .finally(() => { reset(); resetInvalidCells(); tableHeader.onSuccess?.() });
     }
   }
 

@@ -11,6 +11,32 @@ import { useClient, useMetadata } from '../../../lib/api-client';
 import { defaultConfig } from '../../../lib/mock-data';
 import { TroupeDashboard } from '@cloudydaiyz/stringplay-core/types/api';
 
+/** Converts entity data to data parsable by the `CategoricalStatistics` component */
+function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercentageByEventType'] | undefined) {
+    if(!percentagesObj) return undefined;
+
+    const data: CategoricalStatisticProps['data'] = [];
+    for(const id in data) {
+        data.push({
+            name: percentagesObj[id].title,
+            value: percentagesObj[id].value,
+        });
+    }
+    return data;
+}
+
+/** Converts event type data from the dashboard to row data parsable by the `Table` component */
+function getDashboardTableData(dashboard: TroupeDashboard | undefined) {
+    return dashboard 
+    ? Object.keys(dashboard.totalAttendeesByEventType).map(key => [
+        dashboard.totalEventsByEventType[key].title,
+        dashboard.totalEventsByEventType[key].value,
+        dashboard.totalAttendeesByEventType[key].value,
+        dashboard.avgAttendeesByEventType[key].value,
+    ])
+    : [];
+}
+
 const DashboardView = () => {
     const { lastUpdated, loading } = useMetadata();
     const { dashboard } = useClient();
@@ -91,20 +117,6 @@ const DashboardView = () => {
         />
     </div>;
 
-    /** Converts entity data to data parsable by the `CategoricalStatistics` component */
-    function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercentageByEventType'] | undefined): CategoricalStatisticProps['data'] | undefined {
-        if(!percentagesObj) return undefined;
-
-        const data: CategoricalStatisticProps['data'] = [];
-        for(const id in data) {
-            data.push({
-                name: percentagesObj[id].title,
-                value: percentagesObj[id].value,
-            });
-        }
-        return data;
-    }
-
     const categoricalStatistics = <div className="dashboard-categorical">
         <CategoricalStatistic
             data={
@@ -127,18 +139,6 @@ const DashboardView = () => {
             loading={loading}
         />
     </div>;
-    
-    /** Converts entity data to data parsable by the `Table` component */
-    function getEventTypeTableData(dashboard: TroupeDashboard | undefined) {
-        return dashboard 
-        ? Object.keys(dashboard.totalAttendeesByEventType).map(key => [
-            dashboard.totalEventsByEventType[key].title,
-            dashboard.totalEventsByEventType[key].value,
-            dashboard.totalAttendeesByEventType[key].value,
-            dashboard.avgAttendeesByEventType[key].value,
-        ])
-        : [];
-    }
 
     let eventTypeTable = <Table 
         tableData={{
@@ -161,9 +161,9 @@ const DashboardView = () => {
                 },
             ],
             data: !loading && !dashboard
-                ? getEventTypeTableData(defaultConfig.dashboard)
+                ? getDashboardTableData(defaultConfig.dashboard)
                 // : mockEventTypeTable
-                : getEventTypeTableData(dashboard),
+                : getDashboardTableData(dashboard),
         }}
         loading={loading}
         useDataWhileLoading={dashboard && loading} 

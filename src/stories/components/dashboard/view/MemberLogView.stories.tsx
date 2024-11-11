@@ -11,11 +11,11 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
-        mockGetConsoleData,
-        mockCreateMember,
-        mockGetAttendees,
-        mockUpdateMember,
-        mockDeleteMember,
+        mockGetConsoleData(),
+        mockCreateMember(),
+        mockGetAttendees(),
+        mockUpdateMember(),
+        mockDeleteMember(),
       ],
     }
   },

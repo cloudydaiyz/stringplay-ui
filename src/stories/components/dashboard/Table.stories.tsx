@@ -90,12 +90,12 @@ export const Default: Story = {
         {
           title: "First Name",
           type: "string!",
-          disableUpdate: true,
+          disableDelete: true,
         },
         {
           title: "Last Name",
           type: "string?",
-          disableUpdate: true,
+          disableDelete: true,
         },
         {
           title: "# of children",

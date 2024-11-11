@@ -16,7 +16,7 @@
     font-family: var(--font-1);
     font-size: 1.25rem;
     color: var(--c1);
-    margin-bottom: 4px;
+    line-height: 110%;
 }
 
 .cumulative-statistic h4

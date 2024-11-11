@@ -5,14 +5,18 @@ import { ApiClientProvider } from '../../../../lib/api-client';
 
 const meta = {
   component: DashboardView,
-  decorators: [(story) => <div style={{width:'800px', minHeight:'100vh'}}>
-    <ApiClientProvider>{story()}</ApiClientProvider>
-  </div>],
+  decorators: [(story) => (
+    <ApiClientProvider>
+      <div style={{width:'800px', minHeight:'100vh'}}>
+        {story()}
+      </div>
+    </ApiClientProvider>
+  )],
   tags: ['autodocs'],
   parameters: {
     msw: {
       handlers: [
-        mockGetConsoleData,
+        mockGetConsoleData(),
       ],
     }
   },

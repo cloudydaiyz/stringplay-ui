@@ -1,5 +1,5 @@
 import { StringplayApiClient } from '@cloudydaiyz/stringplay-client';
-import type { Attendee, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateEventRequest, UpdateEventTypeRequest, UpdateMemberRequest, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
+import type { Attendee, BulkUpdateEventRequest, BulkUpdateEventTypeRequest, BulkUpdateMemberRequest, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { API_CLIENT_URL, DEFAULT_TROUPE_ID } from './constants';
 
@@ -17,9 +17,9 @@ export function useClient() {
     const [loading, setLoading] = useState<boolean>(false);
 
     /** Wrapper over calls to the API client for standardized parameters */
-    function apiCall(call: Promise<void>) {
+    async function apiCall<T>(call: Promise<T>) {
         setLoading(true);
-        call.finally(() => {
+        return call.finally(() => {
             setLastUpdated(new Date());
             setLoading(false);
         });
@@ -38,7 +38,7 @@ export function useClient() {
     );
 
     /** Get the initial console data */
-    useEffect(() => getConsoleData(), []);
+    useEffect(() => { getConsoleData() }, []);
 
     return { 
         apiCall, 
@@ -102,13 +102,18 @@ export function useTroupe() {
 export function useEvents() {
     const { apiCall, events, setEvents } = useClientContext();
 
-    const createEvent = (request: CreateEventRequest) => apiCall(
-        api.createEvent(DEFAULT_TROUPE_ID, request).then(d => {
-            setEvents(events?.concat(d.data));
-        }).catch(() => {
-            // show error notification 
-        })
-    );
+    const createEvents = (requests: CreateEventRequest[]) => {
+        console.log('creating events');
+        return apiCall(
+            api.createEvents(DEFAULT_TROUPE_ID, requests).then(d => {
+                console.log('create');
+                setEvents(events?.concat(d.data));
+            }).catch(() => {
+                console.log('create failed');
+                // show error notification 
+            })
+        )
+    };
 
     const getEvents = () => apiCall(
         api.getEvents(DEFAULT_TROUPE_ID).then(d => {
@@ -118,30 +123,30 @@ export function useEvents() {
         })
     );
 
-    const updateEvent = (eventId: string, request: UpdateEventRequest) => apiCall(
-        api.updateEvent(DEFAULT_TROUPE_ID, eventId, request).then(d => {
-            setEvents(events?.map(e => e.id == eventId ? d.data : e));
+    const updateEvents = (request: BulkUpdateEventRequest) => apiCall(
+        api.updateEvents(DEFAULT_TROUPE_ID, request).then(d => {
+            setEvents(events?.map(e => e.id in d.data ? d.data[e.id] : e));
         }).catch(() => {
             // show error notification 
         })
     );
 
-    const deleteEvent = (eventId: string) => apiCall(
-        api.deleteEvent(DEFAULT_TROUPE_ID, eventId).then(() => {
-            setEvents(events?.filter(e => e.id != eventId));
+    const deleteEvents = (eventIds: string[]) => apiCall(
+        api.deleteEvents(DEFAULT_TROUPE_ID, eventIds).then(() => {
+            setEvents(events?.filter(e => !eventIds.includes(e.id)));
         }).catch(() => {
             // show error notification 
         })
     );
 
-    return { events, createEvent, getEvents, updateEvent, deleteEvent };
+    return { events, createEvents, getEvents, updateEvents, deleteEvents };
 }
 
 export function useEventTypes() {
     const { apiCall, eventTypes, setEventTypes } = useClientContext();
 
-    const createEventType = (request: CreateEventTypeRequest) => apiCall(
-        api.createEventType(DEFAULT_TROUPE_ID, request).then(d => {
+    const createEventTypes = (requests: CreateEventTypeRequest[]) => apiCall(
+        api.createEventTypes(DEFAULT_TROUPE_ID, requests).then(d => {
             setEventTypes(eventTypes?.concat(d.data))
         }).catch(() => {
             // show error notification 
@@ -156,31 +161,33 @@ export function useEventTypes() {
         })
     );
 
-    const updateEventTypes = (eventTypeId: string, request: UpdateEventTypeRequest) => apiCall(
-        api.updateEventType(DEFAULT_TROUPE_ID, eventTypeId, request).then(d => {
-            setEventTypes(eventTypes?.map(et => et.id == eventTypeId ? d.data : et));
+    const updateEventTypes = (request: BulkUpdateEventTypeRequest) => apiCall(
+        api.updateEventTypes(DEFAULT_TROUPE_ID, request).then(d => {
+            setEventTypes(eventTypes?.map(et => et.id in d.data ? d.data[et.id] : et));
         }).catch(() => {
             // show error notification 
         })
     );
 
-    const deleteEventType = (eventTypeId: string) => apiCall(
-        api.deleteEventType(DEFAULT_TROUPE_ID, eventTypeId).then(() => {
-            setEventTypes(eventTypes?.filter(et => et.id != eventTypeId));
+    const deleteEventTypes = (eventTypeIds: string[]) => apiCall(
+        api.deleteEventTypes(DEFAULT_TROUPE_ID, eventTypeIds).then(() => {
+            setEventTypes(eventTypes?.filter(et => !eventTypeIds.includes(et.id)));
         }).catch(() => {
             // show error notification 
         })
     );
 
-    return { eventTypes, createEventType, getEventTypes, updateEventTypes, deleteEventType };
+    return { eventTypes, createEventTypes, getEventTypes, updateEventTypes, deleteEventTypes };
 }
 
 export function useAttendees() {
     const { apiCall, attendees, setAttendees } = useClientContext();
 
-    const createMember = (request: CreateMemberRequest) => apiCall(
-        api.createMember(DEFAULT_TROUPE_ID, request).then(d => {
-            setAttendees(attendees?.concat({ ...d.data, eventsAttended: [] }));
+    const createMembers = (requests: CreateMemberRequest[]) => apiCall(
+        api.createMembers(DEFAULT_TROUPE_ID, requests).then(d => {
+            setAttendees(attendees?.concat(
+                d.data.map(m => ({ ...m, eventsAttended: [] })))
+            );
         }).catch(() => {
             // show error notification 
         })
@@ -194,23 +201,23 @@ export function useAttendees() {
         })
     );
 
-    const updateMember = (memberId: string, request: UpdateMemberRequest) => apiCall(
-        api.updateMember(DEFAULT_TROUPE_ID, memberId, request).then(d => {
-            setAttendees(attendees?.map(a => a.id == memberId 
-                ? { ...d.data, eventsAttended: a.eventsAttended } : a
+    const updateMembers = (request: BulkUpdateMemberRequest) => apiCall(
+        api.updateMembers(DEFAULT_TROUPE_ID, request).then(d => {
+            setAttendees(attendees?.map(a => a.id in d.data 
+                ? { ...d.data[a.id], eventsAttended: a.eventsAttended } : a
             ));
         }).catch(() => {
             // show error notification 
         })
     );
 
-    const deleteMember = (memberId: string) => apiCall(
-        api.deleteMember(DEFAULT_TROUPE_ID, memberId).then(() => {
-            setAttendees(attendees?.filter(a => a.id != memberId));
+    const deleteMembers = (memberIds: string[]) => apiCall(
+        api.deleteMembers(DEFAULT_TROUPE_ID, memberIds).then(() => {
+            setAttendees(attendees?.filter(a => memberIds.includes(a.id)));
         }).catch(() => {
             // show error notification 
         })
     );
 
-    return { attendees, createMember, getAttendees, updateMember, deleteMember };
+    return { attendees, createMembers, getAttendees, updateMembers, deleteMembers };
 }

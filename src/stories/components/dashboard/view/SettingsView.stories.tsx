@@ -11,7 +11,7 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
-        mockGetConsoleData,
+        mockGetConsoleData(),
       ],
     }
   },
