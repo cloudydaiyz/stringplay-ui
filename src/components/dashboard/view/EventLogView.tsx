@@ -51,6 +51,7 @@ const EventLogView = () => {
                             {
                                 title: "Event ID",
                                 type: "string!",
+                                disableCreate: true,
                             },
                             {
                                 title: "Type ID",

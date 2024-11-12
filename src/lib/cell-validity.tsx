@@ -10,7 +10,7 @@ function useInvalidCells() {
         for(const row of invalidCells) {
             if(row) {
                 for(const cell of row) {
-                if(cell) num++;
+                    if(cell) num++;
                 }
             }
         }
@@ -25,20 +25,43 @@ function useInvalidCells() {
         setInvalidCells(newInvalidCells);
     }
 
+    function bulkSetInvalidCell(cells: [number, number][]) {
+        console.log('setting invalid cell');
+        const newInvalidCells = invalidCells.map(r => r.slice());
+        for(const cell of cells) {
+            const [r, c] = cell;
+            if(!newInvalidCells[r]) newInvalidCells[r] = [];
+            newInvalidCells[r][c] = true;
+        }
+        setInvalidCells(newInvalidCells);
+    }
+
     function unsetInvalidCell(r: number, c: number) {
         console.log('unsetting invalid cell');
         if(invalidCells[r]?.[c]) {
-        const newInvalidCells = invalidCells.map(r => r.slice());
-        newInvalidCells[r][c] = false;
-        setInvalidCells(newInvalidCells);
+            const newInvalidCells = invalidCells.map(r => r.slice());
+            newInvalidCells[r][c] = false;
+            setInvalidCells(newInvalidCells);
         }
+    }
+
+    function bulkUnsetInvalidCell(cells: [number, number][]) {
+        console.log('unsetting invalid cells');
+        const newInvalidCells = invalidCells.map(r => r.slice());
+        for(const cell of cells) {
+            const [r, c] = cell;
+            if(newInvalidCells[r]) {
+                newInvalidCells[r][c] = false;
+            }
+        }
+        setInvalidCells(newInvalidCells);
     }
 
     function resetInvalidCells() {
         setInvalidCells([]);
     }
 
-    return { invalidCells, getNumInvalidCells, setInvalidCell, unsetInvalidCell, resetInvalidCells };
+    return { invalidCells, getNumInvalidCells, setInvalidCell, bulkSetInvalidCell, unsetInvalidCell, bulkUnsetInvalidCell, resetInvalidCells };
 }
 
 const CellValidityContext = createContext<ReturnType<typeof useInvalidCells> | undefined>(undefined);
