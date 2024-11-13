@@ -2,7 +2,7 @@ import type { ConsoleData } from "@cloudydaiyz/stringplay-core/types/api";
 
 export const defaultConfig: ConsoleData = {
     "troupe": {
-        "lastUpdated": "2024-11-09T12:00:02.206Z",
+        "lastUpdated": "2024-11-13T09:17:12.200Z",
         "name": "test troupe",
         "logSheetUri": "https://example.com",
         "syncLock": false,
@@ -37,11 +37,11 @@ export const defaultConfig: ConsoleData = {
                 "endDate": "2065-01-24T05:20:00.000Z"
             }
         },
-        "id": "672f4ec2"
+        "id": "67346e98ada8756df905e545"
     },
     "dashboard": {
-        "troupeId": "672f4ec2",
-        "lastUpdated": "2024-11-09T12:00:02.206Z",
+        "troupeId": "67346e98ada8756df905e545",
+        "lastUpdated": "2024-11-13T09:17:12.200Z",
         "upcomingBirthdays": {
             "frequency": "monthly",
             "desiredFrequency": "monthly",
@@ -57,61 +57,86 @@ export const defaultConfig: ConsoleData = {
         "eventPercentageByEventType": {},
         "totalAttendeesByEventType": {},
         "totalEventsByEventType": {},
-        "id": "672f4ec2"
+        "id": "67346e98ada8756df905e545"
     },
-    "eventTypes": [],
+    "eventTypes": [
+        {
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
+            "title": "Test Event Type - cool events",
+            "value": 10,
+            "sourceFolderUris": [],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346e98ada8756df905e547"
+        },
+        {
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
+            "title": "Test Event Type - alright events",
+            "value": 3,
+            "sourceFolderUris": [],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346e98ada8756df905e548"
+        },
+        {
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
+            "title": "Test Event Type - uncool events",
+            "value": -7,
+            "sourceFolderUris": [],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346e98ada8756df905e549"
+        }
+    ],
     "events": [
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 1",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/first",
             "synchronizedSourceUri": "https://example.com/first",
-            "startDate": "2024-11-09T12:00:02.206Z",
-            "eventTypeId": "672f4ec2",
+            "startDate": "2024-11-13T09:17:12.200Z",
+            "eventTypeId": "67346e98ada8756df905e547",
             "eventTypeTitle": "Test Event Type - cool events",
             "value": 10,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e54a"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 2",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/second",
             "synchronizedSourceUri": "https://example.com/second",
             "startDate": "2024-10-14T04:29:01.961Z",
-            "eventTypeId": "672f4ec2",
+            "eventTypeId": "67346e98ada8756df905e548",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e54b"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 3",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/third",
             "synchronizedSourceUri": "https://example.com/third",
-            "startDate": "2024-11-09T12:00:02.206Z",
-            "eventTypeId": "672f4ec2",
+            "startDate": "2024-11-13T09:17:12.200Z",
+            "eventTypeId": "67346e98ada8756df905e549",
             "eventTypeTitle": "Test Event Type - uncool events",
             "value": -7,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e54c"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
@@ -121,57 +146,57 @@ export const defaultConfig: ConsoleData = {
             "value": 4,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e54d"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 5",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/fifth",
             "synchronizedSourceUri": "https://example.com/fifth",
             "startDate": "2024-10-13T20:09:01.961Z",
-            "eventTypeId": "672f4ec2",
+            "eventTypeId": "67346e98ada8756df905e548",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e54e"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/sixth",
             "synchronizedSourceUri": "https://example.com/sixth",
-            "startDate": "2024-11-09T12:00:02.206Z",
+            "startDate": "2024-11-13T09:17:12.200Z",
             "value": -2,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e54f"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.206Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/seventh",
             "synchronizedSourceUri": "https://example.com/seventh",
-            "startDate": "2024-11-09T12:00:02.206Z",
+            "startDate": "2024-11-13T09:17:12.200Z",
             "value": 7,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e550"
         }
     ],
     "attendees": [
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.207Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "properties": {
                 "First Name": {
                     "value": "John",
@@ -190,7 +215,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Sat Nov 09 2024 06:00:02 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 13 2024 03:17:12 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -199,17 +224,18 @@ export const defaultConfig: ConsoleData = {
                 }
             },
             "points": {
-                "Total": 10,
-                "Fall": 10
+                "Total": 3,
+                "Fall": 3
             },
             "eventsAttended": [
-                "672f4ec2"
+                "67346e98ada8756df905e54a",
+                "67346e98ada8756df905e54c"
             ],
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e551"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.207Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -228,7 +254,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Sat Nov 09 2024 06:00:02 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 13 2024 03:17:12 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -237,17 +263,21 @@ export const defaultConfig: ConsoleData = {
                 }
             },
             "points": {
-                "Total": 10,
-                "Fall": 10
+                "Total": 13,
+                "Fall": 6
             },
             "eventsAttended": [
-                "672f4ec2"
+                "67346e98ada8756df905e54a",
+                "67346e98ada8756df905e54b",
+                "67346e98ada8756df905e54c",
+                "67346e98ada8756df905e54d",
+                "67346e98ada8756df905e54e"
             ],
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e553"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.207Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -266,7 +296,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Sat Nov 09 2024 06:00:02 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 13 2024 03:17:12 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -275,17 +305,19 @@ export const defaultConfig: ConsoleData = {
                 }
             },
             "points": {
-                "Total": 3,
-                "Fall": 3
+                "Total": 14,
+                "Fall": 10
             },
             "eventsAttended": [
-                "672f4ec2"
+                "67346e98ada8756df905e54b",
+                "67346e98ada8756df905e54d",
+                "67346e98ada8756df905e550"
             ],
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e555"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.207Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -304,7 +336,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Sat Nov 09 2024 06:00:02 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 13 2024 03:17:12 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -313,17 +345,20 @@ export const defaultConfig: ConsoleData = {
                 }
             },
             "points": {
-                "Total": -7,
-                "Fall": -7
+                "Total": -2,
+                "Fall": -9
             },
             "eventsAttended": [
-                "672f4ec2"
+                "67346e98ada8756df905e54c",
+                "67346e98ada8756df905e54d",
+                "67346e98ada8756df905e54e",
+                "67346e98ada8756df905e54f"
             ],
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e557"
         },
         {
-            "troupeId": "672f4ec2",
-            "lastUpdated": "2024-11-09T12:00:02.207Z",
+            "troupeId": "67346e98ada8756df905e545",
+            "lastUpdated": "2024-11-13T09:17:12.200Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -342,7 +377,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Sat Nov 09 2024 06:00:02 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 13 2024 03:17:12 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -351,20 +386,26 @@ export const defaultConfig: ConsoleData = {
                 }
             },
             "points": {
-                "Total": 10,
-                "Fall": 10
+                "Total": 18,
+                "Fall": 11
             },
             "eventsAttended": [
-                "672f4ec2"
+                "67346e98ada8756df905e54a",
+                "67346e98ada8756df905e54b",
+                "67346e98ada8756df905e54c",
+                "67346e98ada8756df905e54d",
+                "67346e98ada8756df905e54e",
+                "67346e98ada8756df905e54f",
+                "67346e98ada8756df905e550"
             ],
-            "id": "672f4ec2"
+            "id": "67346e98ada8756df905e559"
         }
     ]
-};
+}
 
 export const noMembersConfig: ConsoleData = {
     "troupe": {
-        "lastUpdated": "2024-11-09T12:02:20.149Z",
+        "lastUpdated": "2024-11-13T09:19:28.464Z",
         "name": "test troupe",
         "logSheetUri": "https://example.com",
         "syncLock": false,
@@ -399,11 +440,11 @@ export const noMembersConfig: ConsoleData = {
                 "endDate": "2065-01-24T05:20:00.000Z"
             }
         },
-        "id": "672f4f4c"
+        "id": "67346f208bea6b97e50f9266"
     },
     "dashboard": {
-        "troupeId": "672f4f4c",
-        "lastUpdated": "2024-11-09T12:02:20.149Z",
+        "troupeId": "67346f208bea6b97e50f9266",
+        "lastUpdated": "2024-11-13T09:19:28.464Z",
         "upcomingBirthdays": {
             "frequency": "monthly",
             "desiredFrequency": "monthly",
@@ -419,61 +460,86 @@ export const noMembersConfig: ConsoleData = {
         "eventPercentageByEventType": {},
         "totalAttendeesByEventType": {},
         "totalEventsByEventType": {},
-        "id": "672f4f4c"
+        "id": "67346f208bea6b97e50f9266"
     },
-    "eventTypes": [],
+    "eventTypes": [
+        {
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
+            "title": "Test Event Type - cool events",
+            "value": 10,
+            "sourceFolderUris": [],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346f208bea6b97e50f9268"
+        },
+        {
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
+            "title": "Test Event Type - alright events",
+            "value": 3,
+            "sourceFolderUris": [],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346f208bea6b97e50f9269"
+        },
+        {
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
+            "title": "Test Event Type - uncool events",
+            "value": -7,
+            "sourceFolderUris": [],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346f208bea6b97e50f926a"
+        }
+    ],
     "events": [
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 1",
             "source": "Google Forms",
             "synchronizedSource": "",
             "sourceUri": "https://docs.google.com/forms/d/1zmXsG53ymMTY16OoPR0VD7mqqP94HcPILskiOA7lOA4",
             "synchronizedSourceUri": "https://example.com/first",
-            "startDate": "2024-11-09T12:02:20.149Z",
-            "eventTypeId": "672f4f4c",
+            "startDate": "2024-11-13T09:19:28.464Z",
+            "eventTypeId": "67346f208bea6b97e50f9268",
             "eventTypeTitle": "Test Event Type - cool events",
             "value": 10,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f926b"
         },
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 2",
             "source": "Google Sheets",
             "synchronizedSource": "",
             "sourceUri": "https://docs.google.com/spreadsheets/d/1Ita-QOxFBd37i-_7xxKtTOh4FghBknFY5WO9Yrqc2nE/edit",
             "synchronizedSourceUri": "https://example.com/second",
             "startDate": "2024-10-14T04:29:01.961Z",
-            "eventTypeId": "672f4f4c",
+            "eventTypeId": "67346f208bea6b97e50f9269",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f926c"
         },
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 3",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/third",
             "synchronizedSourceUri": "https://example.com/third",
-            "startDate": "2024-11-09T12:02:20.149Z",
-            "eventTypeId": "672f4f4c",
+            "startDate": "2024-11-13T09:19:28.464Z",
+            "eventTypeId": "67346f208bea6b97e50f926a",
             "eventTypeTitle": "Test Event Type - uncool events",
             "value": -7,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f926d"
         },
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
@@ -483,59 +549,59 @@ export const noMembersConfig: ConsoleData = {
             "value": 4,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f926e"
         },
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 5",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/fifth",
             "synchronizedSourceUri": "https://example.com/fifth",
             "startDate": "2024-10-13T20:09:01.961Z",
-            "eventTypeId": "672f4f4c",
+            "eventTypeId": "67346f208bea6b97e50f9269",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f926f"
         },
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 6 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/sixth",
             "synchronizedSourceUri": "https://example.com/sixth",
-            "startDate": "2024-11-09T12:02:20.149Z",
+            "startDate": "2024-11-13T09:19:28.464Z",
             "value": -2,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f9270"
         },
         {
-            "troupeId": "672f4f4c",
-            "lastUpdated": "2024-11-09T12:02:20.149Z",
+            "troupeId": "67346f208bea6b97e50f9266",
+            "lastUpdated": "2024-11-13T09:19:28.464Z",
             "title": "test event 7 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/seventh",
             "synchronizedSourceUri": "https://example.com/seventh",
-            "startDate": "2024-11-09T12:02:20.149Z",
+            "startDate": "2024-11-13T09:19:28.464Z",
             "value": 7,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "672f4f4c"
+            "id": "67346f208bea6b97e50f9271"
         }
     ],
     "attendees": []
-};
+}
 
 export const onlyEventTypesConfig: ConsoleData = {
     "troupe": {
-        "lastUpdated": "2024-11-09T12:03:14.213Z",
+        "lastUpdated": "2024-11-13T09:20:18.564Z",
         "name": "test troupe",
         "logSheetUri": "https://example.com",
         "syncLock": false,
@@ -570,11 +636,11 @@ export const onlyEventTypesConfig: ConsoleData = {
                 "endDate": "2065-01-24T05:20:00.000Z"
             }
         },
-        "id": "672f4f82"
+        "id": "67346f52c412ad0f3297f1b4"
     },
     "dashboard": {
-        "troupeId": "672f4f82",
-        "lastUpdated": "2024-11-09T12:03:14.213Z",
+        "troupeId": "67346f52c412ad0f3297f1b4",
+        "lastUpdated": "2024-11-13T09:20:18.564Z",
         "upcomingBirthdays": {
             "frequency": "monthly",
             "desiredFrequency": "monthly",
@@ -590,12 +656,23 @@ export const onlyEventTypesConfig: ConsoleData = {
         "eventPercentageByEventType": {},
         "totalAttendeesByEventType": {},
         "totalEventsByEventType": {},
-        "id": "672f4f82"
+        "id": "67346f52c412ad0f3297f1b4"
     },
-    "eventTypes": [],
+    "eventTypes": [
+        {
+            "lastUpdated": "2024-11-13T09:20:18.564Z",
+            "title": "Test Event Type - cool events",
+            "value": 10,
+            "sourceFolderUris": [
+                "https://drive.google.com/drive/folders/1gQAhRgA7RzOPe_7YWdjniBiK8Q97yV8D"
+            ],
+            "synchronizedSourceFolderUris": [],
+            "id": "67346f52c412ad0f3297f1b6"
+        }
+    ],
     "events": [],
     "attendees": []
-};
+}
 
 export const mockUpcomingBirthdays = [
     {

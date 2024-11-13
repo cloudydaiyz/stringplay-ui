@@ -16,7 +16,6 @@ const defaultMockConsole = structuredClone(defaultConfig);
 export const mockGetConsoleData = (mockData: ConsoleData = defaultMockConsole) => http.get(
     getUrl(API_CLIENT_URL, "/t/:troupeId/console"), 
     async () => {
-        console.log('intercepted request');
         await delay(800);
         return HttpResponse.json(mockData);
     }
@@ -25,6 +24,7 @@ export const mockGetConsoleData = (mockData: ConsoleData = defaultMockConsole) =
 export const mockGetTroupe = (mockData: ConsoleData = defaultMockConsole) => http.get(
     getUrl(API_CLIENT_URL, "/t/:troupeId"),
     async () => {
+        await delay(800);
         return HttpResponse.json(mockData.troupe);
     }
 );
@@ -64,6 +64,8 @@ export const mockUpdateTroupe = (mockData: ConsoleData = defaultMockConsole) => 
                 }
             }
         }
+        await delay(800);
+        return HttpResponse.json(mockData.troupe);
     }
 );
 
@@ -78,6 +80,10 @@ export const mockCreateEvents = (mockData: ConsoleData = defaultMockConsole) => 
                 troupeId: mockData.troupe.id,
                 lastUpdated: (new Date()).toISOString(),
                 title: item.title,
+                eventTypeId: item.eventTypeId,
+                eventTypeTitle: item.eventTypeId 
+                    ? mockData.eventTypes.find(et => et.id == item.eventTypeId)?.title 
+                    : undefined,
                 source: '',
                 synchronizedSource: '',
                 sourceUri: item.sourceUri,
@@ -90,6 +96,7 @@ export const mockCreateEvents = (mockData: ConsoleData = defaultMockConsole) => 
             mockData.events.push(event);
             return event;
         });
+        await delay(800);
         return HttpResponse.json(newEvents);
     }
 );
@@ -97,6 +104,7 @@ export const mockCreateEvents = (mockData: ConsoleData = defaultMockConsole) => 
 export const mockGetEvents = (mockData: ConsoleData = defaultMockConsole) => http.get(
     getUrl(API_CLIENT_URL, "/t/:troupeId/e"),
     async () => {
+        await delay(800);
         return HttpResponse.json(mockData.events);
     }
 );
@@ -106,6 +114,7 @@ export const mockUpdateEvents = (mockData: ConsoleData = defaultMockConsole) => 
     async ({ request }) => {
         const body = await request.json() as BulkUpdateEventRequest;
         const updates = {} as BulkUpdateEventResponse;
+        console.log(body);
         for(const id in body) {
             const event = mockData.events.find(e => e.id == id);
             if(!event) {
@@ -120,15 +129,19 @@ export const mockUpdateEvents = (mockData: ConsoleData = defaultMockConsole) => 
             if(body[id].value) event.value = body[id].value;
             updates[id] = event;
         }
+        await delay(800);
         return HttpResponse.json(updates);
     }
 );
 
-export const mockDeleteEvents = (mockData: ConsoleData = defaultMockConsole) => http.delete(
+export const mockDeleteEvents = (mockData: ConsoleData = defaultMockConsole) => http.post(
     getUrl(API_CLIENT_URL, "/t/:troupeId/e/bulk/delete"),
     async ({ request }) => {
+        console.log('deleting');
         const body = await request.json() as string[];
         mockData.events = mockData.events.filter(e => !body.includes(e.id));
+        await delay(800);
+        return HttpResponse.json();
     }
 );
 
@@ -148,6 +161,7 @@ export const mockCreateEventTypes = (mockData: ConsoleData = defaultMockConsole)
             mockData.eventTypes.push(newEventType);
             return newEventType;
         });
+        await delay(800);
         return HttpResponse.json(newEventTypes);
     }
 );
@@ -155,6 +169,7 @@ export const mockCreateEventTypes = (mockData: ConsoleData = defaultMockConsole)
 export const mockGetEventTypes = (mockData: ConsoleData = defaultMockConsole) => http.get(
     getUrl(API_CLIENT_URL, "/t/:troupeId/et"),
     async () => {
+        await delay(800);
         return HttpResponse.json(mockData.eventTypes);
     }
 );
@@ -181,15 +196,18 @@ export const mockUpdateEventTypes = (mockData: ConsoleData = defaultMockConsole)
             }
             updates[id] = eventType;
         }
+        await delay(800);
         return HttpResponse.json(updates);
     }
 );
 
-export const mockDeleteEventTypes = (mockData: ConsoleData = defaultMockConsole) => http.delete(
+export const mockDeleteEventTypes = (mockData: ConsoleData = defaultMockConsole) => http.post(
     getUrl(API_CLIENT_URL, "/t/:troupeId/et/bulk/delete"),
     async ({ request }) => {
         const body = await request.json() as string[];
         mockData.eventTypes = mockData.eventTypes.filter(e => !body.includes(e.id));
+        await delay(800);
+        return HttpResponse.json();
     }
 );
 
@@ -219,6 +237,7 @@ export const mockCreateMembers = (mockData: ConsoleData = defaultMockConsole) =>
             mockData.attendees.push(newMember);
             return newMember;
         });
+        await delay(800);
         return HttpResponse.json(newMembers);
     }
 );
@@ -226,6 +245,7 @@ export const mockCreateMembers = (mockData: ConsoleData = defaultMockConsole) =>
 export const mockGetAttendees = (mockData: ConsoleData = defaultMockConsole) => http.get(
     getUrl(API_CLIENT_URL, "/t/:troupeId/a"),
     async () => {
+        await delay(800);
         return HttpResponse.json(mockData.attendees);
     }
 )
@@ -263,15 +283,17 @@ export const mockUpdateMembers = (mockData: ConsoleData = defaultMockConsole) =>
                 delete member.properties[property];
             }
         }
-
+        await delay(800);
         return HttpResponse.json(updates);
     }
 );
 
-export const mockDeleteMembers = (mockData: ConsoleData = defaultMockConsole) => http.delete(
+export const mockDeleteMembers = (mockData: ConsoleData = defaultMockConsole) => http.post(
     getUrl(API_CLIENT_URL, "/t/:troupeId/m/bulk/delete"),
     async ({ request }) => {
         const body = await request.json() as string[];
         mockData.attendees = mockData.attendees.filter(m => !body.includes(m.id));
+        await delay(800);
+        return HttpResponse.json();
     }
 );

@@ -1,3 +1,4 @@
+import { BulkUpdateEventRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import '../../../app/shared.css';
 import { useEvents, useEventTypes, useMetadata } from '../../../lib/api-client';
 import { defaultConfig } from '../../../lib/mock-data';
@@ -8,8 +9,8 @@ import Table from '../Table';
 
 const EventLogView = () => {
     const { lastUpdated, loading } = useMetadata();
-    const { eventTypes } = useEventTypes();
-    const { events, createEvents } = useEvents();
+    const { eventTypes, createEventTypes } = useEventTypes();
+    const { events, createEvents, deleteEvents, updateEvents } = useEvents();
 
     return (
     <div className='content-view'>
@@ -25,6 +26,8 @@ const EventLogView = () => {
                             {
                                 title: "Type ID",
                                 type: "string!",
+                                disableCreate: true,
+                                disableUpdate: true,
                             },
                             {
                                 title: "Title",
@@ -37,10 +40,17 @@ const EventLogView = () => {
                         ],
                         data: !loading && !eventTypes 
                             ? defaultConfig.eventTypes.map(et => [et.id, et.title, et.value])
-                            : eventTypes?.map(et => [et.id, et.title, et.value]) || []
+                            : eventTypes?.map(et => [et.id, et.title, et.value]) || [],
                     }}
                     tableHeader={{
-                        title: "Event Types"
+                        title: "Event Types",
+                        onDataCreate: (newRows) => createEventTypes(
+                            newRows.map(row => ({
+                                title: row[1] as string,
+                                value: row[2] as number,
+                                sourceFolderUris: [],
+                            }))
+                        )
                     }}
                     loading={loading}
                     useDataWhileLoading={eventTypes && loading} 
@@ -52,6 +62,7 @@ const EventLogView = () => {
                                 title: "Event ID",
                                 type: "string!",
                                 disableCreate: true,
+                                disableUpdate: true,
                             },
                             {
                                 title: "Type ID",
@@ -67,11 +78,12 @@ const EventLogView = () => {
                             },
                             {
                                 title: "Value",
-                                type: "number!",
+                                type: "number?",
                             },
                             {
                                 title: "Source",
                                 type: "string?",
+                                disableCreate: true,
                                 disableUpdate: true,
                             },
                             {
@@ -80,18 +92,61 @@ const EventLogView = () => {
                             },
                         ],
                         data: !loading && !events
-                        ? defaultConfig.events.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri])
-                        : events?.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri]) || [],
+                            ? defaultConfig.events.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri])
+                            : events?.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri]) || [],
+                        validateData: (data, _, c) => {
+                            if(c == 1 && data && !eventTypes?.find(et => et.id == data)) {
+                                return false;
+                            }
+                            return true;
+                        }
                     }}
                     tableHeader={{
                         title: "Events",
-                        onDataCreate: async (newRows) => createEvents(
+                        onDataCreate: (newRows) => createEvents(
                             newRows.map(row => ({
+                                eventTypeId: row[1] as string || undefined,
                                 title: row[2] as string,
                                 startDate: (row[3] as Date).toISOString(),
-                                sourceUri: row[4] as string,
+                                value: (row[4] as number),
+                                sourceUri: row[6] as string,
                             }))
-                        )
+                        ),
+                        onDataDelete: (deleteIndicies) => deleteEvents(
+                            events?.filter((_, i) => deleteIndicies[i]).map(e => e.id) || []
+                        ),
+                        onDataUpdate: async (updates) => {
+                            const request: BulkUpdateEventRequest = {};
+                            updates.forEach((row, r) => {
+                                row.forEach((col, c) => {
+                                    if(!col) return;
+
+                                    const eventId = events![r].id;
+                                    if(!request[eventId]) request[eventId] = {};
+                                    
+                                    switch(c) {
+                                        case 1:
+                                            request[eventId].eventTypeId = col as string;
+                                            break;
+                                        case 2:
+                                            request[eventId].title = col as string;
+                                            break;
+                                        case 3:
+                                            request[eventId].startDate = (col as Date).toISOString();
+                                            break;
+                                        case 4:
+                                            request[eventId].value = col as number;
+                                            break;
+                                        case 6:
+                                            request[eventId].sourceUri = col as string;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                });
+                            });
+                            return updateEvents(request);
+                        }
                     }}
                     loading={loading}
                     useDataWhileLoading={events && loading} 

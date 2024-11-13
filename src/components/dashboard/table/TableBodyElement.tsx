@@ -199,7 +199,7 @@ export function TableBodyElement(props: TableBodyElementProps) {
         invalid = invalid 
             || (
             tableData.validateData 
-            ? tableData.validateData(value, r + tableData.data.length, c)
+            ? !tableData.validateData(value, r + tableData.data.length, c)
             : false
             );
         
@@ -265,8 +265,10 @@ export function TableBodyElement(props: TableBodyElementProps) {
                     mode == 'create'
                         ? <tr key={newRows?.length || 0}>
                             <td className='create-row'>
-                            {/* The first index of all the rows specify the columns. */}
-                            { <button onClick={() => addNewRow()}><Plus /></button> }
+                            { 
+                                /* The first index of all the rows specify the columns. */
+                                <button onClick={() => addNewRow()}><Plus /></button> 
+                            }
                             </td>
                         </tr>
                         : <td colSpan={tableData.columns.length} style={{textAlign:'center', height:'200px'}}>
@@ -463,7 +465,7 @@ export function TableBodyElement(props: TableBodyElementProps) {
 
         return (
             <tr key={r}>
-            {elements}
+                {elements}
             </tr>
         );
     });

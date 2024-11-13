@@ -60,8 +60,17 @@ export interface TableData {
     columns: {
       title: string;
       type: typeof PROPERTY_TYPES[number];
+
+      /** Prevents the configuration of the element in create mode */
       disableCreate?: boolean;
+
+      /** Prevents the manipulation of the element in update mode */
       disableUpdate?: boolean;
+
+      /** 
+       * Prevents deletion of singular element in update mode.
+       * If `disableUpdate` is true, then this is also true by default.
+       */
       disableDelete?: boolean;
     }[];
   
@@ -75,6 +84,6 @@ export interface TableData {
     /** Rows that cannot be changed (updated/deleted) */
     immutableRows?: boolean[];
   
-    /** Callback that validates data in the table on update */
+    /** Callback that validates data in the table on update. Returns true if the data is invalid. */
     validateData?: (data: TableDataType, r: number, c: number) => boolean;
 }
