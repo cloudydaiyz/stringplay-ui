@@ -1,5 +1,5 @@
 import { useCellValidityContext } from "../../../lib/cell-validity";
-import { TableHeader, TableMode, TableDataType } from "../../../types/table";
+import type { TableHeaderElementProps } from "../../../types/table";
 
 import Button from "../../common/Button";
 import Edit from "../../svg/Edit";
@@ -14,17 +14,6 @@ export function LoadingTableHeaderElement() {
             <span>Loading some sample text here</span>
         </div>
     );
-}
-
-interface TableHeaderElementProps {
-    tableHeader: TableHeader;
-    mode: TableMode;
-    setMode: React.Dispatch<React.SetStateAction<TableMode>>;
-    newRows: TableDataType[][] | null;
-    updates: (TableDataType | undefined)[][] | null;
-    rowsToDelete: boolean[] | null;
-    empty: boolean;
-    reset: () => void;
 }
   
 export function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rowsToDelete, reset, empty = false }: TableHeaderElementProps) {

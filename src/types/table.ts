@@ -87,3 +87,35 @@ export interface TableData {
     /** Callback that validates data in the table on update. Returns true if the data is invalid. */
     validateData?: (data: TableDataType, r: number, c: number) => boolean;
 }
+
+export interface LoadingTableBodyElementProps {
+    tableData?: TableData;
+    newRows: TableDataType[][] | null;
+}
+
+export interface TableBodyElementProps {
+    tableData: TableData;
+    mode: TableMode;
+    newRows: TableDataType[][] | null;
+    setNewRows: React.Dispatch<React.SetStateAction<TableDataType[][] | null>>;
+    updates: (TableDataType | undefined)[][] | null;
+    setUpdates: React.Dispatch<React.SetStateAction<(TableDataType | undefined)[][] | null>>;
+    rowsToDelete: boolean[] | null;
+    setRowsToDelete: React.Dispatch<React.SetStateAction<boolean[] | null>>;
+}
+
+export interface TableHeaderElementProps {
+    tableHeader: TableHeader;
+    mode: TableMode;
+    setMode: React.Dispatch<React.SetStateAction<TableMode>>;
+    newRows: TableDataType[][] | null;
+    updates: (TableDataType | undefined)[][] | null;
+    rowsToDelete: boolean[] | null;
+    empty: boolean;
+    reset: () => void;
+}
+
+export interface TableCellProps {
+    r: number,
+    c: number,
+}
