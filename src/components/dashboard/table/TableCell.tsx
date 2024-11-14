@@ -1,7 +1,7 @@
 import { useCellValidityContext } from "../../../lib/cell-validity";
 import { useTableDataContext, useTableOperationsContext } from "../../../lib/table-data";
 import { tableDataToInputValue, tableDataToElement } from "../../../lib/table-helper";
-import { TableCellProps } from "../../../types/table";
+import { TableCellProps } from "../../../types/table-types";
 import Edit from "../../svg/Edit";
 import Minus from "../../svg/Minus";
 

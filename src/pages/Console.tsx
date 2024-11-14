@@ -1,17 +1,19 @@
-// import React from 'react'
+import './Console.css';
 
 import { useState } from 'react';
 import Header from '../components/dashboard/layout/Header';
 import Navbar, { NavPage } from '../components/dashboard/layout/Navbar';
 import DashboardView from '../components/dashboard/view/DashboardView';
-import './Console.css';
 import TroupeView from '../components/dashboard/view/TroupeView';
 import EventLogView from '../components/dashboard/view/EventLogView';
 import MemberLogView from '../components/dashboard/view/MemberLogView';
 import SettingsView from '../components/dashboard/view/SettingsView';
+import Dialog from '../components/dashboard/Dialog';
+import { useDialogProps } from '../lib/toggle-dialog';
 
 const Console = () => {
-  const [view, setView] = useState<NavPage>('dashboard')
+  const [ view, setView ] = useState<NavPage>('dashboard');
+  const { lastOpened, props } = useDialogProps();
 
   return (
     <div className='console-vert'>
@@ -36,6 +38,7 @@ const Console = () => {
             : <DashboardView />
         }
       </div>
+      <Dialog key={lastOpened.toISOString()} {...props} />
     </div>
   )
 }

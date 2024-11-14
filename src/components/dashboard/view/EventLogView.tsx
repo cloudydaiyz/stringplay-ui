@@ -6,11 +6,13 @@ import { defaultConfig } from '../../../lib/mock-data';
 import ContentFooter from '../layout/ContentFooter';
 import ContentHeader from '../layout/ContentHeader';
 import Table from '../Table';
+import { useDialogToggle } from '../../../lib/toggle-dialog';
 
 const EventLogView = () => {
     const { lastUpdated, loading } = useMetadata();
     const { eventTypes, createEventTypes } = useEventTypes();
     const { events, createEvents, deleteEvents, updateEvents } = useEvents();
+    const { openDialog, closeDialog } = useDialogToggle();
 
     return (
     <div className='content-view'>
@@ -44,13 +46,34 @@ const EventLogView = () => {
                     }}
                     tableHeader={{
                         title: "Event Types",
-                        onDataCreate: (newRows) => createEventTypes(
-                            newRows.map(row => ({
-                                title: row[1] as string,
-                                value: row[2] as number,
-                                sourceFolderUris: [],
-                            }))
-                        )
+                        onDataCreate: (newRows) => {
+                            console.log("opening dialog");
+                            openDialog({
+                                title: 'Confirm Create Event Type',
+                                content: 'Are you sure that you want to create these event types?',
+                                actions: [
+                                    {
+                                        label: 'CANCEL',
+                                        color: 'var(--g2)',
+                                        onClick: async () => closeDialog()
+                                    },
+                                    {
+                                        label: 'CONFIRM',
+                                        color: 'var(--success)',
+                                        onClick: async () => {
+                                            closeDialog();
+                                            createEventTypes(
+                                                newRows.map(row => ({
+                                                    title: row[1] as string,
+                                                    value: row[2] as number,
+                                                    sourceFolderUris: [],
+                                                }))
+                                            )
+                                        }
+                                    },
+                                ]
+                            }) 
+                        }
                     }}
                     loading={loading}
                     useDataWhileLoading={eventTypes && loading} 

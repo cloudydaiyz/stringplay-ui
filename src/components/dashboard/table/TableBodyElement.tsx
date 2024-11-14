@@ -1,5 +1,5 @@
 import { TableDataProvider, TableOperationsProvider } from "../../../lib/table-data";
-import type { LoadingTableBodyElementProps, TableBodyElementProps } from "../../../types/table";
+import type { LoadingTableBodyElementProps, TableBodyElementProps } from "../../../types/table-types";
 
 import CreateRowTableCell from "./CreateRowTableCell";
 import NewRowTableCell from "./NewRowTableCell";

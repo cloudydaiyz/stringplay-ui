@@ -70,7 +70,7 @@ export const CellValidityProvider = ({ children }: { children: React.ReactNode }
     const cellValidityOps = useInvalidCells();
     return (
         <CellValidityContext.Provider value={cellValidityOps}>
-        { children }
+            { children }
         </CellValidityContext.Provider>
     );
 }
@@ -78,7 +78,7 @@ export const CellValidityProvider = ({ children }: { children: React.ReactNode }
 export function useCellValidityContext(): ReturnType<typeof useInvalidCells> {
     const cellValidityOps = useContext(CellValidityContext);
     if(cellValidityOps === undefined) {
-        throw new Error("Invalid state. Make sure that you're using `CellValidityContext` correctly.");
+        throw new Error("Invalid state. Make sure that you're using `CellValidityProvider` correctly.");
     }
     return cellValidityOps;
 }

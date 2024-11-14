@@ -1,7 +1,7 @@
 // Table Data & Table Operations contexts
 
 import { createContext, useContext } from "react";
-import { TableBodyElementProps, TableDataType } from "../types/table";
+import { TableBodyElementProps, TableDataType } from "../types/table-types";
 import { useCellValidityContext } from "./cell-validity";
 
 /** Obtains values for the TableDataContext */

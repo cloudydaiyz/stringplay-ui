@@ -1,4 +1,4 @@
-import { TableDataType, PROPERTY_TYPES } from "../types/table";
+import { TableDataType, PROPERTY_TYPES } from "../types/table-types";
 import Check from '../components/svg/Check';
 
 /** Converts the data to the corresponding element for the table based on its type */

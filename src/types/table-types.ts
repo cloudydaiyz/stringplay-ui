@@ -21,7 +21,7 @@ export interface TableHeader {
      * Called when new rows are requested to be created for the table.
      * Called with the data for each row of the table.
      */
-    onDataCreate?: (newRows: TableDataType[][]) => Promise<void>;
+    onDataCreate?: ((newRows: TableDataType[][]) => Promise<void>) | ((newRows: TableDataType[][]) => void);
   
     /**
      * Called when rows are requested to be updated for the table.
@@ -35,13 +35,13 @@ export interface TableHeader {
      *   of the array is undefined, it leaves the item unchanged. Otherwise, it indicates
      *   the new value of the item at the array index.
      */
-    onDataUpdate?: (updates: (TableDataType | undefined)[][]) => Promise<void>;
+    onDataUpdate?: ((updates: (TableDataType | undefined)[][]) => Promise<void>) | ((updates: (TableDataType | undefined)[][]) => void);
   
     /** 
      * Called when new rows are requested to be deleted from the table. 
      * Called with the indicies of rows to delete from the table.
      */
-    onDataDelete?: (rowsToDelete: boolean[]) => Promise<void>;
+    onDataDelete?: ((rowsToDelete: boolean[]) => Promise<void>) | ((rowsToDelete: boolean[]) => void);
   
     /** Called on successful operation */
     onSuccess?: () => void;

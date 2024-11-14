@@ -1,0 +1,82 @@
+.app-dialog-overlay.active
+{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 40%);
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    display: inline;
+    animation: fade-in .5s ease-in forwards;
+    overflow: scroll;
+}
+
+.app-dialog-overlay.active .app-dialog
+{
+    color: black;
+    text-align: center;
+    background-color: var(--white);
+    width: fit-content;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    padding: 16px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 500px;
+    border-radius: 8px;
+    box-shadow: var(--sh2);
+
+    display: inline;
+    animation: panel-slide-in .5s ease-in forwards;
+}
+
+.app-dialog-overlay,
+.app-dialog
+{
+    display: none;
+}
+
+.app-dialog h3
+{
+    font-size: 1.1rem;
+    font-family: var(--font-1);
+}
+
+.app-dialog p
+{
+    margin-top: 8px;
+    font-size: 1rem;
+}
+
+.app-dialog-actions
+{
+    margin-top: 16px;
+    gap: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.app-dialog-actions button
+{
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: none;
+    color: white;
+    font-family: var(--font-1);
+}
+
+@keyframes fade-in {
+    0% {
+        display: none;
+        opacity: 0;
+    }
+
+    100% {
+        display: initial;
+        opacity: 1;
+    }
+}

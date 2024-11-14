@@ -46,7 +46,7 @@ export const NotificationsProvider = ({ children }: { children: React.ReactNode 
 export function useNotificationsContext(): ReturnType<typeof useNotifications> {
     const client = useContext(NotificationsContext);
     if(client === undefined) {
-        throw new Error("Invalid state. Make sure that you're using `ApiClientProvider` correctly.");
+        throw new Error("Invalid state. Make sure that you're using `NotificationsProvider` correctly.");
     }
     return client;
 }

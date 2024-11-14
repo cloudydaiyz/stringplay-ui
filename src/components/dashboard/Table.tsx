@@ -3,7 +3,7 @@ import './Table.css';
 
 import { useState } from 'react';
 import { CellValidityProvider } from '../../lib/cell-validity';
-import { TableHeader, TableData, TableMode, TableDataType } from '../../types/table';
+import { TableHeader, TableData, TableMode, TableDataType } from '../../types/table-types';
 import { LoadingTableBodyElement, TableBodyElement } from './table/TableBodyElement';
 import { LoadingTableHeaderElement, TableHeaderElement } from './table/TableHeaderElement';
 
