@@ -8,7 +8,7 @@ import TroupeView from '../components/dashboard/view/TroupeView';
 import EventLogView from '../components/dashboard/view/EventLogView';
 import MemberLogView from '../components/dashboard/view/MemberLogView';
 import SettingsView from '../components/dashboard/view/SettingsView';
-import Dialog from '../components/dashboard/Dialog';
+import Dialog from '../components/common/Dialog';
 import { useDialogProps } from '../lib/toggle-dialog';
 
 const Console = () => {

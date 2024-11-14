@@ -3,7 +3,7 @@ import EventLogView from '../../../../components/dashboard/view/EventLogView';
 import { mockCreateEvents, mockCreateEventTypes, mockDeleteEvents, mockDeleteEventTypes, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockUpdateEvents, mockUpdateEventTypes } from '../../../../lib/api-client.mock';
 import { ApiClientProvider } from '../../../../lib/api-client';
 import { DialogProvider } from '../../../../lib/toggle-dialog';
-import { ContextDialog } from '../../../../components/dashboard/Dialog';
+import { ContextDialog } from '../../../../components/common/Dialog';
 
 const meta = {
   component: EventLogView,

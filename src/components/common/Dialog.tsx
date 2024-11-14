@@ -2,7 +2,7 @@ import '../../app/shared.css';
 import './Dialog.css';
 
 import type { DialogProps } from '../../types/dialog-types';
-import Button from '../common/Button';
+import Button from './Button';
 import { useDialogProps } from '../../lib/toggle-dialog';
 
 /** Dialog that uses the `useDialogProps` function inherently */
