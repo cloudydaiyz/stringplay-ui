@@ -2,6 +2,7 @@ import { useCellValidityContext } from "../../../lib/cell-validity";
 import { useTableDataContext, useTableOperationsContext } from "../../../lib/table-data";
 import { tableDataToInputValue, tableDataToElement } from "../../../lib/table-helper";
 import { TableCellProps } from "../../../types/table-types";
+import Bolt from "../../svg/Bolt";
 import Edit from "../../svg/Edit";
 import Minus from "../../svg/Minus";
 
@@ -28,8 +29,26 @@ const TableCell = ({ r, c }: TableCellProps) => {
         cancelRowDelete, 
         isEditingCell 
     } = useTableOperationsContext();
-
     const item = tableData.data[r][c];
+
+    if(tableData.columns[c].type == "action") {
+        return (
+            <td className='action'>
+                <button 
+                    onClick={() => {
+                        if(!tableData.onAction) {
+                            console.warn('No action defined for this table.');
+                            return;
+                        }
+                        tableData.onAction(r, c);
+                    }}
+                >
+                    <Bolt />
+                </button>
+            </td>
+        );
+    }
+    
     if(isEditingCell(r, c)) {
         return (
             <td className='edit-cell'>
@@ -55,7 +74,9 @@ const TableCell = ({ r, c }: TableCellProps) => {
                 />
             </td>
         );
-    } else if(isDeletingRow(r)) {
+    } 
+    
+    if(isDeletingRow(r)) {
         return (
             <td className='delete-cell'>
                 { 
@@ -71,6 +92,7 @@ const TableCell = ({ r, c }: TableCellProps) => {
             </td>
         );
     }
+
     return (
         <td>
             <span>

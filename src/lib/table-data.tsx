@@ -26,7 +26,7 @@ function useTableOperationsContextValue(props: TableBodyElementProps) {
     const addNewRow = () => {
         const cells: [number, number][] = [];
         tableData.columns.forEach((col, c) => {
-            if(col.type.endsWith("!") && !tableData.columns[c].disableCreate) {
+            if(col.type.endsWith("!") && !tableData.columns[c].disableCreate && !col.type.startsWith('boolean')) {
                 cells.push([tableData.data.length + (newRows?.length || 0), c]);
             }
         });

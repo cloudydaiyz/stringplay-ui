@@ -151,7 +151,7 @@ export function TableBodyElement(props: TableBodyElementProps) {
                     </th>
                     { currentElement }
                     { renderedNewRowElements }
-                    <CreateRowTableCell oneRow={true} />
+                    { mode == 'create' && <CreateRowTableCell /> }
                 </tr>
             );
         });

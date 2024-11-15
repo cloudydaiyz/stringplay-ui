@@ -5,6 +5,7 @@ export const PROPERTY_TYPES = [
     "number?", "number!", // entries must be convertible to a number
     "boolean?", "boolean!", // entries must be either true or false
     "date?", "date!", // entries must be in ISO format
+    "action",
     "null",
 ] as const;
 
@@ -58,20 +59,30 @@ export interface TableData {
      * The number of columns must match the number of columns in `data`.
      */
     columns: {
-      title: string;
-      type: typeof PROPERTY_TYPES[number];
+        
+        /** The title of the column */
+        title: string;
 
-      /** Prevents the configuration of the element in create mode */
-      disableCreate?: boolean;
+        /** The property type of the column */
+        type: typeof PROPERTY_TYPES[number];
 
-      /** Prevents the manipulation of the element in update mode */
-      disableUpdate?: boolean;
+        /** 
+         * Prevents the configuration of the element in create mode. 
+         * Disabled by default for matrix type columns. 
+         */
+        disableCreate?: boolean;
 
-      /** 
-       * Prevents deletion of singular element in update mode.
-       * If `disableUpdate` is true, then this is also true by default.
-       */
-      disableDelete?: boolean;
+        /** 
+         * Prevents the manipulation of the element in update mode.
+         * Disabled by default for matrix type columns. 
+         */
+        disableUpdate?: boolean;
+
+        /** 
+         * Prevents deletion of singular element in update mode.
+         * Disabled by default if `disableUpdate` is true.
+         */
+        disableDelete?: boolean;
     }[];
   
     /** 
@@ -86,6 +97,9 @@ export interface TableData {
   
     /** Callback that validates data in the table on update. Returns true if the data is invalid. */
     validateData?: (data: TableDataType, r: number, c: number) => boolean;
+
+    /** Callback that executes whenever an action button is pressed */
+    onAction?: (r: number, c: number) => void;
 }
 
 export interface LoadingTableBodyElementProps {
@@ -118,4 +132,28 @@ export interface TableHeaderElementProps {
 export interface TableCellProps {
     r: number,
     c: number,
+}
+
+export interface TableProps {
+
+    /** True if this table is loading. If loading, no given table data will be displayed. */
+    loading?: boolean;
+
+    /** True if the loading element should match the given table data (and header) */
+    useDataWhileLoading?: boolean;
+
+    /** Header data for the table (title and action buttons) */
+    tableHeader?: TableHeader;
+
+    /** Main data to be displayed for the table */
+    tableData: TableData;
+
+    /** Overrides the current mode of the table */
+    modeOverride?: TableMode;
+
+    /** The maximum number of columns for the table */
+    maxCols?: number;
+
+    /** The maximum number of rows for the table */
+    maxRows?: number;
 }

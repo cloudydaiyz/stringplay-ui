@@ -25,7 +25,7 @@ const NewRowTableCell = ({ r, c }: TableCellProps) => {
         <td className='new-data'>
             { c == 0 && <button onClick={() => removeNewRow(r)}><XCircle /></button> }
             {
-                tableData.columns[c].disableCreate
+                tableData.columns[c].disableCreate || tableData.columns[c].type == "action"
                 ? <span>&nbsp;</span>
                 : <>
                     { <Pencil /> }

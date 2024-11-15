@@ -17,7 +17,6 @@
     border-spacing: 0px 8px;
     border-collapse: collapse;
     width: 100%;
-    border-bottom: 1px solid var(--g2);
 }
 
 .app-table.no-header table
@@ -174,12 +173,14 @@ th, td, tr
     position: relative;
 }
 
+.app-table .action button,
 .app-table .create-row button
 {
     width: 100%;
     text-align: center;
 }
 
+.app-table .action button,
 .app-table .create-row button,
 .app-table .new-data button,
 .app-table .edit-cell button,
@@ -194,6 +195,7 @@ th, td, tr
     height: 20px;
 }
 
+.app-table .action button:hover,
 .app-table .create-row button:hover,
 .app-table .new-data button:hover,
 .app-table .edit-cell button:hover,
@@ -203,6 +205,7 @@ th, td, tr
     cursor: pointer;
 }
 
+.app-table .action button:active,
 .app-table .create-row button:active,
 .app-table .new-data button:active,
 .app-table .edit-cell button:active,
@@ -318,8 +321,10 @@ th, td, tr
 
 .app-table-body
 {
-    padding-bottom: 16px;
+    margin-bottom: 16px;
     overflow: scroll;
+    max-height: calc(var(--max-rows) * 28px);
+    border-bottom: 1px solid var(--g2);
 }
 
 .app-table-mode-text
@@ -346,4 +351,23 @@ th, td, tr
         left: 50%;
         translate: -50% -50%;
     }
+}
+
+.app-table-body td button svg
+{
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.app-table .action button
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.app-table .action button svg
+{
+    width: 16px !important;
+    height: 16px !important;
 }

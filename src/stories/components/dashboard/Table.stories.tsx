@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Table, { TableProps } from '../../../components/dashboard/Table';
+import Table from '../../../components/dashboard/Table';
 import { useState } from 'react';
+import { TableProps } from '../../../types/table-types';
 
 const renderTable = (args: TableProps) => {
   const [data, setData] = useState(args.tableData.data);
@@ -169,6 +170,58 @@ export const DefaultNoHeader: Story = {
     tableHeader: { control: false },
     tableData: { control: false },
   }
+};
+
+export const DefaultAction: Story = {
+  args: {
+    tableHeader: {
+      title: "Member Information",
+    },
+    tableData: {
+      columns: [
+        {
+          title: "First Name",
+          type: "string!",
+          disableDelete: true,
+        },
+        {
+          title: "Last Name",
+          type: "string?",
+          disableDelete: true,
+        },
+        {
+          title: "# of children",
+          type: "number?",
+          disableUpdate: true,
+          disableDelete: true,
+        },
+        {
+          title: "Birthday",
+          type: "date!",
+        },
+        {
+          title: "isInteresting",
+          type: "boolean!",
+        },
+        {
+          title: "more stuff",
+          type: "action",
+        },
+      ],
+      data: [
+        ['John', 'Doe', 4, new Date('8/16/1964'), false, null],
+        ['Jane', 'Doe', 4, new Date('4/12/1964'), true, null],
+        ['Josh with a very long name', null, 0, new Date('4/12/2000'), false, null],
+        ['Bean', 'Bag', null, new Date('4/22/2003'), true, null],
+        ['Another', 'Dude', 4, null, false, null],
+        ['Running', null, null, new Date('5/8/2004'), true, null],
+        ['Of', 'Names', null, null, false, null],
+        ['To', 'Use', 4, new Date('1/1/2000'), false, null],
+      ],
+      immutableRows: [true],
+      onAction: (r, c) => console.log(`Performed action for cell [${r}, ${c}]`),
+    },
+  },
 };
 
 export const OneRow: Story = {
