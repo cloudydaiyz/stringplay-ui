@@ -1,4 +1,5 @@
 import { useCellValidityContext } from "../../../lib/cell-validity";
+import { useTableDataContext } from "../../../lib/table-data";
 import type { TableHeaderElementProps } from "../../../types/table-types";
 
 import Button from "../../common/Button";
@@ -16,7 +17,7 @@ export function LoadingTableHeaderElement() {
     );
 }
   
-export function TableHeaderElement({ tableHeader, mode, setMode, newRows, updates, rowsToDelete, reset, empty = false }: TableHeaderElementProps) {
+export function TableHeaderElement({ tableHeader, loading, mode, setMode, newRows, updates, rowsToDelete, reset, empty = false }: TableHeaderElementProps) {
     const { resetInvalidCells, getNumInvalidCells } = useCellValidityContext();
 
     /** Handles the (sync or async) function calls from the actions defined in the header */
@@ -58,21 +59,25 @@ export function TableHeaderElement({ tableHeader, mode, setMode, newRows, update
     }
 
     const actions = mode 
-    ? <div className='actions'>
-        <Button text={<span><ThumbsUp />CONFIRM</span>} onClick={() => performAction()} buttonType={2} />
-        <Button text={<span><XMark />CANCEL</span>} onClick={() => {resetInvalidCells(); reset()}} buttonType={2} />
-    </div>
-    : <div className='actions'>
-        {tableHeader.onDataCreate && <Button text={<span><Plus />NEW</span>} onClick={() => setMode('create')} buttonType={2} />}
-        {!empty && tableHeader.onDataUpdate && <Button text={<span><Edit />EDIT</span>} onClick={() => setMode('edit')} buttonType={2} />}
-        {!empty && tableHeader.onDataDelete && <Button text={<span><Trash />DELETE</span>} onClick={() => setMode('delete')} buttonType={2} />}
-    </div>
+        ? (
+            <div className='actions'>
+                <Button text={<span><ThumbsUp />CONFIRM</span>} onClick={() => performAction()} buttonType={2} />
+                <Button text={<span><XMark />CANCEL</span>} onClick={() => {resetInvalidCells(); reset()}} buttonType={2} />
+            </div>
+        )
+        : (
+            <div className='actions'>
+                {tableHeader.onDataCreate && <Button text={<span><Plus />NEW</span>} onClick={() => setMode('create')} buttonType={2} />}
+                {!empty && tableHeader.onDataUpdate && <Button text={<span><Edit />EDIT</span>} onClick={() => setMode('edit')} buttonType={2} />}
+                {!empty && tableHeader.onDataDelete && <Button text={<span><Trash />DELETE</span>} onClick={() => setMode('delete')} buttonType={2} />}
+            </div>
+        )
 
     return (
         <div className='app-table-header'>
             <div className='app-table-subheader'>
             <h3>{ tableHeader.title }</h3>
-            { actions }
+            { !loading && actions }
             </div>
             { mode && <p className='app-table-mode-text'>You are currently in <strong>{mode}</strong> mode.</p> }
         </div>

@@ -204,7 +204,7 @@ export const DefaultAction: Story = {
           type: "boolean!",
         },
         {
-          title: "more stuff",
+          title: "Click to Print",
           type: "action",
         },
       ],

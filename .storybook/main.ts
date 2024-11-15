@@ -19,11 +19,3 @@ const config: StorybookConfig = {
   staticDirs: ['../public']
 };
 export default config;
-
-export async function viteFinal(config, { configType }) {
-  return mergeConfig(config, {
-      define: {
-          'process.env.NODE_DEBUG': false,
-      },
-  });
-}

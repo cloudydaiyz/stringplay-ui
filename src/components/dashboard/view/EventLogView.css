@@ -1,0 +1,30 @@
+.event-information .event-log-return
+{
+    color: var(--white);
+    fill: var(--white);
+    width: fit-content;
+    padding: 8px 16px;
+    font-size: .9rem;
+    outline: 1px solid var(--g2);
+    transform: translate(0px);
+    border-radius: 8px;
+}
+
+.event-log-return:hover svg
+{
+    transition: all .3s;
+}
+
+.event-log-return:hover svg
+{
+    transform: translateX(-4px);
+}
+
+.event-information > h3
+{
+    padding-left: 0px;
+    font-family: var(--font-2);
+    font-weight: 400;
+    color: var(--c1);
+    margin-bottom: -16px;
+}

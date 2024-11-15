@@ -141,9 +141,9 @@ function useTableOperationsContextValue(props: TableBodyElementProps) {
         }
         invalid = invalid 
             || (
-            tableData.validateData 
-            ? !tableData.validateData(value, r + tableData.data.length, c)
-            : false
+                tableData.validateData 
+                ? !tableData.validateData(value, r + tableData.data.length, c)
+                : false
             );
         
         if(!invalid && invalidCells[r]?.[c]) unsetInvalidCell(r, c);

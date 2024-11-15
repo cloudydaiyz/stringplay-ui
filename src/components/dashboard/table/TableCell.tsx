@@ -34,17 +34,20 @@ const TableCell = ({ r, c }: TableCellProps) => {
     if(tableData.columns[c].type == "action") {
         return (
             <td className='action'>
-                <button 
-                    onClick={() => {
-                        if(!tableData.onAction) {
-                            console.warn('No action defined for this table.');
-                            return;
-                        }
-                        tableData.onAction(r, c);
-                    }}
-                >
-                    <Bolt />
-                </button>
+                {
+                    mode == null 
+                        && <button 
+                            onClick={() => {
+                                if(!tableData.onAction) {
+                                    console.warn('No action defined for this table.');
+                                    return;
+                                }
+                                tableData.onAction(r, c);
+                            }}
+                        >
+                            <Bolt />
+                        </button>
+                }
             </td>
         );
     }
@@ -55,7 +58,9 @@ const TableCell = ({ r, c }: TableCellProps) => {
                 <button onClick={() => cancelCellEdit(r, c)}>
                     <XCircle />
                 </button>
-                <Pencil />
+                <div className="svg">
+                    <Pencil />
+                </div>
                 <input 
                     type={getInputType(c)} 
                     defaultValue={
@@ -81,11 +86,13 @@ const TableCell = ({ r, c }: TableCellProps) => {
             <td className='delete-cell'>
                 { 
                     c == 0 
-                    && <button onClick={() => cancelRowDelete(r)}>
-                        <XCircle />
-                    </button> 
+                        && <button onClick={() => cancelRowDelete(r)}>
+                            <XCircle />
+                        </button> 
                 }
-                <Trash />
+                <div className="svg">
+                    <Trash />
+                </div>
                 <span>
                     { tableDataToElement(item) }
                 </span>

@@ -126,6 +126,7 @@ export interface TableHeaderElementProps {
     updates: (TableDataType | undefined)[][] | null;
     rowsToDelete: boolean[] | null;
     empty: boolean;
+    loading: boolean;
     reset: () => void;
 }
 

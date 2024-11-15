@@ -371,3 +371,9 @@ th, td, tr
     width: 16px !important;
     height: 16px !important;
 }
+
+.app-table-body td div.svg
+{
+    width: 20px !important;
+    height: 20px !important;
+}

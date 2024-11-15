@@ -121,13 +121,31 @@ export const mockUpdateEvents = (mockData: ConsoleData = defaultMockConsole) => 
                 console.error(`mockUpdateEvent: Invalid event ${id}, skipping`);
                 continue;
             }
-    
-            if(body[id].eventTypeId) event.eventTypeId = body[id].eventTypeId;
+
             if(body[id].sourceUri) event.sourceUri = body[id].sourceUri;
             if(body[id].startDate) event.startDate = body[id].startDate;
             if(body[id].title) event.title = body[id].title;
             if(body[id].value) event.value = body[id].value;
-            updates[id] = event;
+            if(body[id].updateProperties) {
+                for(const field in body[id].updateProperties) {
+                    if(field in event.fieldToPropertyMap) {
+                        event.fieldToPropertyMap[field].property = body[id].updateProperties[field];
+                    }
+                }
+            }
+            if(body[id].removeProperties) {
+                for(const field of body[id].removeProperties) {
+                    if(field in event.fieldToPropertyMap) {
+                        event.fieldToPropertyMap[field].property = null;
+                    }
+                }
+            }
+            if(body[id].eventTypeId) {
+                event.eventTypeId = body[id].eventTypeId;
+                event.value = mockData.eventTypes.find(et => et.id == event.eventTypeId)!.value;
+            }
+            
+            updates[id] = { ...event };
         }
         await delay(800);
         return HttpResponse.json(updates);
