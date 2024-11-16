@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { DialogProps } from "../types/dialog-types";
+import { ConfirmDialogProps, DialogProps } from "../types/dialog-types";
 
 const initialProps: DialogProps = {
     title: "Nothing selected",
@@ -48,15 +48,44 @@ export function useDialogToggle() {
             console.error("Dialog already in use.");
             return;
         }
-        setActive(true);
+
         setProps(newProps);
+        setActive(true);
+        setLastOpened(new Date());
+    }
+
+    const openConfirmDialog = ({ title, content, onConfirm }: ConfirmDialogProps) => {
+        if(props.active) {
+            console.error("Dialog already in use.");
+            return;
+        }
+
+        setProps({
+            title,
+            content,
+            actions: [
+                {
+                    label: 'CANCEL',
+                    color: 'var(--g2)',
+                    onClick: async () => closeDialog()
+                },
+                {
+                    label: 'CONFIRM',
+                    color: 'var(--success)',
+                    onClick: async () => {
+                        closeDialog();
+                        onConfirm();
+                    }
+                },
+            ]
+        });
+        setActive(true);
         setLastOpened(new Date());
     }
 
     const closeDialog = () => {
-        console.log('closing dialog', props.active);
         setActive(false);
     }
 
-    return { openDialog, closeDialog };
+    return { openDialog, openConfirmDialog, closeDialog };
 }

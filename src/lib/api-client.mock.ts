@@ -210,7 +210,7 @@ export const mockUpdateEventTypes = (mockData: ConsoleData = defaultMockConsole)
                 eventType.sourceFolderUris.push(...body[id].addSourceFolderUris);
             }
             if(body[id].removeSourceFolderUris) {
-                eventType.sourceFolderUris.filter(uri => !body[id].removeSourceFolderUris!.includes(uri));
+                eventType.sourceFolderUris = eventType.sourceFolderUris.filter(uri => !body[id].removeSourceFolderUris!.includes(uri));
             }
             updates[id] = eventType;
         }

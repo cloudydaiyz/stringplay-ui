@@ -1,5 +1,4 @@
 import { useCellValidityContext } from "../../../lib/cell-validity";
-import { useTableDataContext } from "../../../lib/table-data";
 import type { TableHeaderElementProps } from "../../../types/table-types";
 
 import Button from "../../common/Button";

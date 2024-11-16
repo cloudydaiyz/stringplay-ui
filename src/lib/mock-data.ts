@@ -64,7 +64,7 @@ export const defaultConfig: ConsoleData = {
             "lastUpdated": "2024-11-15T15:22:23.506Z",
             "title": "Test Event Type - cool events",
             "value": 10,
-            "sourceFolderUris": ["https://google.com","https://google.com","https://google.com",],
+            "sourceFolderUris": ["https://google.com","https://google.com/something","https://google.com/something2",],
             "synchronizedSourceFolderUris": [],
             "id": "6737672f53f6f996b8c5842b"
         },
@@ -80,7 +80,7 @@ export const defaultConfig: ConsoleData = {
             "lastUpdated": "2024-11-15T15:22:23.506Z",
             "title": "Test Event Type - uncool events",
             "value": -7,
-            "sourceFolderUris": ["https://google.com","https://google.com"],
+            "sourceFolderUris": ["https://google.com","https://google.com/something"],
             "synchronizedSourceFolderUris": [],
             "id": "6737672f53f6f996b8c5842d"
         }

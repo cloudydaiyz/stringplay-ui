@@ -10,3 +10,9 @@ export interface DialogProps {
     actions: DialogAction[];
     active?: boolean;
 }
+
+export interface ConfirmDialogProps {
+    title: string,
+    content: React.ReactNode,
+    onConfirm: () => Promise<void>;
+}
