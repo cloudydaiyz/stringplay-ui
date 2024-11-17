@@ -7,7 +7,7 @@
     font-size: .9rem;
     outline: 1px solid var(--g2);
     transform: translate(0px);
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 .event-log-return:hover svg
@@ -26,5 +26,4 @@
     font-family: var(--font-2);
     font-weight: 400;
     color: var(--c1);
-    margin-bottom: -16px;
 }

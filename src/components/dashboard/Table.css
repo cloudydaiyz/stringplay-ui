@@ -69,11 +69,17 @@
 
 .app-table-subheader .actions button
 {
-    font-size: .9rem;
+    font-size: .8rem;
     padding: 4px 4px;
     border-radius: 4px;
     color: var(--c1);
     transition: color .1s, fill .1s;
+}
+
+.app-table-subheader .actions button svg
+{
+    width: 16px !important;
+    height: 16px !important;
 }
 
 .app-table-subheader .actions button:hover

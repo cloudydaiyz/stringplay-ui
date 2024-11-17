@@ -11,7 +11,7 @@ const Line = ({ className }: LineProps) => {
         style={{
             borderRight: '1px solid rgb(from var(--g2) r g b / 50%)'
         }}
-    >&nbsp;</div>
+    ></div>
   )
 }
 

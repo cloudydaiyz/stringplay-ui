@@ -2,7 +2,7 @@
 {
     padding: 0px;
     width: fit-content;
-    border-radius: 8px;
+    border-radius: 4px;
     box-shadow: none;
 }
 
@@ -20,15 +20,16 @@
     /* color: rgb(from var(--c2) r g b / 50%); */
     font-size: .9rem;
     transition: all .3s;
-    background-color: transparent !important;
+    border-radius: 0px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    /* background-color: transparent !important; */
 }
 
 .content-nav .content-nav-btn:not(:disabled):hover
 {
-    /* color: var(--c2); */
-    color: var(--c1);
-    /* fill: var(--c2); */
-    fill: var(--c1);
+    color: var(--c2);
+    /* color: rgb(from var(--c1) r g b / 50%); */
 }
 
 
@@ -36,5 +37,6 @@
 {
     opacity: 1;
     /* color: var(--c1); */
-    color: var(--c2);
+    color: var(--white);
+    background-color: var(--c2);
 }

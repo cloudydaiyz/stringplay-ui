@@ -11,6 +11,7 @@ import { EventLog } from './subview/EventLog';
 
 const EventLogView = () => {
     const [{ subviewId, props }, setSubview] = useState<EventLogSubview>({ subviewId: 'event-log', props: {} });
+    
     return (
         <div className='content-view'>
             {

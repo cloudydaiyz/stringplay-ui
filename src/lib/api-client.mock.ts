@@ -230,7 +230,7 @@ export const mockDeleteEventTypes = (mockData: ConsoleData = defaultMockConsole)
 );
 
 export const mockCreateMembers = (mockData: ConsoleData = defaultMockConsole) => http.post(
-    getUrl(API_CLIENT_URL, "/t/:troupeId/m/bulk"),
+    getUrl(API_CLIENT_URL, "/t/:troupeId/a/bulk"),
     async ({ request }) => {
         const body = await request.json() as CreateMemberRequest[];
         const newMembers = body.map(item => {

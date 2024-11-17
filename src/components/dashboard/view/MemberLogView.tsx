@@ -5,16 +5,247 @@ import ContentFooter from '../layout/ContentFooter';
 import ContentHeader from '../layout/ContentHeader';
 import ContentNav from '../layout/ContentNav';
 import Table from '../Table';
+import { useAttendees, useEvents, useMetadata, useTroupe } from '../../../lib/api-client';
+import { defaultConfig } from '../../../lib/mock-data';
+import { useDialogToggle } from '../../../lib/toggle-dialog';
+import { BulkUpdateMemberRequest } from '@cloudydaiyz/stringplay-core/types/api';
+import { TableData } from '../../../types/table-types';
+import { arrayToObject } from '../../../lib/helper';
 
-type MemberLogTable = 'membership-info'|'membership-points'|'events-attended';
+const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
+const basePointTypes = ["Total"] as const;
+
+type MemberLogTable = 'membership-info' | 'membership-points' | 'events-attended';
+
+const MembershipInformationTable = () => {
+    const { loading } = useMetadata();
+    const { troupe } = useTroupe();
+    const { attendees, createMembers, updateMembers, deleteMembers } = useAttendees();
+    const { openConfirmDialog } = useDialogToggle();
+
+    const memberProperties = troupe 
+        ? Object.keys(troupe?.memberPropertyTypes)
+            .filter(t => !baseMemberProperties.includes(t as typeof baseMemberProperties[number])) 
+        : [];
+
+    const columns: TableData['columns'] = [
+        {
+            title: "Member ID",
+            type: "string!",
+        },
+        {
+            title: "First Name",
+            type: "string!",
+        },
+        {
+            title: "Last Name",
+            type: "string!",
+        },
+        {
+            title: "Email",
+            type: "string!",
+        },
+        {
+            title: "Birthday",
+            type: "date?",
+        },
+        ...(
+            troupe 
+                ? memberProperties.map(p => ({
+                    title: p,
+                    type: troupe?.memberPropertyTypes[p],
+                })) 
+                : []
+        )
+    ];
+
+    return (
+        <Table
+            tableData={{
+                columns,
+                data: !loading && !attendees
+                    ? defaultConfig.attendees.map(a => [
+                        a.properties["Member ID"].value, 
+                        a.properties["First Name"].value, 
+                        a.properties["Last Name"].value, 
+                        a.properties["Email"].value, 
+                        a.properties["Birthday"].value,
+                    ]) 
+                    : attendees?.map(a => [
+                        a.properties["Member ID"].value, 
+                        a.properties["First Name"].value, 
+                        a.properties["Last Name"].value, 
+                        a.properties["Email"].value, 
+                        a.properties["Birthday"].value,
+                        ...memberProperties.map(p => a.properties[p].value)
+                    ]) || []
+            }}
+            tableHeader={{
+                title: "Membership Information",
+                onDataCreate: (newRows) => openConfirmDialog({
+                    title: newRows.length > 1 ? 'Confirm Create New Members' 
+                        : 'Confirm Create New Member',
+                    content: newRows.length > 1 ? 'Are you sure that you want to create these members?' 
+                        : 'Are you sure that you want to create this member?',
+                    onConfirm: () => createMembers(
+                        newRows.map(row => ({
+                                properties: {
+                                    ...arrayToObject(
+                                        row.slice(5).map((prop) => (prop instanceof Date ? prop.toISOString() : prop)),
+                                        (val, c) => [columns[c + 5].title, val]
+                                    ),
+                                    "Member ID": row[0] as string,
+                                    "First Name": row[1] as string,
+                                    "Last Name": row[2] as string,
+                                    "Email": row[3] as string,
+                                    "Birthday": row[4] instanceof Date ? row[4].toISOString() : null,
+                                }
+                            })
+                        )
+                    ),
+                }),
+                onDataUpdate: async (updates) => openConfirmDialog({
+                    title: 'Confirm Update Members',
+                    content: 'Are you sure that you want to update the(se) member(s)?',
+                    onConfirm: () => {
+                        const request: BulkUpdateMemberRequest = {};
+                        updates.forEach((row, r) => {
+                            row.forEach((col, c) => {
+                                if(!col) return;
+
+                                const memberId = attendees![r].id;
+                                const property = columns[c].title;
+                                const value = col instanceof Date ? col.toISOString() : col;
+                                if(!request[memberId]) request[memberId] = { updateProperties: {} };
+
+                                col ? request[memberId].updateProperties![property] = { value, override: true } 
+                                    : request[memberId].removeProperties!.push(property);
+                            });
+                        });
+                        return updateMembers(request);
+                    }
+                }),
+                onDataDelete: async (deleteIndicies) => openConfirmDialog({
+                    title: 'Confirm Delete Members',
+                    content: 'Are you sure that you want to delete these members?',
+                    onConfirm: () => deleteMembers(
+                        attendees?.filter((_, i) => deleteIndicies[i]).map(a => a.id) || []
+                    )
+                }),
+            }}
+            loading={loading}
+            useDataWhileLoading={attendees && loading}
+        />
+    );
+}
+
+const MembershipPointsTable = () => {
+    const { loading } = useMetadata();
+    const { attendees } = useAttendees();
+    const { troupe } = useTroupe();
+    
+    const pointTypes = troupe 
+        ? Object.keys(troupe?.pointTypes)
+            .filter(t => !basePointTypes.includes(t as typeof basePointTypes[number])) 
+        : [];
+
+    return (
+        <Table
+            tableData={{
+                columns: [
+                    {
+                        title: "Member ID",
+                        type: "string!",
+                    },
+                    {
+                        title: "First Name",
+                        type: "string!",
+                    },
+                    {
+                        title: "Last Name",
+                        type: "string!",
+                    },
+                    {
+                        title: "Total",
+                        type: "number!",
+                    },
+                    ...pointTypes.map(p => ({ title: p, type: "number!" as const })),
+                ],
+                data: !loading && !attendees 
+                    ? defaultConfig.attendees.map(a => [
+                        a.properties["Member ID"].value,
+                        a.properties["First Name"].value,
+                        a.properties["Last Name"].value,
+                        a.points["Total"],
+                        ...pointTypes.map(t => a.points[t])
+                    ])
+                    : attendees?.map(a => [
+                        a.properties["Member ID"].value,
+                        a.properties["First Name"].value,
+                        a.properties["Last Name"].value,
+                        a.points["Total"],
+                        ...pointTypes.map(t => a.points[t])
+                    ]) || []
+            }}
+            tableHeader={{
+                title: "Membership Points",
+            }}
+        />
+    );
+}
+
+const EventsAttendedTable = () => {
+    const { loading } = useMetadata();
+    const { events } = useEvents();
+    const { attendees } = useAttendees();
+    
+    return (
+        <Table
+            tableData={{
+                columns: [
+                    {
+                        title: "Member ID",
+                        type: "string!",
+                    },
+                    {
+                        title: "First Name",
+                        type: "string!",
+                    },
+                    {
+                        title: "Last Name",
+                        type: "string!",
+                    },
+                    ...(events?.map(e => ({ title: e.title, type: "boolean!" as const })) || [])
+                ],
+                data: !loading && !attendees 
+                    ? defaultConfig.attendees.map(a => [
+                        a.properties["Member ID"].value,
+                        a.properties["First Name"].value,
+                        a.properties["Last Name"].value,
+                        ...(events?.map(e => a.eventsAttended.includes(e.id)) || [])
+                    ])
+                    : attendees?.map(a => [
+                        a.properties["Member ID"].value,
+                        a.properties["First Name"].value,
+                        a.properties["Last Name"].value,
+                        ...(events?.map(e => a.eventsAttended.includes(e.id)) || [])
+                    ]) || []
+            }}
+            tableHeader={{
+                title: "Events Attended",
+            }}
+        />
+    );
+}
 
 const MemberLogView = () => {
-    const [table, setTable] = useState<MemberLogTable>('membership-info');
+    const [ table, setTable ] = useState<MemberLogTable>('membership-info');
+    const { lastUpdated } = useMetadata();
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title='Member Log' />
+                <ContentHeader title='Member Log' lastUpdated={lastUpdated} />
                 <div className='content-notifications'>
                     {/* <Notification notificationType='info' text="Hello world" /> */}
                 </div>
@@ -39,122 +270,10 @@ const MemberLogView = () => {
                 <div className='content-stats'>
                     {
                         table == 'membership-points'
-                        ? <Table
-                            tableData={{
-                                columns: [
-                                    {
-                                        title: "Member ID",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "First Name",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "Last Name",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "Total",
-                                        type: "number!",
-                                    },
-                                    {
-                                        title: "Fall Semester",
-                                        type: "number!",
-                                    },
-                                    {
-                                        title: "Spring Semester",
-                                        type: "number!",
-                                    },
-                                ],
-                                data: [
-                                    ["a", "Kylan", "Duncan", 45, 25, 20],
-                                    ["b", "Kylan", "Duncan", 25, 5, 20],
-                                    ["c", "Kylan", "Duncan", 20, 0, 20],
-                                    ["d", "Kylan", "Duncan", 25, 20, 5],
-                                    ["e", "Kylan", "Duncan", 15, 10, 5],
-                                    ["f", "Kylan", "Duncan", 5, 5, 0],
-                                ]
-                            }}
-                            tableHeader={{
-                                title: "Membership Points"
-                            }}
-                        />
+                        ? <MembershipPointsTable />
                         : table == 'events-attended'
-                        ? <Table
-                            tableData={{
-                                columns: [
-                                    {
-                                        title: "Member ID",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "First Name",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "Last Name",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "AA",
-                                        type: "boolean!",
-                                    },
-                                    {
-                                        title: "AB",
-                                        type: "boolean!",
-                                    },
-                                ],
-                                data: [
-                                    ["a", "Kylan", "Duncan", true, true],
-                                    ["b", "Kylan", "Duncan", true, true],
-                                    ["c", "Kylan", "Duncan", false, true],
-                                    ["d", "Kylan", "Duncan", true, false],
-                                    ["e", "Kylan", "Duncan", false, false],
-                                    ["f", "Kylan", "Duncan", true, false],
-                                ]
-                            }}
-                            tableHeader={{
-                                title: "Events Attended"
-                            }}
-                        />
-                        : <Table
-                            tableData={{
-                                columns: [
-                                    {
-                                        title: "Member ID",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "First Name",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "Last Name",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "Email",
-                                        type: "string!",
-                                    },
-                                    {
-                                        title: "Birthday",
-                                        type: "date?",
-                                    },
-                                ],
-                                data: [
-                                    ["a", "Kylan", "Duncan", "kduncan@utexas.edu", new Date('04-22-2003')],
-                                    ["b", "Kylan", "Duncan", "kduncan@utexas.edu", new Date('04-22-2003')],
-                                    ["c", "Kylan", "Duncan", "kduncan@utexas.edu", new Date('04-22-2003')],
-                                    ["d", "Kylan", "Duncan", "kduncan@utexas.edu", new Date('04-22-2003')],
-                                    ["e", "Kylan", "Duncan", "kduncan@utexas.edu", new Date('04-22-2003')],
-                                    ["f", "Kylan", "Duncan", "kduncan@utexas.edu", new Date('04-22-2003')],
-                                ]
-                            }}
-                            tableHeader={{
-                                title: "Membership Information"
-                            }}
-                        />
+                        ? <EventsAttendedTable />
+                        : <MembershipInformationTable />
                     }
                 </div>
             </div>

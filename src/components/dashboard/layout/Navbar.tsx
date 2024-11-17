@@ -5,10 +5,9 @@ import './Navbar.css';
 import Calendar from '../../svg/Calendar';
 import Group from '../../svg/Group';
 import Home from '../../svg/Home';
-import Settings from '../../svg/Settings';
 import User from '../../svg/User';
 
-export type NavPage = 'dashboard' | 'troupe' | 'event-log' | 'member-log' | 'settings';
+export type NavPage = 'dashboard' | 'troupe' | 'event-log' | 'member-log';
 
 interface NavbarProps {
     initialPage: NavPage,
@@ -23,7 +22,6 @@ const Navbar = ({ initialPage = 'dashboard', onNavigate }: NavbarProps) => {
     troupe: <><Group />Troupe</>,
     'event-log': <><Calendar />Event Log</>,
     'member-log': <><User />Member Log</>,
-    settings: <><Settings />Settings</>,
   };
 
   const menuItems: JSX.Element[] = [];

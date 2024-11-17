@@ -7,7 +7,6 @@ import DashboardView from '../components/dashboard/view/DashboardView';
 import TroupeView from '../components/dashboard/view/TroupeView';
 import EventLogView from '../components/dashboard/view/EventLogView';
 import MemberLogView from '../components/dashboard/view/MemberLogView';
-import SettingsView from '../components/dashboard/view/SettingsView';
 import Dialog from '../components/common/Dialog';
 import { useDialogProps } from '../lib/toggle-dialog';
 
@@ -33,8 +32,6 @@ const Console = () => {
             ? <EventLogView />
             : view == 'member-log'
             ? <MemberLogView />
-            : view == 'settings'
-            ? <SettingsView />
             : <DashboardView />
         }
       </div>

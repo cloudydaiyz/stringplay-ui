@@ -12,8 +12,8 @@ const meta = {
       <DialogProvider>
         <div style={{width:'800px', minHeight:'100vh', height:'100vh'}}>
           {story()}
+          <ContextDialog />
         </div>
-        <ContextDialog />
       </DialogProvider>
     </ApiClientProvider>
   )],

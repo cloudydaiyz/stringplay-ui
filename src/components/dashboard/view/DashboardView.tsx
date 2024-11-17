@@ -7,7 +7,7 @@ import ContentFooter from '../layout/ContentFooter';
 import ContentHeader from '../layout/ContentHeader';
 import Table from '../Table';
 import UpcomingBirthdays from '../UpcomingBirthdays';
-import { useClient, useMetadata } from '../../../lib/api-client';
+import { useMetadata, useTroupe } from '../../../lib/api-client';
 import { defaultConfig } from '../../../lib/mock-data';
 import { TroupeDashboard } from '@cloudydaiyz/stringplay-core/types/api';
 
@@ -39,7 +39,7 @@ function getDashboardTableData(dashboard: TroupeDashboard | undefined) {
 
 const DashboardView = () => {
     const { lastUpdated, loading } = useMetadata();
-    const { dashboard } = useClient();
+    const { dashboard } = useTroupe();
 
     const upcomingBirthdays = <UpcomingBirthdays 
         birthdays={
