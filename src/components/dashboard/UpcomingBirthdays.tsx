@@ -30,9 +30,17 @@ const UpcomingBirthdays = ({ birthdays = [], loading, useDataWhileLoading = fals
             <div className='upcoming-birthdays content-unit loading'>
                 <h3>Upcoming Birthdays</h3>
                 <ul>
-                    {birthdays.map(b => <li>
-                        <p><span>{`${b.firstName} ${b.lastName}`} {`(${b.birthday.getMonth()}/${b.birthday.getDate()})`}</span></p>
-                    </li>)}
+                    {
+                        birthdays.map((b, i) => (
+                            <li key={i}>
+                                <p>
+                                    <span>
+                                        {`${b.firstName} ${b.lastName}`} {`(${b.birthday.getMonth()}/${b.birthday.getDate()})`}
+                                    </span>
+                                </p>
+                            </li>
+                        ))
+                    }
                 </ul>
             </div>
         )

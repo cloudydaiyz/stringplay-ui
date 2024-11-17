@@ -75,8 +75,8 @@ export function TableHeaderElement({ tableHeader, loading, mode, setMode, newRow
     return (
         <div className='app-table-header'>
             <div className='app-table-subheader'>
-            <h3>{ tableHeader.title }</h3>
-            { !loading && actions }
+                <h3>{ tableHeader.title }</h3>
+                { !loading && actions }
             </div>
             { mode && <p className='app-table-mode-text'>You are currently in <strong>{mode}</strong> mode.</p> }
         </div>

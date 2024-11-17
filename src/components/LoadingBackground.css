@@ -16,13 +16,11 @@
     background-color: var(--g1);
     box-shadow: var(--sh2);
     opacity: 1;
-    transition: opacity 2s, transform 2s ease-out;
 }
 
 .loading-bg-left.inactive
 {
-    transform: translateX(-100%);
-    opacity: 0;
+    animation: loading-bg-slide-left 2s ease-out 1 forwards;
 }
 
 .loading-bg-right
@@ -34,11 +32,29 @@
     background-color: var(--g1);
     box-shadow: var(--sh2);
     opacity: 1;
-    transition: opacity 2s, transform 2s ease-out;
 }
 
 .loading-bg-right.inactive
 {
-    transform: translateX(100%);
-    opacity: 0;
+    animation: loading-bg-slide-right 2s ease-out 1 forwards;
+}
+
+@keyframes loading-bg-slide-left {
+    0% {}
+
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+        display: none;
+    }
+}
+
+@keyframes loading-bg-slide-right {
+    0% {}
+
+    100% {
+        transform: translateX(100%);
+        opacity: 0;
+        display: none;
+    }
 }

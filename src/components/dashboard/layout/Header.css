@@ -26,3 +26,8 @@
 {
     padding: 8px 16px;
 }
+
+.app-header-user button:hover
+{
+    background-color: var(--c2) !important;
+}

@@ -37,11 +37,12 @@ export function LoadingTableBodyElement({ tableData, newRows }: LoadingTableBody
         );
     }
 
-    const columnHeaders = Array(numCols !== undefined ? numCols : 5).fill(null).map((_, r) => (
-        <th key={r} scope='col'>
-            <span>Loading...</span>
-        </th>
-    ));
+    const columnHeaders = Array(numCols !== undefined ? numCols : 5)
+        .fill(null).map((_, r) => (
+            <th key={r} scope='col'>
+                <span>Loading...</span>
+            </th>
+        ));
 
     const rows = Array((numRows !== undefined && numRows > 0 ? numRows : 7) + (newRows?.length || 0))
         .fill(null).map((_, c) => (
@@ -95,7 +96,7 @@ export function TableBodyElement(props: TableBodyElementProps) {
                 <tr key={r}>
                     {
                         tableData.columns.map((_, c) => (
-                            <NewRowTableCell key={r} r={r} c={c} />
+                            <NewRowTableCell key={c} r={r} c={c} />
                         ))
                     }
                 </tr>
@@ -114,12 +115,20 @@ export function TableBodyElement(props: TableBodyElementProps) {
                             {
                                 mode == 'create'
                                     ? <CreateRowTableCell />
-                                    : <td 
-                                        colSpan={tableData.columns.length} 
-                                        style={{textAlign:'center', height:'200px'}}
-                                    >
-                                        No data available
-                                    </td>
+                                    : <tr>
+                                        <td 
+                                            colSpan={tableData.columns.length} 
+                                            style={{
+                                                textAlign:'center', 
+                                                width:'100%',
+                                                height:'200px',
+                                                display:'flex',
+                                                justifyContent:'center',
+                                            }}
+                                        >
+                                            No data available
+                                        </td>
+                                    </tr>
                             }
                         </tbody>
                     </table>
@@ -132,7 +141,7 @@ export function TableBodyElement(props: TableBodyElementProps) {
         const rows = tableData.data[0].map((_, c) => {
 
             /** The current element in the row to be displayed */
-            const currentElement = <TableCell key={0} r={0} c={c} />
+            const currentElement = <TableCell key={c} r={0} c={c} />
 
             /** 
              * If in create mode, this represents the new values to create in the same 

@@ -241,7 +241,7 @@ const PointTypesTable = () => {
             loading={loading}
             useDataWhileLoading={troupe && loading}
         />
-    )
+    );
 }
 
 const SettingsTable = () => {
@@ -321,7 +321,7 @@ const TroupeView = () => {
             </div>
             <ContentFooter />
         </div>
-    )
+    );
 }
 
 export default TroupeView;

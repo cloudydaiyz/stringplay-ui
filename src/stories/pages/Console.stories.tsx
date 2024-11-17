@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import Console from '../../pages/Console';
 import { ApiClientProvider } from '../../lib/api-client';
-import { mockGetConsoleData } from '../../lib/api-client.mock';
+import { mockCreateEvents, mockCreateEventTypes, mockCreateMembers, mockDeleteEvents, mockDeleteEventTypes, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockGetTroupe, mockUpdateEvents, mockUpdateEventTypes, mockUpdateMembers, mockUpdateTroupe } from '../../lib/api-client.mock';
 import { DialogProvider } from '../../lib/toggle-dialog';
 
 const meta = {
@@ -12,6 +12,20 @@ const meta = {
     msw: {
       handlers: [
         mockGetConsoleData(),
+        mockGetTroupe(),
+        mockUpdateTroupe(),
+        mockCreateEvents(),
+        mockGetEvents(),
+        mockUpdateEvents(),
+        mockDeleteEvents(),
+        mockCreateEventTypes(),
+        mockGetEventTypes(),
+        mockUpdateEventTypes(),
+        mockDeleteEventTypes(),
+        mockCreateMembers(),
+        mockGetAttendees(),
+        mockUpdateMembers(),
+        mockDeleteMembers(),
       ],
     }
   },
