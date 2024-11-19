@@ -4,51 +4,117 @@ import TextField from "./common/TextField";
 import Button from "./common/Button";
 import LoginLogo from "./common/LoginLogo";
 
-import "../app/shared.css";
 import "./LoginPanel.css";
+import "../app/shared.css";
+import { useAuth } from "../lib/auth";
+import { useState } from "react";
+
+const emptyUsername = 1 << 0;
+const emptyPassword = 1 << 1;
 
 interface LoginPanelProps {
-  status?: "" | "logging in" | "logged in" | 400 | 500 | 503;
-  inactive?: boolean,
+    inactive?: boolean,
 }
 
-const LoginPanel = ({ status = "", inactive = false }: LoginPanelProps) => {
-  // let [error, setError] = useState<null | 400 | 500 | 503>(null);
-  // let [loggingIn, setLoggingIn] = useState(false);
-  // let [loggedIn, setLoggedIn] = useState(false);
-  const error = status == 400 ? 400 : status == 500 ? 500 : status == 503 ? 503 : null;
-  const loggingIn = status == "logging in";
-  const loggedIn = status == "logged in";
+const LoginPanel = ({ inactive = false }: LoginPanelProps) => {
+    const { login } = useAuth();
+    const [ statusCode, setStatusCode ] = useState(0);
+    const [ error, setError ] = useState(0);
+    const loggingIn = statusCode == 1;
+    const loggedIn = statusCode == 200;
+    const disableInput = loggingIn || loggedIn;
 
-  let statusEle: JSX.Element = <p key={`${Date.now()}`} className="login-status">&nbsp;</p>;
-  if(loggingIn) {
-    statusEle = <p key={`${Date.now()}`} className="login-status">&nbsp;Verifying your information...</p>;
-  } else if(loggedIn) {
-    statusEle = <p key={`${Date.now()}`} className="login-status">&nbsp;Log in successful!</p>;
-  } else if(error == 400) {
-    statusEle = <p key={`${Date.now()}`} className="login-status error">&nbsp;Login failed.</p>;
-  } else if(error == 500) {
-    statusEle = <p key={`${Date.now()}`} className="login-status error">&nbsp;A server error has occurred.</p>;
-  } else if(error == 503) {
-    statusEle = <p key={`${Date.now()}`} className="login-status error">&nbsp;This service is currently unavailable. Please try again later.</p>;
-    // Redirect to `NoServicePanel`
-  }
+    let statusElement: JSX.Element = <p key={`${Date.now()}`} className="login-status"></p>;
+    if(loggingIn) {
+        statusElement = (
+            <p key={`${Date.now()}`} className="login-status">
+                Verifying your information...
+            </p>
+        );
+    } else if(loggedIn) {
+        statusElement = (
+            <p key={`${Date.now()}`} className="login-status">
+                Log in successful!
+            </p>
+        );
+    } else if(statusCode == 400) {
+        statusElement = (
+            <p key={`${Date.now()}`} className="login-status error">
+                Login failed.
+                {/* Login failed.<br/>Your username or password is invalid. */}
+            </p>
+        );
+    } else if(statusCode == 500) {
+        statusElement = (
+            <p key={`${Date.now()}`} className="login-status error">
+                A server error has occurred.
+            </p>
+        );
+    }
 
-  const disableInput = loggingIn || loggedIn || error == 503;
-  return (
-    <div className={`login-panel ${inactive ? "inactive" : ""}`}>
-        <LoginLogo animated={loggingIn && !loggedIn} size="m" />
-        <form action="" onSubmit={e => { e.preventDefault() }} noValidate={true}>
-          <div className="login-text-fields">
-            <TextField title="Username or Email" disabled={disableInput} />
-            <TextField title="Password" type="password" disabled={disableInput} />
-          </div>
-          <Button text="Log in" disabled={disableInput} />
-          <Button text="Create an account" buttonType={2} disabled={disableInput} />
-          {statusEle}
-        </form>
-    </div>
-  )
+    const submitLogin = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); 
+
+        const username = e.currentTarget.elements.namedItem('username') as HTMLInputElement;
+        const password = e.currentTarget.elements.namedItem('password') as HTMLInputElement;
+
+        let currentError = 0;
+        if(!username.checkValidity()) currentError = currentError | emptyUsername;
+        if(!password.checkValidity()) currentError = currentError | emptyPassword;
+
+        if(currentError) {
+            setError(currentError);
+            return;
+        }
+
+        setError(0);
+        setStatusCode(1);
+        login(username.value, password.value)
+            .then(d => {
+                if(!d) return;
+                if(d.status == 200) {
+                    // introduce short delay to show successful login text
+                    setTimeout(() => {
+                        // navigate to console page
+                    }, 1000);
+                } else if(d.status == 503) {
+                    // navigate to no service page
+                }
+                setStatusCode(d.status!);
+            })
+            .catch(e => { console.error(e); setStatusCode(400) })
+    }
+
+    return (
+        <div className={`auth-panel login-panel ${inactive ? "inactive" : ""}`}>
+            <LoginLogo animated={loggingIn && !loggedIn} size="s" />
+            <form onSubmit={submitLogin} noValidate={true}>
+                <div className="login-text-fields">
+                    <TextField title="Username or Email" disabled={disableInput} name="username" />
+                    { (error & emptyUsername) != 0 && <p className="auth-error-msg">Required</p> }
+                    <TextField title="Password" type="password" disabled={disableInput} name="password" />
+                    { (error & emptyPassword) != 0 && <p className="auth-error-msg">Required</p> }
+                </div>
+                <Button 
+                    text="Log in" 
+                    buttonType={3} 
+                    disabled={disableInput} 
+                    className="auth-submit-btn"
+                />
+                <p className="auth-panel-nav">
+                    Don't have an account yet?
+                    <Button 
+                        text="Create an account." 
+                        buttonType={2} 
+                        disabled={disableInput} 
+                        className="auth-panel-nav-btn"
+                        onClick={(e) => { e.preventDefault() }} 
+                    />
+                </p>
+                {statusElement}
+            </form>
+        </div>
+    );
 }
 
-export default LoginPanel
+export default LoginPanel;

@@ -19,9 +19,10 @@ export function useClient() {
     /** Wrapper over calls to the API client for standardized parameters */
     async function apiCall<T>(call: Promise<T>) {
         setLoading(true);
-        return call.finally(() => {
+        return call.then(d => {
             setLastUpdated(new Date());
             setLoading(false);
+            return d;
         });
     }
 

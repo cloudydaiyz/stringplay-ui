@@ -8,8 +8,9 @@
     background-color: white;
     padding: 2rem;
     border-radius: 16px; 
+    border: none;
     font-family: var(--font-1);
-    box-shadow: var(--sh2);
+    box-shadow: var(--sh1);
     position: relative;
     z-index: 10;
     transition: opacity .2s linear, transform .2s linear;
@@ -20,6 +21,7 @@
     opacity: 0;
     transform: translateY(16px);
     pointer-events: none;
+    z-index: -20;
 }
 
 .login-panel,
@@ -34,14 +36,7 @@
 
 .login-text-fields
 {
-    margin-bottom: 16px;
-}
-
-.forgot-password 
-{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 8px;
 }
 
 .login-status 

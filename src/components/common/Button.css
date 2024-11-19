@@ -36,7 +36,9 @@
 .stringplay-btn:disabled,
 .stringplay-btn.v3:disabled
 {
-    color: var(--g2);
+    /* color: rgb(from var(--white) r g b / 50%); */
+    color: var(--white);
+    background-color: var(--g2);
 }
 
 .stringplay-btn.v2:disabled {

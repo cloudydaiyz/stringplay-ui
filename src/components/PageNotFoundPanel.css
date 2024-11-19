@@ -26,7 +26,12 @@
     background-color: white;
     padding: 2rem;
     border-radius: 16px; 
+    border: none;
     font-family: var(--font-1);
+    box-shadow: var(--sh1);
     text-align: center;
     animation: panel-slide-in .5s ease-in 1 forwards;
+    max-width: 400px;
+    position: relative;
+    z-index: 10;
 }

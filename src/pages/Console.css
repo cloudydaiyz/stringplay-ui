@@ -38,6 +38,19 @@
     z-index: 101;
     opacity: 1;
     transition: opacity .2s linear, transform .2s linear;
+
+    background-color: white;
+    padding: 2rem;
+    border-radius: 16px; 
+    border: none;
+    font-family: var(--font-1);
+    box-shadow: var(--sh1);
+    z-index: 10;
+}
+
+.loading-logo h3
+{
+    color: var(--black);
 }
 
 .done-loading

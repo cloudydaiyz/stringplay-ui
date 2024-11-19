@@ -26,13 +26,21 @@
     background-color: white;
     padding: 2rem;
     border-radius: 16px; 
+    border: none;
+    box-shadow: var(--sh1);
     font-family: var(--font-1);
+    text-align: center;
     transition: opacity .2s linear, transform .2s linear;
+    max-width: 400px;
+    position: relative;
+    z-index: 10;
+    animation: panel-slide-in .5s ease-in 1 forwards;
 }
 
 .no-service-panel.inactive
 {
     opacity: 0;
     transform: translateY(16px);
-    /* z-index: -10; */
+    pointer-events: none;
+    z-index: -20;
 }

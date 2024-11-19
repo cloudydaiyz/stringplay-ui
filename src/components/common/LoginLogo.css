@@ -17,7 +17,7 @@
     line-height: 100%;
     font-family: var(--font-3);
     font-size: 3rem;
-    background: linear-gradient(to bottom, var(--g1), var(--black) 50%);
+    background: linear-gradient(to bottom, var(--g1), var(--black) 35%);
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
@@ -31,9 +31,9 @@
 
 .login-logo.xs h1
 {
-    background: none;
-    background-clip: none;
-    color: black;
+    background: linear-gradient(to bottom, var(--g1), var(--black) 40%);
+    background-clip: text;
+    color: transparent;
     font-size: 32px;
     margin: 0;
     padding: 0;

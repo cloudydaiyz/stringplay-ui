@@ -21,7 +21,7 @@ export const EventTypeInformation = ({ eventTypeId, setSubview }: EventTypeInfor
             </div>
             <h3>Event Type Information for { eventType.title }</h3>
             <Button 
-                buttonType={1}
+                buttonType={3}
                 text={
                     <>
                         <div style={{width:'20px', height:'20px'}}>

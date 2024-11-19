@@ -59,7 +59,7 @@
     /* color: rgb(from var(--c1) r g b / 50%); */
     color: var(--white);
     /* background-color: rgb(from var(--c1) r g b / 25%); */
-    background-color: rgb(from var(--c2) r g b / 40%);
+    background-color: rgb(from var(--c2) r g b / 45%);
     cursor: initial;
 }
 

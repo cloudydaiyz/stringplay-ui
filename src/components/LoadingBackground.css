@@ -13,7 +13,28 @@
     width: 50%;
     height: 100%;
     left: 0;
-    background-color: var(--g1);
+    /* background-color: var(--g1); */
+    /* background-color: var(--c2); */
+    /* background: linear-gradient(to bottom, var(--c2) 80%, rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30))); */
+    background: 
+    linear-gradient(
+        to bottom, 
+        transparent 80%, 
+        rgb(from var(--c2) calc(r - 60) calc(g - 60) calc(b - 60)) 95%,
+        rgb(from var(--c2) calc(r - 75) calc(g - 75) calc(b - 75)) 100%
+    ),
+    linear-gradient(
+        to right, 
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 0%,
+        var(--c2) 12.5%, 
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 25%,
+        var(--c2) 37.5%,
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 50%,
+        var(--c2) 62.5%, 
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 75%,
+        var(--c2) 87.5%,
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 100%
+    );
     box-shadow: var(--sh2);
     opacity: 1;
 }
@@ -29,7 +50,28 @@
     width: 50%;
     height: 100%;
     left: 50%;
-    background-color: var(--g1);
+    /* background-color: var(--g1); */
+    /* background-color: var(--c2); */
+    /* background: linear-gradient(to bottom, var(--c2) 80%, rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30))); */
+    background: 
+    linear-gradient(
+        to bottom, 
+        transparent 80%, 
+        rgb(from var(--c2) calc(r - 60) calc(g - 60) calc(b - 60)) 95%,
+        rgb(from var(--c2) calc(r - 75) calc(g - 75) calc(b - 75)) 100%
+    ),
+    linear-gradient(
+        to right, 
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 0%,
+        var(--c2) 12.5%, 
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 25%,
+        var(--c2) 37.5%,
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 50%,
+        var(--c2) 62.5%, 
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 75%,
+        var(--c2) 87.5%,
+        rgb(from var(--c2) calc(r - 30) calc(g - 30) calc(b - 30)) 100%
+    );
     box-shadow: var(--sh2);
     opacity: 1;
 }

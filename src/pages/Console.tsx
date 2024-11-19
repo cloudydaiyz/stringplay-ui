@@ -1,5 +1,4 @@
 import './Console.css';
-import './AuthPage.css';
 
 import { useState } from 'react';
 import Header from '../components/dashboard/layout/Header';
@@ -27,7 +26,11 @@ const Console = () => {
                 doneLoading={dashboard !== undefined || !loading}
             >
                 <div className={`loading-logo`}>
-                    <Logo stroke={false} size="l" animated={loading} />
+                    <Logo 
+                        stroke={false} 
+                        size="l" 
+                        animated={loading} 
+                    />
                     <h3>Loading...</h3>
                 </div>
             </LoadingBackground>

@@ -8,8 +8,9 @@
     background-color: white;
     padding: 2rem;
     border-radius: 16px; 
+    border: none;
     font-family: var(--font-1);
-    box-shadow: var(--sh2);
+    box-shadow: var(--sh1);
     position: relative;
     z-index: 10;
     min-width: fit-content;
@@ -22,6 +23,7 @@
     opacity: 0;
     transform: translateY(16px);
     pointer-events: none;
+    z-index: -20;
 }
 
 .signup-panel,
@@ -36,7 +38,7 @@
 
 .signup-text-fields
 {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 }
 
 .forgot-password 
