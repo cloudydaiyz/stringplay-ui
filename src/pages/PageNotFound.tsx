@@ -1,7 +1,7 @@
 import LoadingBackground from '../components/LoadingBackground'
 import PageNotFoundPanel from '../components/PageNotFoundPanel'
 
-const PageNotFound = () => {
+export const PageNotFound = () => {
   return (
     <LoadingBackground doneLoading={false}>
         <div
@@ -17,5 +17,3 @@ const PageNotFound = () => {
     </LoadingBackground>
   )
 }
-
-export default PageNotFound

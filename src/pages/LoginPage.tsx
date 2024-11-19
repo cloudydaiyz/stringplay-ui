@@ -3,12 +3,10 @@ import LoginPanel from "../components/LoginPanel";
 
 import '../app/shared.css';
 
-const LoginPage = () => {
+export const LoginPage = () => {
     return (
         <LoadingBackground className="auth-page" doneLoading={false}>
             <LoginPanel />
         </LoadingBackground>
     )
 }
-
-export default LoginPage;

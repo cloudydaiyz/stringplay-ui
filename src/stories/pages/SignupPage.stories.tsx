@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import SignupPage from '../../pages/SignupPage';
+import { SignupPage } from '../../pages/SignupPage';
 import { fn } from '@storybook/test';
 import { mockRegister } from '../../lib/auth.mock';
 

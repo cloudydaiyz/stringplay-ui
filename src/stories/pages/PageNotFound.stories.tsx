@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import PageNotFound from '../../pages/PageNotFound';
+import { PageNotFound } from '../../pages/PageNotFound';
 
 const meta = {
   tags: ['autodocs'],

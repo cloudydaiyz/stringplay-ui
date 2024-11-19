@@ -1,6 +1,6 @@
 import './Console.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/dashboard/layout/Header';
 import Navbar, { NavPage } from '../components/dashboard/layout/Navbar';
 import DashboardView from '../components/dashboard/view/DashboardView';
@@ -10,20 +10,29 @@ import MemberLogView from '../components/dashboard/view/MemberLogView';
 import { ContextDialog } from '../components/common/Dialog';
 import { useDialogProps } from '../lib/toggle-dialog';
 import LoadingBackground from '../components/LoadingBackground';
-import { useMetadata, useTroupe } from '../lib/api-client';
+import { useClient, useMetadata, useTroupe } from '../lib/api-client';
 import Logo from '../components/svg/Logo';
 
-const Console = () => {
+export const Console = () => {
     const [ view, setView ] = useState<NavPage>('dashboard');
+    const [ doneLoading, setDoneLoading ] = useState(false);
     const { loading } = useMetadata();
     const { lastOpened } = useDialogProps();
     const { dashboard } = useTroupe();
+    const { getConsoleData } = useClient();
+
+    /** Get the initial console data */
+    useEffect(() => { getConsoleData() }, []);
+
+    if(!doneLoading && dashboard !== undefined || !loading) {
+        setTimeout(() => setDoneLoading(true), 1000);
+    }
 
     return (
         <div className='console-vert'>
             <LoadingBackground 
-                className={`loading-background ${(dashboard !== undefined || !loading) && 'done-loading'}`} 
-                doneLoading={dashboard !== undefined || !loading}
+                className={`loading-background ${doneLoading && 'done-loading'}`} 
+                doneLoading={doneLoading}
             >
                 <div className={`loading-logo`}>
                     <Logo 
@@ -57,5 +66,3 @@ const Console = () => {
         </div>
     )
 }
-
-export default Console;

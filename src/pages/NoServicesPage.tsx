@@ -1,7 +1,7 @@
 import LoadingBackground from '../components/LoadingBackground'
 import NoServicePanel from '../components/NoServicePanel'
 
-const NoServicesPage = () => {
+export const NoServicesPage = () => {
   return (
     <LoadingBackground doneLoading={false}>
         <div
@@ -17,5 +17,3 @@ const NoServicesPage = () => {
     </LoadingBackground>
   )
 }
-
-export default NoServicesPage

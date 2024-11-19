@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import NoServicesPage from '../../pages/NoServicesPage';
+import { NoServicesPage } from '../../pages/NoServicesPage';
 
 const meta = {
   tags: ['autodocs'],

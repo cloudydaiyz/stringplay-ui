@@ -1,6 +1,6 @@
 import { StringplayApiClient } from '@cloudydaiyz/stringplay-client';
 import type { Attendee, BulkUpdateEventRequest, BulkUpdateEventTypeRequest, BulkUpdateMemberRequest, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import { API_CLIENT_URL, DEFAULT_TROUPE_ID } from './constants';
 
 export const api = new StringplayApiClient(API_CLIENT_URL);
@@ -37,9 +37,6 @@ export function useClient() {
             // show error notification 
         })
     );
-
-    /** Get the initial console data */
-    useEffect(() => { getConsoleData() }, []);
 
     return { 
         apiCall, 

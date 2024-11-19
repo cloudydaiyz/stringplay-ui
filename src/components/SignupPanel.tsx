@@ -8,6 +8,7 @@ import "../app/shared.css";
 import "./SignupPanel.css";
 import { useState } from "react";
 import { useAuth } from "../lib/auth";
+import { useNavigate } from "react-router-dom";
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -29,6 +30,8 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
     const { register } = useAuth();
     const [ statusCode, setStatusCode ] = useState(0);
     const [ error, setError ] = useState(0);
+    const navigate = useNavigate();
+    
     const loggingIn = statusCode == 1;
     const loggedIn = statusCode == 200;
     const disableInput = loggingIn || loggedIn;
@@ -142,7 +145,7 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
                         buttonType={2} 
                         disabled={disableInput} 
                         className="auth-panel-nav-btn"
-                        onClick={(e) => { e.preventDefault(); }}
+                        onClick={(e) => { e.preventDefault(); navigate("/login") }}
                     />
                 </p>
                 {statusEle}

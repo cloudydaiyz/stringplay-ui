@@ -8,6 +8,7 @@ import "./LoginPanel.css";
 import "../app/shared.css";
 import { useAuth } from "../lib/auth";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const emptyUsername = 1 << 0;
 const emptyPassword = 1 << 1;
@@ -20,6 +21,8 @@ const LoginPanel = ({ inactive = false }: LoginPanelProps) => {
     const { login } = useAuth();
     const [ statusCode, setStatusCode ] = useState(0);
     const [ error, setError ] = useState(0);
+    const navigate = useNavigate();
+
     const loggingIn = statusCode == 1;
     const loggedIn = statusCode == 200;
     const disableInput = loggingIn || loggedIn;
@@ -75,10 +78,12 @@ const LoginPanel = ({ inactive = false }: LoginPanelProps) => {
                 if(d.status == 200) {
                     // introduce short delay to show successful login text
                     setTimeout(() => {
-                        // navigate to console page
+                        navigate("/console");
                     }, 1000);
                 } else if(d.status == 503) {
-                    // navigate to no service page
+                    navigate("/no-service");
+                } else {
+                    d.status = 400;
                 }
                 setStatusCode(d.status!);
             })
@@ -108,7 +113,7 @@ const LoginPanel = ({ inactive = false }: LoginPanelProps) => {
                         buttonType={2} 
                         disabled={disableInput} 
                         className="auth-panel-nav-btn"
-                        onClick={(e) => { e.preventDefault() }} 
+                        onClick={(e) => { e.preventDefault(); navigate("/register") }} 
                     />
                 </p>
                 {statusElement}
