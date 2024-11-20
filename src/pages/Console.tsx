@@ -1,6 +1,6 @@
 import './Console.css';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Header from '../components/dashboard/layout/Header';
 import Navbar, { NavPage } from '../components/dashboard/layout/Navbar';
 import DashboardView from '../components/dashboard/view/DashboardView';
@@ -10,8 +10,9 @@ import MemberLogView from '../components/dashboard/view/MemberLogView';
 import { ContextDialog } from '../components/common/Dialog';
 import { useDialogProps } from '../lib/toggle-dialog';
 import LoadingBackground from '../components/LoadingBackground';
-import { useClient, useMetadata, useTroupe } from '../lib/api-client';
+import { api, useMetadata, useTroupe } from '../lib/api-client';
 import Logo from '../components/svg/Logo';
+import { useNavigate } from 'react-router-dom';
 
 export const Console = () => {
     const [ view, setView ] = useState<NavPage>('dashboard');
@@ -19,10 +20,9 @@ export const Console = () => {
     const { loading } = useMetadata();
     const { lastOpened } = useDialogProps();
     const { dashboard } = useTroupe();
-    const { getConsoleData } = useClient();
+    const navigate = useNavigate();
 
-    /** Get the initial console data */
-    useEffect(() => { getConsoleData() }, []);
+    if(!api.credentials) navigate("/login");
 
     if(!doneLoading && dashboard !== undefined || !loading) {
         setTimeout(() => setDoneLoading(true), 1000);
@@ -43,7 +43,10 @@ export const Console = () => {
                     <h3>Loading...</h3>
                 </div>
             </LoadingBackground>
-            <Header username='blahblah' />
+            <Header 
+                username='blahblah' 
+                onLogOut={() => { api.credentials = undefined; navigate("/login") }} 
+            />
             <div className='console-hori'>
                 <Navbar 
                     initialPage='dashboard' 

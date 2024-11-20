@@ -4,6 +4,8 @@ import { useMetadata, useTroupe, useEventTypes, useEvents } from "../../../../li
 import { objectToArray } from "../../../../lib/helper";
 import { useDialogToggle } from "../../../../lib/toggle-dialog";
 import { EventInformationProps, SetEventLogSubview } from "../../../../types/view-types";
+import { useEventLogNotifications } from "../../../../lib/notifications";
+import Notification from '../../Notification';
 import Button from "../../../common/Button";
 import LeftArrow from "../../../svg/LeftArrow";
 import ContentHeader from "../../layout/ContentHeader";
@@ -16,6 +18,7 @@ export const EventInformation = ({ eventId, setSubview }: EventInformationProps 
     const { eventTypes } = useEventTypes();
     const { events, updateEvents } = useEvents();
     const { openConfirmDialog } = useDialogToggle();
+    const { eventLogNotif, removeEventLogNotif } = useEventLogNotifications();
     const event = events!.find(e => e.id == eventId!)!;
 
     const fieldPropMap: [keyof FieldToPropertyMap, string, string|null][] = objectToArray(
@@ -27,11 +30,18 @@ export const EventInformation = ({ eventId, setSubview }: EventInformationProps 
         <div className='event-information content-inner-view'>
             <ContentHeader title='Event Log' lastUpdated={lastUpdated} />
             <div className='content-notifications'>
-                {/* <Notification notificationType='info' text="Hello world" /> */}
+                { 
+                    eventLogNotif.map((props, i) => (
+                        <Notification 
+                            {...props} 
+                            onClick={() => { setTimeout(() => removeEventLogNotif(i), 1000) }}
+                        />
+                    )) 
+                }
             </div>
             <h3>Event Information for { event.title }</h3>
             <Button 
-                buttonType={1}
+                buttonType={3}
                 text={
                     <>
                         <div style={{width:'20px', height:'20px'}}>

@@ -18,6 +18,8 @@ export function useAuth() {
         return api.refreshCredentials(refreshToken)
             .then(d => {
                 api.addCredentials(d.data.accessToken, d.data.refreshToken);
+                localStorage.setItem("at", d.data.accessToken);
+                localStorage.setItem("rt", d.data.refreshToken);
                 return d;
             }).catch(e => {
                 const err = e as AxiosError;

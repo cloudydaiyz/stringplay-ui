@@ -3,6 +3,18 @@ import {
     RouterProvider,
     Navigate,
 } from "react-router-dom";
+import { AppContext } from "./context";
+
+/** Wraps the console element with AppContext */
+const getAppConsole = async () => {
+    const { Console } = await import("../pages/Console");
+    const AppConsole = () => (
+        <AppContext>
+            <Console />
+        </AppContext>
+    );
+    return { AppConsole }
+}
 
 export const routes = [
     {
@@ -26,16 +38,27 @@ export const routes = [
     {
         path: "/console",
         lazy: async () => {
-            const { Console } = await import("../pages/Console");
-            return { Component: Console };
+            const { AppConsole } = await getAppConsole();
+            return { Component: AppConsole };
         },
     },
     {
-        path: "*",
+        path: "/not-found",
         lazy: async () => {
             const { PageNotFound } = await import("../pages/PageNotFound");
             return { Component: PageNotFound };
         },
+    },
+    {
+        path: "/no-service",
+        lazy: async () => {
+            const { NoServicesPage } = await import("../pages/NoServicesPage");
+            return { Component: NoServicesPage };
+        },
+    },
+    {
+        path: "*",
+        element: <Navigate to="/not-found"/>,
     }
 ];
 

@@ -7,15 +7,16 @@ import './Header.css';
 
 interface HeaderProps {
     username: string;
+    onLogOut?: () => void;
 }
 
-const Header = ({ username }: HeaderProps) => {
+const Header = ({ username, onLogOut }: HeaderProps) => {
   return (
     <header className='app-header'>
         <LoginLogo size='xs'/>
         <div className='app-header-user'>
             <p>{username}</p>
-            <Button text='Log out' />
+            <Button text='Log out' onClick={onLogOut} />
         </div>
     </header>
   );

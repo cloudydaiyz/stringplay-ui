@@ -9,6 +9,8 @@ import { PROPERTY_TYPES } from '../../../types/table-types';
 import ContentFooter from '../layout/ContentFooter';
 import ContentHeader from '../layout/ContentHeader';
 import Table from '../Table';
+import { useTroupeNotifications } from '../../../lib/notifications';
+import Notification from '../Notification';
 
 const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
 const basePointTypes = ["Total"] as const;
@@ -305,13 +307,21 @@ const SettingsTable = () => {
 
 const TroupeView = () => {
     const { lastUpdated } = useMetadata();
+    const { troupeNotif, removeTroupeNotif } = useTroupeNotifications();
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
                 <ContentHeader title='Troupe' lastUpdated={lastUpdated} />
                 <div className='content-notifications'>
-                    {/* <Notification notificationType='info' text="Hello world" /> */}
+                    { 
+                        troupeNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => { setTimeout(() => removeTroupeNotif(i), 1000) }}
+                            />
+                        )) 
+                    }
                 </div>
                 <div className='content-stats'>
                     <MemberPropertyTypesTable />

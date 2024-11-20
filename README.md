@@ -27,4 +27,6 @@ Make sure that Node.js version 20.0.0 or higher is installed on your device.
 
 ## Environment Variables
 
+- `STRINGPLAY_CORE_URL` - URL for the backend. To use for testing, dev, and prod environments.
+
 ## Commands

@@ -5,6 +5,8 @@ import { useDialogToggle } from "../../../../lib/toggle-dialog";
 import { SetEventLogSubview } from "../../../../types/view-types";
 import ContentHeader from "../../layout/ContentHeader";
 import Table from "../../Table";
+import { useEventLogNotifications } from "../../../../lib/notifications";
+import Notification from '../../Notification';
 
 /** Subview that shows an overview of events and event types */
 export const EventLog = ({ setSubview }: SetEventLogSubview) => {
@@ -12,12 +14,20 @@ export const EventLog = ({ setSubview }: SetEventLogSubview) => {
     const { eventTypes, createEventTypes, updateEventTypes, deleteEventTypes } = useEventTypes();
     const { events, createEvents, updateEvents, deleteEvents, } = useEvents();
     const { openConfirmDialog } = useDialogToggle();
+    const { eventLogNotif, removeEventLogNotif } = useEventLogNotifications();
 
     return (
         <div className='content-inner-view'>
             <ContentHeader title='Event Log' lastUpdated={lastUpdated} />
             <div className='content-notifications'>
-                {/* <Notification notificationType='info' text="Hello world" /> */}
+                { 
+                    eventLogNotif.map((props, i) => (
+                        <Notification 
+                            {...props} 
+                            onClick={() => { setTimeout(() => removeEventLogNotif(i), 1000) }}
+                        />
+                    )) 
+                }
             </div>
             <div className='content-stats'>
                 <Table

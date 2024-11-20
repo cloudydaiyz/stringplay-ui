@@ -8,13 +8,14 @@ interface LoadingBackgroundProps {
 }
 
 const LoadingBackground = ({ doneLoading = false, children, className = '' }: React.PropsWithChildren<LoadingBackgroundProps>) => {
-  return (
-    <div className={`loading-bg ${className}`}>
-        <div className={`loading-bg-left ${doneLoading ? 'inactive' : ''}`}></div>
-        <div className={`loading-bg-right ${doneLoading ? 'inactive' : ''}`}></div>
-        {children}
-    </div>
-  )
+    return (
+        <div className={`loading-bg ${className}`}>
+            <div className={`loading-bg-top ${doneLoading ? 'inactive' : ''}`}></div>
+            <div className={`loading-bg-left ${doneLoading ? 'inactive' : ''}`}></div>
+            <div className={`loading-bg-right ${doneLoading ? 'inactive' : ''}`}></div>
+            {children}
+        </div>
+    )
 }
 
 export default LoadingBackground

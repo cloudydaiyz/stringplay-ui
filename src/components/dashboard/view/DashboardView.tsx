@@ -10,6 +10,8 @@ import UpcomingBirthdays from '../UpcomingBirthdays';
 import { useMetadata, useTroupe } from '../../../lib/api-client';
 import { defaultConfig } from '../../../lib/mock-data';
 import { TroupeDashboard } from '@cloudydaiyz/stringplay-core/types/api';
+import { useDashboardNotifications } from '../../../lib/notifications';
+import Notification from '../Notification';
 
 /** Converts entity data to data parsable by the `CategoricalStatistics` component */
 function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercentageByEventType'] | undefined) {
@@ -40,6 +42,7 @@ function getDashboardTableData(dashboard: TroupeDashboard | undefined) {
 const DashboardView = () => {
     const { lastUpdated, loading } = useMetadata();
     const { dashboard } = useTroupe();
+    const { dashboardNotif, removeDashboardNotif } = useDashboardNotifications();
 
     const upcomingBirthdays = <UpcomingBirthdays 
         birthdays={
@@ -174,7 +177,14 @@ const DashboardView = () => {
             <div className='content-inner-view'>
                 <ContentHeader title="Dashboard" lastUpdated={lastUpdated} />
                 <div className='content-notifications'>
-                    {/* <Notification notificationType='info' text="Hello world" /> */}
+                    { 
+                        dashboardNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => { setTimeout(() => removeDashboardNotif(i), 1000) }}
+                            />
+                        )) 
+                    }
                 </div>
                 <div className='content-stats'>
                     { upcomingBirthdays }

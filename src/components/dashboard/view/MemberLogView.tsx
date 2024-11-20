@@ -11,6 +11,8 @@ import { useDialogToggle } from '../../../lib/toggle-dialog';
 import { BulkUpdateMemberRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import { TableData } from '../../../types/table-types';
 import { arrayToObject } from '../../../lib/helper';
+import { useMemberLogNotifications } from '../../../lib/notifications';
+import Notification from '../Notification';
 
 const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
 const basePointTypes = ["Total"] as const;
@@ -241,13 +243,21 @@ const EventsAttendedTable = () => {
 const MemberLogView = () => {
     const [ table, setTable ] = useState<MemberLogTable>('membership-info');
     const { lastUpdated } = useMetadata();
+    const { memberLogNotif, removeMemberLogNotif } = useMemberLogNotifications();
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
                 <ContentHeader title='Member Log' lastUpdated={lastUpdated} />
                 <div className='content-notifications'>
-                    {/* <Notification notificationType='info' text="Hello world" /> */}
+                    { 
+                        memberLogNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => { setTimeout(() => removeMemberLogNotif(i), 1000) }}
+                            />
+                        )) 
+                    }
                 </div>
                 <ContentNav
                     pageIdToTitleMap={[

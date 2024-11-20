@@ -2,6 +2,8 @@ import { BulkUpdateEventTypeRequest } from "@cloudydaiyz/stringplay-core/types/a
 import { useMetadata, useEventTypes } from "../../../../lib/api-client";
 import { useDialogToggle } from "../../../../lib/toggle-dialog";
 import { EventTypeInformationProps, SetEventLogSubview } from "../../../../types/view-types";
+import { useEventLogNotifications } from "../../../../lib/notifications";
+import Notification from '../../Notification';
 import Button from "../../../common/Button";
 import LeftArrow from "../../../svg/LeftArrow";
 import ContentHeader from "../../layout/ContentHeader";
@@ -11,13 +13,21 @@ export const EventTypeInformation = ({ eventTypeId, setSubview }: EventTypeInfor
     const { lastUpdated, loading } = useMetadata();
     const { eventTypes, updateEventTypes } = useEventTypes();
     const { openConfirmDialog } = useDialogToggle();
+    const { eventLogNotif, removeEventLogNotif } = useEventLogNotifications();
     const eventType = eventTypes!.find(et => et.id == eventTypeId)!;    
 
     return (
         <div className='event-information content-inner-view'>
             <ContentHeader title='Event Log' lastUpdated={lastUpdated} />
             <div className='content-notifications'>
-                {/* <Notification notificationType='info' text="Hello world" /> */}
+                { 
+                    eventLogNotif.map((props, i) => (
+                        <Notification 
+                            {...props} 
+                            onClick={() => { setTimeout(() => removeEventLogNotif(i), 1000) }}
+                        />
+                    )) 
+                }
             </div>
             <h3>Event Type Information for { eventType.title }</h3>
             <Button 

@@ -15,7 +15,7 @@ export interface NotificationProps {
     text: string;
 }
 
-const Notification = ({ notificationType, text }: NotificationProps) => {
+const Notification = ({ notificationType, text, onClick }: NotificationProps & { onClick: () => void }) => {
     const [done, setDone] = useState(false);
 
     return (
@@ -29,7 +29,7 @@ const Notification = ({ notificationType, text }: NotificationProps) => {
             }
             </div>
             <p>{ text }</p>
-            <Button buttonType={2} text={<XMark />} onClick={() => setDone(true)} />
+            <Button buttonType={2} text={<XMark />} onClick={() => { setDone(true); onClick() }} />
         </div>
     )
 }

@@ -99,10 +99,10 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
                 if(d.status == 200) {
                     // introduce short delay to show successful login text
                     setTimeout(() => {
-                        // navigate to console page
+                        navigate("/login");
                     }, 1000);
                 } else if(d.status == 503) {
-                    // navigate to no service page
+                    navigate("/no-service");
                 }
                 setStatusCode(d.status!);
             })
