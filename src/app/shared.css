@@ -33,8 +33,10 @@ body
   --black: #222222;
   --white: #FFFFFF;
 
-  --success: #4CAF50;
-  --error: #F44336;
+  --success: #24D57A;
+  --error: #F3655A;
+  --info: #2CAAFF;
+  --warning: #F8A134;
 
   --sh1: 0px 0px 5px rgb(0, 0, 0, .7);
   --sh2: 0px 0px 16px rgba(0, 0, 0, .2);
@@ -252,11 +254,12 @@ body
         rgb(from var(--c2) calc(r + 20) calc(g + 20) calc(b + 20)) 30%,
         rgb(from var(--c2) calc(r - 20) calc(g - 20) calc(b - 20))
     );
+    transform: scale(1.05);
 }
 
 .auth-panel .auth-submit-btn:not(:disabled):active
 {
-    transform: scale(1.05);
+    transform: scale(.95);
 }
 
 .auth-error-msg

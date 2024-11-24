@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TroupeView from '../../../../components/dashboard/view/TroupeView';
-import { mockGetConsoleData, mockGetTroupe, mockUpdateTroupe } from '../../../../lib/api-client.mock';
+import { mockGetConsoleData, mockGetTroupe, mockInitiateSync, mockUpdateTroupe } from '../../../../lib/api-client.mock';
 import { ContextDialog } from '../../../../components/common/Dialog';
 import { AppContext } from '../../../../app/context';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
@@ -33,6 +33,7 @@ const meta = {
         mockGetConsoleData(),
         mockGetTroupe(),
         mockUpdateTroupe(),
+        mockInitiateSync(),
       ],
     }
   },

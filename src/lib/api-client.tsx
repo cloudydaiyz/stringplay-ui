@@ -123,7 +123,25 @@ export function useTroupe() {
         })
     );
 
-    return { troupe, dashboard, getTroupe, updateTroupe };
+    const initiateSync = () => apiCall(
+        api.initiateSync(DEFAULT_TROUPE_ID).then(() => {
+            const newTroupe = structuredClone(troupe);
+            if(newTroupe) {
+                newTroupe.syncLock = true;
+                setTroupe(newTroupe);
+            }
+        }).catch(e => {
+            const err = e as AxiosError;
+            console.log(err);
+            if(err.status == 503) {
+                navigate("/no-service");
+                return;
+            }
+            addTroupeNotif({ notificationType: "error", text: err.message });
+        })
+    );
+
+    return { troupe, dashboard, getTroupe, updateTroupe, initiateSync };
 }
 
 export function useEvents() {

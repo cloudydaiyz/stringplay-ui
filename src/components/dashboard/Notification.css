@@ -5,48 +5,54 @@
     max-width: 1000px;
     color: var(--white);
     fill: var(--white);
-    box-shadow: none;
+    box-shadow: var(--sh3);
     border-color: transparent;
-}
-
-.app-notification-icon svg
-{
-    width: 32px !important;
-    height: 32px !important;
-}
-
-.app-notification.content-unit.info
-{
-    background-color: rgb(from darkblue r g b / 50%);
-    border: 1px solid rgb(from darkblue r - 50 g - 50 b - 50);
-}
-
-.app-notification.content-unit.warning
-{
-    background-color: rgb(from rgb(213, 139, 0) r g b / 50%);
-}
-
-.app-notification.content-unit.success
-{
-    background-color: rgb(from darkgreen r g b / 50%);
-}
-
-.app-notification.content-unit.error
-{
-    background-color: rgb(from rgb(204, 0, 0) r g b / 50%);
+    border-radius: 16px;
 }
 
 .app-notification-icon
 {
-    width: 32px;
-    height: 32px;
+    width: 20px;
+    height: 20px;
 }
 
-.app-notification > p
+.app-notification-icon svg
 {
-    padding-top: 4px;
-    font-size: 1rem;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.app-notification.content-unit.info
+{
+    background-color: var(--info);
+}
+
+.app-notification.content-unit.warning
+{
+    background-color: var(--warning);
+}
+
+.app-notification.content-unit.success
+{
+    background-color: var(--success);
+}
+
+.app-notification.content-unit.error
+{
+    background-color: var(--error);
+}
+
+.app-notification .app-notification-content
+{
+    font-size: .8rem;
     flex-grow: 1;
+}
+
+.app-notification h3
+{
+    font-family: var(--font-2);
+    font-weight: 700;
+    font-size: .8rem;
 }
 
 .app-notification > button
@@ -54,11 +60,40 @@
     background: none;
     border: none;
     padding: 0;
-    color: var(--white);
-    fill: var(--white);
-    padding: 4px;
-    width: 32px;
-    height: 32px;
+    color: var(--white) !important;
+    padding: 0px;
+    height: fit-content;
+    position: relative;
+}
+
+.app-notification > button:hover
+{
+    transform: scale(1.1);
+}
+
+.app-notification > button:active
+{
+    transform: scale(.95);
+}
+
+.app-notification > button:hover,
+.app-notification > button:active
+{
+    background: none !important;
+}
+
+.app-notification > button svg
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+
+.app-notification > button:active svg
+{
+    color: rgba(from var(--white) r g b / 50%);
+    fill: rgba(from var(--white) r g b / 50%);
 }
 
 .app-notification.done

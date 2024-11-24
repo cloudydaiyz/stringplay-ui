@@ -5,7 +5,6 @@ import Button from '../common/Button';
 import Error from '../svg/Error';
 import Info from '../svg/Info';
 import Warning from '../svg/Warning';
-import XMark from '../svg/XMark';
 import Check from '../svg/Check';
 
 import { useState } from 'react';
@@ -21,15 +20,23 @@ const Notification = ({ notificationType, text, onClick }: NotificationProps & {
     return (
         <div className={`app-notification content-unit ${notificationType} ${done && 'done'}`}>
             <div className='app-notification-icon'>
-            {
-                notificationType == 'warning' ? <Warning />
-                : notificationType == 'error' ? <Error />
-                : notificationType == 'success' ? <Check />
-                : <Info />
-            }
+                { notificationType == 'info' && <Info /> }
+                { notificationType == 'warning' && <Warning /> }
+                { notificationType == 'error' && <Error /> }
+                { notificationType == 'success' && <Check /> }
             </div>
-            <p>{ text }</p>
-            <Button buttonType={2} text={<XMark />} onClick={() => { setDone(true); onClick() }} />
+            <div className='app-notification-content'>
+                { notificationType == 'info' && <h3>FYI</h3> }
+                { notificationType == 'warning' && <h3>Heads up!</h3> }
+                { notificationType == 'error' && <h3>An error has occurred.</h3> }
+                { notificationType == 'success' && <h3>Success!</h3> }
+                <p>{ text }</p>
+            </div>
+            <Button 
+                buttonType={2} 
+                text={<h3>CLOSE</h3>}
+                onClick={() => { setDone(true); onClick() }} 
+            />
         </div>
     )
 }

@@ -24,11 +24,7 @@ const meta = {
               element: story(),
             },
             {
-              path: "/register",
-              element: story(),
-            },
-            {
-              path: "/console",
+              path: "/login",
               element: story(),
             },
           ])} 

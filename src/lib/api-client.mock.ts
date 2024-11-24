@@ -315,3 +315,11 @@ export const mockDeleteMembers = (mockData: ConsoleData = defaultMockConsole) =>
         return HttpResponse.json();
     }
 );
+
+export const mockInitiateSync = () => http.post(
+    getUrl(API_CLIENT_URL, "/t/:troupeId/sync"),
+    async () => {
+        await delay(800);
+        return new HttpResponse(null, { status: 204 });
+    }
+);

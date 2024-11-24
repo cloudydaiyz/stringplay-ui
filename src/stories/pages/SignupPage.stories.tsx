@@ -34,7 +34,7 @@ const meta = {
                 element: story(),
               },
               {
-                path: "/register",
+                path: "/login",
                 element: story(),
               },
             ])} 

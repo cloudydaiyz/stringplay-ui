@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Console } from '../../pages/Console';
-import { mockCreateEvents, mockCreateEventTypes, mockCreateMembers, mockDeleteEvents, mockDeleteEventTypes, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockGetTroupe, mockUpdateEvents, mockUpdateEventTypes, mockUpdateMembers, mockUpdateTroupe } from '../../lib/api-client.mock';
+import { mockCreateEvents, mockCreateEventTypes, mockCreateMembers, mockDeleteEvents, mockDeleteEventTypes, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockGetTroupe, mockInitiateSync, mockUpdateEvents, mockUpdateEventTypes, mockUpdateMembers, mockUpdateTroupe } from '../../lib/api-client.mock';
 import { AppContext } from '../../app/context';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
@@ -14,6 +14,7 @@ const meta = {
         mockGetConsoleData(),
         mockGetTroupe(),
         mockUpdateTroupe(),
+        mockInitiateSync(),
         mockCreateEvents(),
         mockGetEvents(),
         mockUpdateEvents(),

@@ -257,7 +257,7 @@ const PointTypesTable = () => {
 const SettingsTable = () => {
     const { loading } = useMetadata();
     const { events } = useEvents();
-    const { troupe, updateTroupe } = useTroupe();
+    const { troupe, updateTroupe, initiateSync } = useTroupe();
     const { openConfirmDialog } = useDialogToggle();
 
     return (
@@ -289,19 +289,22 @@ const SettingsTable = () => {
                         defaultConfig.troupe.logSheetUri, 
                         defaultConfig.troupe.originEventId || null, 
                         defaultConfig.troupe.syncLock, 
-                        true,
+                        false,
                     ]] 
                     : [[
                         troupe?.logSheetUri || "err", 
                         troupe?.originEventId || null, 
                         troupe?.syncLock || false, 
-                        true,
+                        troupe !== undefined && !troupe.syncLock,
                     ]],
                 validateData: (data, _, c) => {
                     if(c == 1) {
                         return events?.some(e => e.id == data) || false;
                     }
                     return true;
+                },
+                onAction: (_, c) => {
+                    if(c == 3) initiateSync();
                 }
             }}
             tableHeader={{
