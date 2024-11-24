@@ -40,6 +40,134 @@ function getDashboardTableData(dashboard: TroupeDashboard | undefined) {
     : [];
 }
 
+function DashboardCumulativeStatistics() {
+    const { loading } = useMetadata();
+    const { dashboard } = useTroupe();
+    return (
+        <div className='dashboard-cumulative'>
+            <CumulativeStatistic 
+                accumulator='total' 
+                statistic='members' 
+                value={
+                    !loading && !dashboard
+                    ? defaultConfig.dashboard.totalMembers
+                    : dashboard?.totalMembers
+                } 
+                loading={loading} 
+                useDataWhileLoading={dashboard && loading} 
+            />
+            <CumulativeStatistic 
+                accumulator='total' 
+                statistic='attendees' 
+                value={
+                    !loading && !dashboard
+                    ? defaultConfig.dashboard.totalAttendees
+                    : dashboard?.totalAttendees
+                } 
+                loading={loading} 
+                useDataWhileLoading={dashboard && loading} 
+            />
+            <CumulativeStatistic 
+                accumulator='total' 
+                statistic='events' 
+                value={
+                    !loading && !dashboard
+                    ? defaultConfig.dashboard.totalEvents
+                    : dashboard?.totalEvents
+                } 
+                loading={loading} 
+                useDataWhileLoading={dashboard && loading} 
+            />
+            <CumulativeStatistic 
+                accumulator='total' 
+                statistic='event types' 
+                value={
+                    !loading && !dashboard
+                    ? defaultConfig.dashboard.totalEventTypes
+                    : dashboard?.totalEventTypes
+                } 
+                loading={loading} 
+                useDataWhileLoading={dashboard && loading} 
+            />
+            <CumulativeStatistic 
+                accumulator='average' 
+                statistic='attendees per event' 
+                value={
+                    !loading && !dashboard
+                    ? defaultConfig.dashboard.avgAttendeesPerEvent
+                    : dashboard?.avgAttendeesPerEvent
+                } 
+                loading={loading} 
+                useDataWhileLoading={dashboard && loading} 
+            />
+        </div>
+    );
+}
+
+function EventTypeStatsTable() {
+    const { loading } = useMetadata();
+    const { dashboard } = useTroupe();
+    return (
+        <Table 
+            tableData={{
+                columns: [
+                    {
+                        title: 'Event Type',
+                        type: 'string!',
+                    },
+                    {
+                        title: 'Total Events',
+                        type: 'number!',
+                    },
+                    {
+                        title: 'Total Attendees',
+                        type: 'number!',
+                    },
+                    {
+                        title: 'Average Attendees',
+                        type: 'number!',
+                    },
+                ],
+                data: !loading && !dashboard
+                    ? getDashboardTableData(defaultConfig.dashboard)
+                    // : mockEventTypeTable
+                    : getDashboardTableData(dashboard),
+            }}
+            loading={loading}
+            useDataWhileLoading={dashboard && loading} 
+        />
+    );
+}
+
+function DashboardCategoricalStatistics() {
+    const { loading } = useMetadata();
+    const { dashboard } = useTroupe();
+    return (
+        <div className="dashboard-categorical">
+            <CategoricalStatistic
+                data={
+                    !loading && !dashboard
+                    ? convertCategoricalData(defaultConfig.dashboard.attendeePercentageByEventType)!
+                    // : mockCategoricalStatistics1
+                    : convertCategoricalData(dashboard?.attendeePercentageByEventType)
+                }
+                title='% of attendees by Event Type'
+                loading={loading}
+            />
+            <CategoricalStatistic
+                data={
+                    !loading && !dashboard
+                    ? convertCategoricalData(defaultConfig.dashboard.eventPercentageByEventType)!
+                    // : mockCategoricalStatistics2
+                    : convertCategoricalData(dashboard?.eventPercentageByEventType)
+                }
+                title='% of events by Event Type'
+                loading={loading}
+            />
+        </div>
+    );
+}
+
 const DashboardView = () => {
     const { loading } = useMetadata();
     const { dashboard } = useTroupe();
@@ -63,116 +191,6 @@ const DashboardView = () => {
         useDataWhileLoading={dashboard && loading}
     />;
     
-    const cumulativeStatistics = <div className='dashboard-cumulative'>
-        <CumulativeStatistic 
-            accumulator='total' 
-            statistic='members' 
-            value={
-                !loading && !dashboard
-                ? defaultConfig.dashboard.totalMembers
-                : dashboard?.totalMembers
-            } 
-            loading={loading} 
-            useDataWhileLoading={dashboard && loading} 
-        />
-        <CumulativeStatistic 
-            accumulator='total' 
-            statistic='attendees' 
-            value={
-                !loading && !dashboard
-                ? defaultConfig.dashboard.totalAttendees
-                : dashboard?.totalAttendees
-            } 
-            loading={loading} 
-            useDataWhileLoading={dashboard && loading} 
-        />
-        <CumulativeStatistic 
-            accumulator='total' 
-            statistic='events' 
-            value={
-                !loading && !dashboard
-                ? defaultConfig.dashboard.totalEvents
-                : dashboard?.totalEvents
-            } 
-            loading={loading} 
-            useDataWhileLoading={dashboard && loading} 
-        />
-        <CumulativeStatistic 
-            accumulator='total' 
-            statistic='event types' 
-            value={
-                !loading && !dashboard
-                ? defaultConfig.dashboard.totalEventTypes
-                : dashboard?.totalEventTypes
-            } 
-            loading={loading} 
-            useDataWhileLoading={dashboard && loading} 
-        />
-        <CumulativeStatistic 
-            accumulator='average' 
-            statistic='attendees per event' 
-            value={
-                !loading && !dashboard
-                ? defaultConfig.dashboard.avgAttendeesPerEvent
-                : dashboard?.avgAttendeesPerEvent
-            } 
-            loading={loading} 
-            useDataWhileLoading={dashboard && loading} 
-        />
-    </div>;
-
-    const categoricalStatistics = <div className="dashboard-categorical">
-        <CategoricalStatistic
-            data={
-                !loading && !dashboard
-                ? convertCategoricalData(defaultConfig.dashboard.attendeePercentageByEventType)!
-                // : mockCategoricalStatistics1
-                : convertCategoricalData(dashboard?.attendeePercentageByEventType)
-            }
-            title='% of attendees by Event Type'
-            loading={loading}
-        />
-        <CategoricalStatistic
-            data={
-                !loading && !dashboard
-                ? convertCategoricalData(defaultConfig.dashboard.eventPercentageByEventType)!
-                // : mockCategoricalStatistics2
-                : convertCategoricalData(dashboard?.eventPercentageByEventType)
-            }
-            title='% of events by Event Type'
-            loading={loading}
-        />
-    </div>;
-
-    let eventTypeTable = <Table 
-        tableData={{
-            columns: [
-                {
-                    title: 'Event Type',
-                    type: 'string!',
-                },
-                {
-                    title: 'Total Events',
-                    type: 'number!',
-                },
-                {
-                    title: 'Total Attendees',
-                    type: 'number!',
-                },
-                {
-                    title: 'Average Attendees',
-                    type: 'number!',
-                },
-            ],
-            data: !loading && !dashboard
-                ? getDashboardTableData(defaultConfig.dashboard)
-                // : mockEventTypeTable
-                : getDashboardTableData(dashboard),
-        }}
-        loading={loading}
-        useDataWhileLoading={dashboard && loading} 
-    />;
-
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
@@ -195,14 +213,14 @@ const DashboardView = () => {
                     onAnimationStart={() => visitedPages.push("DashboardView")}
                 >
                     { upcomingBirthdays }
-                    { cumulativeStatistics }
-                    { categoricalStatistics }
-                    { eventTypeTable }
+                    <DashboardCumulativeStatistics />
+                    <DashboardCategoricalStatistics />
+                    <EventTypeStatsTable />
                 </div>
             </div>
             <ContentFooter />
         </div>
-    )
+    );
 }
 
 export default DashboardView;

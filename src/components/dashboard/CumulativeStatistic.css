@@ -14,14 +14,14 @@
 .cumulative-statistic h3
 {
     font-family: var(--font-1);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     color: var(--c1);
     line-height: 110%;
 }
 
 .cumulative-statistic h4
 {
-    font-size: 1rem;
+    font-size: .9rem;
     /* margin-bottom: 1rem; */
     line-height: 110%;
     color: var(--c1);
@@ -29,7 +29,7 @@
 
 .cumulative-statistic div
 {
-    overflow: scroll;
+    overflow-x: scroll;
     scrollbar-gutter: stable;
     width: 100%;
     flex-grow: 1;

@@ -9,7 +9,7 @@
 
 .app-table h3
 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
 .app-table table
@@ -208,6 +208,7 @@ th, td, tr
 .app-table .delete-cell button:hover
 {
     opacity: .5;
+    transform: scale(1.1);
     cursor: pointer;
 }
 
@@ -218,7 +219,7 @@ th, td, tr
 .app-table .delete-cell button:active
 {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(.95);
     cursor: initial;
 }
 
@@ -329,7 +330,7 @@ th, td, tr
 .app-table-body
 {
     margin-bottom: 16px;
-    overflow: scroll;
+    overflow-x: scroll;
     max-height: calc(var(--max-rows) * 28px);
     border-bottom: 1px solid var(--g2);
 }

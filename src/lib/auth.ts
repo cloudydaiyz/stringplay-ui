@@ -1,3 +1,4 @@
+import { Credentials } from "@cloudydaiyz/stringplay-core/types/api";
 import { api } from "./api-client";
 import type { AxiosError } from "axios";
 
@@ -39,5 +40,22 @@ export function useAuth() {
             });
     }
 
-    return { login, refresh, register };
+    /** Retrieves auth from local storage (for now) */
+    const getAuth = () => {
+        try {
+            const c = JSON.parse(localStorage.getItem("nbvcxz")!) as Credentials;
+            api.addCredentials(c.accessToken, c.refreshToken);
+        } catch {
+            return false;
+        }
+        return true;
+    }
+
+    /** Saves auth to local storage */
+    const saveAuth = () => {
+        const c = api.getCredentials();
+        if(c) localStorage.setItem("nbvcxz", JSON.stringify(c));
+    }
+
+    return { login, refresh, register, getAuth, saveAuth };
 }

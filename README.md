@@ -14,7 +14,7 @@
 
 This repository provides the frontend for the stringplay project. For other relevant repositories, check out the following links:
 
-- [`stringplay`](https://github.com/cloudydaiyz/stringplay) (Orchestration)
+- [`stringplay`](https://github.com/cloudydaiyz/stringplay) (Main)
 - [`stringplay-core`](https://github.com/cloudydaiyz/stringplay-core) (Backend)
 
 ## Installation
@@ -27,6 +27,12 @@ Make sure that Node.js version 20.0.0 or higher is installed on your device.
 
 ## Environment Variables
 
-- `STRINGPLAY_CORE_URL` - URL for the backend. To use for testing, dev, and prod environments.
+- `VITE_STRINGPLAY_CORE_URL` - URL for the backend
 
 ## Commands
+
+- `npm run dev`: Runs development server in Vite. Backend functionality is **NOT** mocked.
+- `npm run build`: Transpiles all `.ts` code and builds source files in the `/dist` folder
+- `npm run lint`: Runs `eslint` linter on the project
+- `npm run storybook`: Runs a local storybook server to preview all components. Backend functionality is mocked.
+- `npm run build-storybook`: Builds the code necessary for storybook to run

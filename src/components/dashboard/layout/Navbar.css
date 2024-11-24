@@ -48,23 +48,19 @@
 
 .app-nav button:not(.current):hover
 {
-    /* background-color: var(--g1); */
-    /* color: var(--c2); */
-    color: var(--white);
-    /* fill: var(--c2); */
+    /* color: var(--white);
     fill: var(--white);
-    /* background-color: rgb(from var(--c1) r g b / 50%); */
-    background-color: rgb(from var(--c2) r g b / 50%);
+    background-color: rgb(from var(--c2) r g b / 50%); */
+    color: var(--c2);
+    fill: var(--c2);
+    background-color: transparent;
     cursor: pointer;
 }
 
 .app-nav button:not(.current):active
 {
-    /* fill: rgb(from var(--c1) r g b / 50%); */
     fill: var(--white);
-    /* color: rgb(from var(--c1) r g b / 50%); */
     color: var(--white);
-    /* background-color: rgb(from var(--c1) r g b / 25%); */
     background-color: rgb(from var(--c2) r g b / 45%);
     cursor: initial;
 }

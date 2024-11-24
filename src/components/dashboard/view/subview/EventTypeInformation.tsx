@@ -1,4 +1,4 @@
-import { BulkUpdateEventTypeRequest } from "@cloudydaiyz/stringplay-core/types/api";
+import { BulkUpdateEventTypeRequest, EventType } from "@cloudydaiyz/stringplay-core/types/api";
 import { useMetadata, useEventTypes } from "../../../../lib/api-client";
 import { useDialogToggle } from "../../../../lib/toggle-dialog";
 import { EventTypeInformationProps, SetEventLogSubview } from "../../../../types/view-types";
@@ -9,10 +9,121 @@ import LeftArrow from "../../../svg/LeftArrow";
 import ContentHeader from "../../layout/ContentHeader";
 import Table from "../../Table";
 
-export const EventTypeInformation = ({ eventTypeId, setSubview }: EventTypeInformationProps & SetEventLogSubview) => {
+interface EventTypeInformationTableProps extends EventTypeInformationProps {
+    eventType: EventType;
+}
+
+function GeneralInformationTable({ eventType }: EventTypeInformationTableProps) {
     const { loading } = useMetadata();
     const { eventTypes, updateEventTypes } = useEventTypes();
     const { openConfirmDialog } = useDialogToggle();
+
+    return (
+        <Table
+            tableData={{
+                columns: [
+                    {
+                        title: "Type ID",
+                        type: "string!",
+                        disableCreate: true,
+                        disableUpdate: true,
+                    },
+                    {
+                        title: "Title",
+                        type: "string!",
+                    },
+                    {
+                        title: "Value",
+                        type: "number!",
+                    },
+                ],
+                data: [[eventType.id, eventType.title, eventType.value]],
+            }}
+            tableHeader={{
+                title: "General Information",
+                onDataUpdate: (updates) => openConfirmDialog({
+                    title: 'Confirm Update Event Types',
+                    content: `Are you sure that you want to update event type ${eventType.title}?`,
+                    onConfirm: () => {
+                        const request: BulkUpdateEventTypeRequest = {};
+                        updates.forEach((row, _) => {
+                            row.forEach((col, c) => {
+                                if(!col) return;
+
+                                const eventTypeId = eventType.id;
+                                if(!request[eventTypeId]) request[eventTypeId] = {};
+                                
+                                switch(c) {
+                                    case 1:
+                                        request[eventTypeId].title = col as string;
+                                        break;
+                                    case 2:
+                                        request[eventTypeId].value = col as number;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            });
+                        });
+                        return updateEventTypes(request);
+                    }
+                }),
+            }}
+            loading={loading}
+            useDataWhileLoading={eventTypes && loading} 
+        />
+    );
+}
+
+function SourceFolderUrisTable({ eventType, eventTypeId }: EventTypeInformationTableProps) {
+    const { loading } = useMetadata();
+    const { eventTypes, updateEventTypes } = useEventTypes();
+    const { openConfirmDialog } = useDialogToggle();
+
+    return (
+        <Table
+            tableData={{
+                columns: [
+                    {
+                        title: "URI",
+                        type: "string!",
+                    },
+                ],
+                data: eventType.sourceFolderUris.map(uri => [uri]),
+            }}
+            tableHeader={{
+                title: "Source Folder URIs",
+                onDataCreate: (newRows) => openConfirmDialog({
+                    title: 'Confirm Create Source Folder URIs',
+                    content: `Are you sure that you want to create the(se) source folder URI(s) for event type ${eventType.title}?`,
+                    onConfirm: () => {
+                        const request: BulkUpdateEventTypeRequest = {};
+                        request[eventTypeId] = {
+                            addSourceFolderUris: newRows.map(row => (row[0] as string))
+                        };
+                        return updateEventTypes(request);
+                    }
+                }),
+                onDataDelete: (deleteIndicies) => openConfirmDialog({
+                    title: 'Confirm Delete Source Folder URIs',
+                    content: `Are you sure that you want to delete the(se) source folder URI(s) for event type ${eventType.title}?`,
+                    onConfirm: () => {
+                        const request: BulkUpdateEventTypeRequest = {};
+                        request[eventTypeId] = {
+                            removeSourceFolderUris: eventType.sourceFolderUris.filter((_, i) => deleteIndicies[i])
+                        }
+                        return updateEventTypes(request);
+                    }
+                }),
+            }}
+            loading={loading}
+            useDataWhileLoading={eventTypes && loading} 
+        />
+    );
+}
+
+export const EventTypeInformation = ({ eventTypeId, setSubview }: EventTypeInformationProps & SetEventLogSubview) => {
+    const { eventTypes } = useEventTypes();
     const { eventLogNotif, removeEventLogNotif } = useEventLogNotifications();
     const eventType = eventTypes!.find(et => et.id == eventTypeId)!;    
 
@@ -43,104 +154,9 @@ export const EventTypeInformation = ({ eventTypeId, setSubview }: EventTypeInfor
                 onClick={() => setSubview({ subviewId: 'event-log', props: {} })}
                 className='event-log-return'
             />
-            <div 
-                className={
-                    'content-stats '
-                    // + (visitedPages.includes("EventTypeInformation") ? "" : "init")
-                }
-                // onAnimationStart={() => visitedPages.push("EventTypeInformation")}
-            >
-                <Table
-                    tableData={{
-                        columns: [
-                            {
-                                title: "Type ID",
-                                type: "string!",
-                                disableCreate: true,
-                                disableUpdate: true,
-                            },
-                            {
-                                title: "Title",
-                                type: "string!",
-                            },
-                            {
-                                title: "Value",
-                                type: "number!",
-                            },
-                        ],
-                        data: [[eventType.id, eventType.title, eventType.value]],
-                    }}
-                    tableHeader={{
-                        title: "Event Types",
-                        onDataUpdate: (updates) => openConfirmDialog({
-                            title: 'Confirm Update Event Types',
-                            content: `Are you sure that you want to update event type ${eventType.title}?`,
-                            onConfirm: () => {
-                                const request: BulkUpdateEventTypeRequest = {};
-                                updates.forEach((row, _) => {
-                                    row.forEach((col, c) => {
-                                        if(!col) return;
-
-                                        const eventTypeId = eventType.id;
-                                        if(!request[eventTypeId]) request[eventTypeId] = {};
-                                        
-                                        switch(c) {
-                                            case 1:
-                                                request[eventTypeId].title = col as string;
-                                                break;
-                                            case 2:
-                                                request[eventTypeId].value = col as number;
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    });
-                                });
-                                return updateEventTypes(request);
-                            }
-                        }),
-                    }}
-                    loading={loading}
-                    useDataWhileLoading={eventTypes && loading} 
-                />
-                <Table
-                    tableData={{
-                        columns: [
-                            {
-                                title: "URI",
-                                type: "string!",
-                            },
-                        ],
-                        data: eventType.sourceFolderUris.map(uri => [uri]),
-                    }}
-                    tableHeader={{
-                        title: "Source Folder URIs",
-                        onDataCreate: (newRows) => openConfirmDialog({
-                            title: 'Confirm Create Source Folder URIs',
-                            content: `Are you sure that you want to create the(se) source folder URI(s) for event type ${eventType.title}?`,
-                            onConfirm: () => {
-                                const request: BulkUpdateEventTypeRequest = {};
-                                request[eventTypeId] = {
-                                    addSourceFolderUris: newRows.map(row => (row[0] as string))
-                                };
-                                return updateEventTypes(request);
-                            }
-                        }),
-                        onDataDelete: (deleteIndicies) => openConfirmDialog({
-                            title: 'Confirm Delete Source Folder URIs',
-                            content: `Are you sure that you want to delete the(se) source folder URI(s) for event type ${eventType.title}?`,
-                            onConfirm: () => {
-                                const request: BulkUpdateEventTypeRequest = {};
-                                request[eventTypeId] = {
-                                    removeSourceFolderUris: eventType.sourceFolderUris.filter((_, i) => deleteIndicies[i])
-                                }
-                                return updateEventTypes(request);
-                            }
-                        }),
-                    }}
-                    loading={loading}
-                    useDataWhileLoading={eventTypes && loading} 
-                />
+            <div className="content-stats">
+                <GeneralInformationTable eventType={eventType} eventTypeId={eventTypeId} />
+                <SourceFolderUrisTable eventType={eventType} eventTypeId={eventTypeId} />
             </div>
         </div>
     )
