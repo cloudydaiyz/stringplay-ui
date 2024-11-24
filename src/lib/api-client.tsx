@@ -86,8 +86,8 @@ export function useClientContext(): ReturnType<typeof useClient> {
 }
 
 export function useMetadata() {
-    const { lastUpdated, loading } = useClientContext();
-    return { lastUpdated, loading };
+    const { lastUpdated, loading, getConsoleData } = useClientContext();
+    return { lastUpdated, loading, getConsoleData };
 }
 
 export function useTroupe() {
@@ -233,6 +233,7 @@ export function useEventTypes() {
 
     const updateEventTypes = (request: BulkUpdateEventTypeRequest) => apiCall(
         api.updateEventTypes(DEFAULT_TROUPE_ID, request).then(d => {
+            console.log('setting event types');
             setEventTypes(eventTypes?.map(et => et.id in d.data ? d.data[et.id] : et));
         }).catch(e => {
             const err = e as AxiosError;

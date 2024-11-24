@@ -7,10 +7,11 @@ import ContentHeader from "../../layout/ContentHeader";
 import Table from "../../Table";
 import { useEventLogNotifications } from "../../../../lib/notifications";
 import Notification from '../../Notification';
+import { visitedPages } from "../../../../lib/global";
 
 /** Subview that shows an overview of events and event types */
 export const EventLog = ({ setSubview }: SetEventLogSubview) => {
-    const { lastUpdated, loading } = useMetadata();
+    const { loading } = useMetadata();
     const { eventTypes, createEventTypes, updateEventTypes, deleteEventTypes } = useEventTypes();
     const { events, createEvents, updateEvents, deleteEvents, } = useEvents();
     const { openConfirmDialog } = useDialogToggle();
@@ -18,8 +19,8 @@ export const EventLog = ({ setSubview }: SetEventLogSubview) => {
 
     return (
         <div className='content-inner-view'>
-            <ContentHeader title='Event Log' lastUpdated={lastUpdated} />
-            <div className='content-notifications'>
+            <ContentHeader title='Event Log' />
+            <div className='content-notifications' style={eventLogNotif.length == 0 ? {display: 'none'} : {}}>
                 { 
                     eventLogNotif.map((props, i) => (
                         <Notification 
@@ -29,7 +30,13 @@ export const EventLog = ({ setSubview }: SetEventLogSubview) => {
                     )) 
                 }
             </div>
-            <div className='content-stats'>
+            <div 
+                className={
+                    'content-stats '
+                    + (visitedPages.includes("EventLog") ? "" : "init")
+                }
+                onAnimationStart={() => visitedPages.push("EventLog")}
+            >
                 <Table
                     tableData={{
                         columns: [

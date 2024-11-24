@@ -11,6 +11,7 @@ import ContentHeader from '../layout/ContentHeader';
 import Table from '../Table';
 import { useTroupeNotifications } from '../../../lib/notifications';
 import Notification from '../Notification';
+import { visitedPages } from '../../../lib/global';
 
 const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
 const basePointTypes = ["Total"] as const;
@@ -99,14 +100,18 @@ const MemberPropertyTypesTable = () => {
                     title: 'Confirm Update Property Types',
                     content: 'Are you sure that you want to update these property types?',
                     onConfirm: () => {
-                        type UTP = UpdateTroupeRequest['updateMemberProperties'];
+                        type UMP = UpdateTroupeRequest['updateMemberProperties'];
 
-                        const updateMemberProperties: UTP = {};
+                        const updateMemberProperties: UMP = {};
                         updates.forEach((row, r) => {
-                            if(!row) return;
+                            const isBaseMemberProp = baseMemberProperties.includes(
+                                (row[0] || data[r][0]) as typeof baseMemberProperties[number]
+                            );
+                            if(!row || isBaseMemberProp) return;
+
                             const required = (row[2] !== undefined ? row[2] : data[r][2]) as boolean;
-                            const prop = (row[0] || data[r][0]) as keyof UTP;
-                            const newValue = (row[1] || data[r][1]) + (required ? "!" : "?") as UTP[keyof UTP];
+                            const prop = (row[0] || data[r][0]) as keyof UMP;
+                            const newValue = (row[1] || data[r][1]) + (required ? "!" : "?") as UMP[keyof UMP];
                             updateMemberProperties[prop] = newValue;
                         });
 
@@ -217,18 +222,21 @@ const PointTypesTable = () => {
                     content: 'Are you sure that you want to update these membership point types?',
                     onConfirm: () => {
                         type UPT = UpdateTroupeRequest['updatePointTypes'];
-                        return updateTroupe({
-                            updatePointTypes: arrayToObject(
-                                updates, 
-                                (row, r) => [
-                                    (row[0] || data[r][0]) as keyof UPT, 
-                                    {
-                                        startDate: ((row[1] || data[r][1]) as Date).toISOString(),
-                                        endDate: ((row[2] || data[r][2]) as Date).toISOString(),
-                                    } as UPT[keyof UPT]
-                                ]
-                            )
+
+                        const updatePointTypes: UPT = {};
+                        updates.forEach((row, r) => {
+                            const isBasePointType = basePointTypes.includes(
+                                (row[0] || data[r][0]) as typeof basePointTypes[number]
+                            );
+                            if(isBasePointType) return;
+
+                            updatePointTypes[(row[0] || data[r][0]) as string] = {
+                                startDate: ((row[1] || data[r][1]) as Date).toISOString(),
+                                endDate: ((row[2] || data[r][2]) as Date).toISOString(),
+                            }
                         });
+
+                        return updateTroupe({ updatePointTypes });
                     }
                 }),
                 onDataDelete: (deleteIndicies) => openConfirmDialog({
@@ -270,17 +278,24 @@ const SettingsTable = () => {
                         type: "boolean!",
                         disableUpdate: true,
                     },
+                    {
+                        title: "Manual Sync",
+                        type: "action",
+                        disableUpdate: true,
+                    },
                 ],
                 data: !loading && !troupe 
                     ? [[
                         defaultConfig.troupe.logSheetUri, 
                         defaultConfig.troupe.originEventId || null, 
                         defaultConfig.troupe.syncLock, 
+                        true,
                     ]] 
                     : [[
                         troupe?.logSheetUri || "err", 
                         troupe?.originEventId || null, 
                         troupe?.syncLock || false, 
+                        true,
                     ]],
                 validateData: (data, _, c) => {
                     if(c == 1) {
@@ -306,14 +321,13 @@ const SettingsTable = () => {
 }
 
 const TroupeView = () => {
-    const { lastUpdated } = useMetadata();
     const { troupeNotif, removeTroupeNotif } = useTroupeNotifications();
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title='Troupe' lastUpdated={lastUpdated} />
-                <div className='content-notifications'>
+                <ContentHeader title='Troupe' />
+                <div className='content-notifications' style={troupeNotif.length == 0 ? {display: 'none'} : {}}>
                     { 
                         troupeNotif.map((props, i) => (
                             <Notification 
@@ -323,7 +337,13 @@ const TroupeView = () => {
                         )) 
                     }
                 </div>
-                <div className='content-stats'>
+                <div 
+                    className={
+                        'content-stats '
+                        + (visitedPages.includes("TroupeView") ? "" : "init")
+                    }
+                    onAnimationStart={() => visitedPages.push("TroupeView")}
+                >
                     <MemberPropertyTypesTable />
                     <PointTypesTable />
                     <SettingsTable />

@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SignupPage } from '../../pages/SignupPage';
 import { fn } from '@storybook/test';
 import { mockRegister } from '../../lib/auth.mock';
+import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
 const meta = {
   tags: ['autodocs'],
@@ -26,9 +27,20 @@ const meta = {
             zIndex: '100',
           }}
         >
-          { story() }
+          <RouterProvider 
+            router={createMemoryRouter([
+              {
+                path: "/",
+                element: story(),
+              },
+              {
+                path: "/register",
+                element: story(),
+              },
+            ])} 
+          />
         </div>
-      )
+      );
     }
   ],
   args: {

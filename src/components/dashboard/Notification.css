@@ -18,6 +18,7 @@
 .app-notification.content-unit.info
 {
     background-color: rgb(from darkblue r g b / 50%);
+    border: 1px solid rgb(from darkblue r - 50 g - 50 b - 50);
 }
 
 .app-notification.content-unit.warning

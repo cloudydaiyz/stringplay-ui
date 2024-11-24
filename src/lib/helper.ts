@@ -82,3 +82,12 @@ export function removeId<T>(obj: T & { _id?: any }): T {
     delete obj._id;
     return obj;
 }
+
+/**
+ * @param status The status code to check
+ * @param rangeBase The base for the range of the status code (e.g. 200, 300, 400, 500, etc.)
+ * @returns True if the status code is within the range
+ */
+export function checkStatus(status: number, rangeBase: number) {
+    return rangeBase <= status && status < rangeBase + 100;
+}

@@ -2,7 +2,6 @@ import '../app/shared.css';
 import './LoadingBackground.css';
 
 interface LoadingBackgroundProps {
-    /** Hello world */
     doneLoading?: boolean;
     className?: string;
 }
@@ -15,7 +14,7 @@ const LoadingBackground = ({ doneLoading = false, children, className = '' }: Re
             <div className={`loading-bg-right ${doneLoading ? 'inactive' : ''}`}></div>
             {children}
         </div>
-    )
+    );
 }
 
 export default LoadingBackground

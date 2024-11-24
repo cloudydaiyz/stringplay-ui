@@ -16,17 +16,17 @@
 
 .app-nav button
 {
-    padding: 8px 0px;
-    padding-left: 8px;
+    padding: 12px 0px;
+    padding-left: 16px;
     padding-right: 32px;
     width: 100%;
     display: flex;
     gap: 8px;
     align-items: center;
-    margin-bottom: 8px;
+    /* margin-bottom: 8px; */
 
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
 
     font-family: var(--font-2);
     font-weight: 500;
@@ -38,6 +38,12 @@
     color: var(--c1);
 
     transition: all .3s;
+}
+
+.app-nav button svg
+{
+    width: 18px !important;
+    height: 18px !important;
 }
 
 .app-nav button:not(.current):hover

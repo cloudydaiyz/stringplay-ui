@@ -35,7 +35,7 @@ const TableCell = ({ r, c }: TableCellProps) => {
         return (
             <td className='action'>
                 {
-                    mode == null 
+                    mode == null && item !== false
                         && <button 
                             onClick={() => {
                                 if(!tableData.onAction) {

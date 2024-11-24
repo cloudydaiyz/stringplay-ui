@@ -12,6 +12,7 @@ import { defaultConfig } from '../../../lib/mock-data';
 import { TroupeDashboard } from '@cloudydaiyz/stringplay-core/types/api';
 import { useDashboardNotifications } from '../../../lib/notifications';
 import Notification from '../Notification';
+import { visitedPages } from '../../../lib/global';
 
 /** Converts entity data to data parsable by the `CategoricalStatistics` component */
 function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercentageByEventType'] | undefined) {
@@ -40,7 +41,7 @@ function getDashboardTableData(dashboard: TroupeDashboard | undefined) {
 }
 
 const DashboardView = () => {
-    const { lastUpdated, loading } = useMetadata();
+    const { loading } = useMetadata();
     const { dashboard } = useTroupe();
     const { dashboardNotif, removeDashboardNotif } = useDashboardNotifications();
 
@@ -175,8 +176,8 @@ const DashboardView = () => {
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title="Dashboard" lastUpdated={lastUpdated} />
-                <div className='content-notifications'>
+                <ContentHeader title="Dashboard" />
+                <div className='content-notifications' style={dashboardNotif.length == 0 ? {display: 'none'} : {}}>
                     { 
                         dashboardNotif.map((props, i) => (
                             <Notification 
@@ -186,7 +187,13 @@ const DashboardView = () => {
                         )) 
                     }
                 </div>
-                <div className='content-stats'>
+                <div 
+                    className={
+                        'content-stats '
+                        + (visitedPages.includes("DashboardView") ? "" : "init")
+                    }
+                    onAnimationStart={() => visitedPages.push("DashboardView")}
+                >
                     { upcomingBirthdays }
                     { cumulativeStatistics }
                     { categoricalStatistics }

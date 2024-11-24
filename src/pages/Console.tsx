@@ -38,7 +38,7 @@ export const Console = () => {
                     <Logo 
                         stroke={false} 
                         size="l" 
-                        animated={loading} 
+                        animated={!doneLoading} 
                     />
                     <h3>Loading...</h3>
                 </div>

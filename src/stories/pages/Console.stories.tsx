@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Console } from '../../pages/Console';
-import { ApiClientProvider } from '../../lib/api-client';
 import { mockCreateEvents, mockCreateEventTypes, mockCreateMembers, mockDeleteEvents, mockDeleteEventTypes, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockGetEvents, mockGetEventTypes, mockGetTroupe, mockUpdateEvents, mockUpdateEventTypes, mockUpdateMembers, mockUpdateTroupe } from '../../lib/api-client.mock';
-import { DialogProvider } from '../../lib/toggle-dialog';
+import { AppContext } from '../../app/context';
+import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 
 const meta = {
   tags: ['autodocs'],
@@ -31,13 +31,22 @@ const meta = {
   },
   decorators: [
     (story) => (
-      <ApiClientProvider>
-        <DialogProvider>
-          <div style={{height:'fit-content', width:'1200px'}}>
-            {story()}
-          </div>
-        </DialogProvider>
-      </ApiClientProvider>
+      <AppContext>
+        <div style={{height:'fit-content', width:'1200px'}}>
+          <RouterProvider 
+            router={createMemoryRouter([
+              {
+                path: "/",
+                element: story(),
+              },
+              {
+                path: "/login",
+                element: story(),
+              },
+            ])} 
+          />
+        </div>
+      </AppContext>
     ),
   ],
   component: Console,

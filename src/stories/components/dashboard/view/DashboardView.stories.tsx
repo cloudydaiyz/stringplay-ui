@@ -1,16 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import DashboardView from '../../../../components/dashboard/view/DashboardView';
 import { mockGetConsoleData } from '../../../../lib/api-client.mock';
-import { ApiClientProvider } from '../../../../lib/api-client';
+import { AppContext } from '../../../../app/context';
+import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
 const meta = {
   component: DashboardView,
   decorators: [(story) => (
-    <ApiClientProvider>
+    <AppContext>
       <div style={{width:'800px', minHeight:'100vh'}}>
-        {story()}
+        <RouterProvider 
+          router={createMemoryRouter([
+            {
+              path: "/",
+              element: story(),
+            },
+            {
+              path: "/login",
+              element: story(),
+            },
+          ])} 
+        />
       </div>
-    </ApiClientProvider>
+    </AppContext>
   )],
   tags: ['autodocs'],
   parameters: {

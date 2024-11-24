@@ -106,7 +106,7 @@
 .app-table tbody td
 {
     white-space: nowrap;
-    overflow-x: scroll;
+    overflow-x: hidden;
     position: relative;
 }
 
@@ -196,9 +196,9 @@ th, td, tr
     background: none;
     border: none;
     opacity: .25;
-    transition: opacity .2s;
     width: fit-content;
     height: 20px;
+    transition: opacity .2s, transform .2s;
 }
 
 .app-table .action button:hover,
@@ -218,6 +218,7 @@ th, td, tr
 .app-table .delete-cell button:active
 {
     opacity: 1;
+    transform: scale(1.1);
     cursor: initial;
 }
 

@@ -2,20 +2,29 @@ import type { Meta, StoryObj } from '@storybook/react';
 import MemberLogView from '../../../../components/dashboard/view/MemberLogView';
 import { mockCreateMembers, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockUpdateMembers } from '../../../../lib/api-client.mock';
 import { ContextDialog } from '../../../../components/common/Dialog';
-import { ApiClientProvider } from '../../../../lib/api-client';
-import { DialogProvider } from '../../../../lib/toggle-dialog';
+import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { AppContext } from '../../../../app/context';
 
 const meta = {
   component: MemberLogView,
   decorators: [(story) => (
-    <ApiClientProvider>
-      <DialogProvider>
-        <div style={{width:'800px', minHeight:'100vh', height:'100vh'}}>
-          {story()}
-          <ContextDialog />
-        </div>
-      </DialogProvider>
-    </ApiClientProvider>
+    <AppContext>
+      <div style={{width:'800px', minHeight:'100vh', height:'100vh'}}>
+        <RouterProvider 
+          router={createMemoryRouter([
+            {
+              path: "/",
+              element: story(),
+            },
+            {
+              path: "/login",
+              element: story(),
+            },
+          ])} 
+        />
+        <ContextDialog />
+      </div>
+    </AppContext>
   )],
   tags: ['autodocs'],
   parameters: {

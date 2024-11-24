@@ -9,6 +9,7 @@ import "./SignupPanel.css";
 import { useState } from "react";
 import { useAuth } from "../lib/auth";
 import { useNavigate } from "react-router-dom";
+import { checkStatus } from "../lib/helper";
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
 const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
@@ -32,31 +33,31 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
     const [ error, setError ] = useState(0);
     const navigate = useNavigate();
     
-    const loggingIn = statusCode == 1;
-    const loggedIn = statusCode == 200;
-    const disableInput = loggingIn || loggedIn;
+    const signingUp = statusCode == 1;
+    const signedUp = checkStatus(statusCode, 200);
+    const disableInput = signingUp || signedUp;
 
     let statusEle: JSX.Element = <p key={`${Date.now()}`} className="signup-status"></p>;
-    if(loggingIn) {
+    if(signingUp) {
         statusEle = (
             <p key={`${Date.now()}`} className="signup-status">
                 Verifying your information...
             </p>
         );
-    } else if(loggedIn) {
+    } else if(signedUp) {
         statusEle = (
             <p key={`${Date.now()}`} className="signup-status">
                 Sign up successful!
             </p>
         );
-    } else if(statusCode == 400) {
+    } else if(checkStatus(statusCode, 400)) {
         statusEle = (
             <p key={`${Date.now()}`} className="signup-status error">
                 Sign up failed.
                 {/* Sign up failed.<br/>Username already exists. */}
             </p>
         );
-    } else if(statusCode == 500) {
+    } else if(checkStatus(statusCode, 500)) {
         statusEle = (
             <p key={`${Date.now()}`} className="signup-status error">
                 A server error has occurred.
@@ -95,23 +96,27 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
         setStatusCode(1);
         register(username.value, email.value, password.value)
             .then(d => {
-                if(!d) return;
-                if(d.status == 200) {
-                    // introduce short delay to show successful login text
+                if(!d || !d.status) {
+                    console.log("An error has occurred. Data received:", d);
+                    setStatusCode(500);
+                    return;
+                }
+
+                if(checkStatus(d.status, 200)) {
                     setTimeout(() => {
                         navigate("/login");
                     }, 1000);
                 } else if(d.status == 503) {
                     navigate("/no-service");
                 }
-                setStatusCode(d.status!);
+                setStatusCode(d.status);
             })
             .catch(e => { console.error(e); setStatusCode(400) })
     }
 
     return (
         <div className={`auth-panel signup-panel ${inactive ? "inactive" : ""}`}>
-            <LoginLogo animated={loggingIn && !loggedIn} size="s" />
+            <LoginLogo animated={signingUp && !signedUp} size="s" />
             <form onSubmit={submitSignUp} noValidate={true}>
                 <div className="signup-text-fields">
                     <TextField title="Email address*" name="email" disabled={disableInput} />

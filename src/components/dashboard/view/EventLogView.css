@@ -3,19 +3,25 @@
     color: var(--white);
     fill: var(--white);
     width: fit-content;
-    padding: 8px 16px;
+    padding: 4px 16px;
     font-size: .9rem;
     outline: 1px solid var(--g2);
     transform: translate(0px);
     border-radius: 4px;
 }
 
-.event-log-return:hover svg
+.event-log-return:hover,
+.event-log-return:active
+{
+    box-shadow: 0px 0px 2px 4px rgba(0, 0, 0, .2) !important;
+}
+
+.event-log-return svg
 {
     transition: all .3s;
 }
 
-.event-log-return:hover svg
+.event-log-return:active svg
 {
     transform: translateX(-4px);
 }

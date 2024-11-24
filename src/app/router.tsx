@@ -4,14 +4,17 @@ import {
     Navigate,
 } from "react-router-dom";
 import { AppContext } from "./context";
+import { ErrorBoundary } from "react-error-boundary";
 
 /** Wraps the console element with AppContext */
 const getAppConsole = async () => {
     const { Console } = await import("../pages/Console");
     const AppConsole = () => (
-        <AppContext>
-            <Console />
-        </AppContext>
+        <ErrorBoundary fallback={<Navigate to={"/login"}/>}>
+            <AppContext>
+                <Console />
+            </AppContext>
+        </ErrorBoundary>
     );
     return { AppConsole }
 }

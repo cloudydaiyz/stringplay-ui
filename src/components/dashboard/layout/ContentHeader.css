@@ -13,5 +13,67 @@
 
 .content-header h2
 {
-    font-size: 2rem;
+    font-size: 1.5rem;
+}
+
+.app-refresh
+{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.app-refresh.loading
+{
+    color: var(--g2);
+}
+
+.app-refresh-btn
+{
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    fill: var(--c1);
+    background: none;
+    border: none;
+    /* rotate: 5deg; */
+    transition: all .3s;
+}
+
+.app-refresh-btn svg
+{
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.app-refresh-btn:disabled
+{
+    animation: rotation 1s linear infinite;
+    fill: var(--g2);
+}
+
+.app-refresh-btn.inactive
+{
+    display: none;
+}
+
+.app-refresh-btn:not(:disabled):hover
+{
+    transform: scale(1.15);
+    fill: var(--c2);
+    cursor: pointer;
+}
+
+.app-refresh-btn:not(:disabled):active
+{
+    animation: rotation 5s linear infinite;
+    transform: scale(1.25);
+    cursor: initial;
+}
+
+@keyframes rotation {
+    from { rotate: 0deg }
+    to { rotate: 360deg }
 }

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import SignupPanel from '../../components/SignupPanel';
 import { mockRegister } from '../../lib/auth.mock';
+import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
 const meta = {
   tags: ['autodocs'],
@@ -13,6 +14,28 @@ const meta = {
       ]
     },
   },
+  decorators: [
+    (story) => {
+      return (
+        <RouterProvider 
+          router={createMemoryRouter([
+            {
+              path: "/",
+              element: story(),
+            },
+            {
+              path: "/register",
+              element: story(),
+            },
+            {
+              path: "/console",
+              element: story(),
+            },
+          ])} 
+        />
+      );
+    }
+  ],
   component: SignupPanel,
 } satisfies Meta<typeof SignupPanel>;
 

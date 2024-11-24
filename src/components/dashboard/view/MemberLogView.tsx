@@ -13,6 +13,7 @@ import { TableData } from '../../../types/table-types';
 import { arrayToObject } from '../../../lib/helper';
 import { useMemberLogNotifications } from '../../../lib/notifications';
 import Notification from '../Notification';
+import { visitedPages } from '../../../lib/global';
 
 const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
 const basePointTypes = ["Total"] as const;
@@ -192,6 +193,8 @@ const MembershipPointsTable = () => {
             tableHeader={{
                 title: "Membership Points",
             }}
+            loading={loading}
+            useDataWhileLoading={attendees && loading}
         />
     );
 }
@@ -236,20 +239,21 @@ const EventsAttendedTable = () => {
             tableHeader={{
                 title: "Events Attended",
             }}
+            loading={loading}
+            useDataWhileLoading={attendees && loading}
         />
     );
 }
 
 const MemberLogView = () => {
     const [ table, setTable ] = useState<MemberLogTable>('membership-info');
-    const { lastUpdated } = useMetadata();
     const { memberLogNotif, removeMemberLogNotif } = useMemberLogNotifications();
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title='Member Log' lastUpdated={lastUpdated} />
-                <div className='content-notifications'>
+                <ContentHeader title='Member Log' />
+                <div className='content-notifications' style={memberLogNotif.length == 0 ? {display: 'none'} : {}}>
                     { 
                         memberLogNotif.map((props, i) => (
                             <Notification 
@@ -277,7 +281,13 @@ const MemberLogView = () => {
                     initialPageId='membership-info'
                     onClick={(key) => setTable(key as MemberLogTable)}
                 />
-                <div className='content-stats'>
+                <div 
+                    className={
+                        'content-stats '
+                        + (visitedPages.includes("MemberLogView") ? "" : "init")
+                    }
+                    onAnimationStart={() => visitedPages.push("MemberLogView")}
+                >
                     {
                         table == 'membership-points'
                         ? <MembershipPointsTable />

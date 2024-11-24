@@ -1,20 +1,31 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import ContentHeader from '../../../../components/dashboard/layout/ContentHeader';
+import { ApiClientProvider } from '../../../../lib/api-client';
+import { mockGetConsoleData } from '../../../../lib/api-client.mock';
 
 const meta = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    msw: {
+      handlers: [
+        mockGetConsoleData(),
+      ]
+    }
   },
-  decorators: [(story) => <div
-    style={{
-      width: '1000px',
-      padding: '16px',
-    }}
-  >
-    {story()}
-  </div>],
+  decorators: [(story) => (
+    <ApiClientProvider>
+      <div
+        style={{
+          width: '1000px',
+          padding: '16px',
+        }}
+      >
+        {story()}
+      </div>
+    </ApiClientProvider>
+  )],
   args: {
     title: "Content at a glance"
   },

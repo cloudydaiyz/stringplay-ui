@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { fn } from '@storybook/test';
 import Notification from '../../../components/dashboard/Notification';
 
 const meta = {
@@ -15,6 +16,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = { 
   args: {
     notificationType: 'info',
-    text: 'This is an example notification.'
+    text: 'This is an example notification.',
+    onClick: () => fn(),
   }
 };

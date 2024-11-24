@@ -13,7 +13,7 @@ import Table from "../../Table";
 
 /** Subview that shows detailed information about one event */
 export const EventInformation = ({ eventId, setSubview }: EventInformationProps & SetEventLogSubview) => {
-    const { lastUpdated, loading } = useMetadata();
+    const { loading } = useMetadata();
     const { troupe } = useTroupe();
     const { eventTypes } = useEventTypes();
     const { events, updateEvents } = useEvents();
@@ -28,8 +28,8 @@ export const EventInformation = ({ eventId, setSubview }: EventInformationProps 
 
     return (
         <div className='event-information content-inner-view'>
-            <ContentHeader title='Event Log' lastUpdated={lastUpdated} />
-            <div className='content-notifications'>
+            <ContentHeader title='Event Log' />
+            <div className='content-notifications' style={eventLogNotif.length == 0 ? {display: 'none'} : {}}>
                 { 
                     eventLogNotif.map((props, i) => (
                         <Notification 
@@ -53,148 +53,156 @@ export const EventInformation = ({ eventId, setSubview }: EventInformationProps 
                 onClick={() => setSubview({ subviewId: 'event-log', props: {} })}
                 className='event-log-return'
             />
-            <Table
-                tableData={{
-                    columns: [
-                        {
-                            title: "Event ID",
-                            type: "string!",
-                            disableUpdate: true,
-                        },
-                        {
-                            title: "Type ID",
-                            type: "string?",
-                        },
-                        {
-                            title: "Title",
-                            type: "string!",
-                        },
-                        {
-                            title: "Start Date",
-                            type: "date!",
-                        },
-                        {
-                            title: "Value",
-                            type: "number?",
-                        },
-                        {
-                            title: "Source",
-                            type: "string?",
-                            disableUpdate: true,
-                        },
-                        {
-                            title: "Source URI",
-                            type: "string!",
-                        },
-                    ],
-                    data: [[event.id, event.eventTypeId || null, event.title, new Date(event.startDate), event.value, event.source, event.sourceUri]],
-                    validateData: (data, _, c) => {
-                        if(c == 1 && data && !eventTypes?.find(et => et.id == data)) {
-                            return false;
+            <div 
+                className={
+                    'content-stats '
+                    // + (visitedPages.includes("EventInformation") ? "" : "init")
+                }
+                // onAnimationStart={() => visitedPages.push("EventInformation")}
+            >
+                <Table
+                    tableData={{
+                        columns: [
+                            {
+                                title: "Event ID",
+                                type: "string!",
+                                disableUpdate: true,
+                            },
+                            {
+                                title: "Type ID",
+                                type: "string?",
+                            },
+                            {
+                                title: "Title",
+                                type: "string!",
+                            },
+                            {
+                                title: "Start Date",
+                                type: "date!",
+                            },
+                            {
+                                title: "Value",
+                                type: "number?",
+                            },
+                            {
+                                title: "Source",
+                                type: "string?",
+                                disableUpdate: true,
+                            },
+                            {
+                                title: "Source URI",
+                                type: "string!",
+                            },
+                        ],
+                        data: [[event.id, event.eventTypeId || null, event.title, new Date(event.startDate), event.value, event.source, event.sourceUri]],
+                        validateData: (data, _, c) => {
+                            if(c == 1 && data && !eventTypes?.find(et => et.id == data)) {
+                                return false;
+                            }
+                            return true;
                         }
-                        return true;
-                    }
-                }}
-                tableHeader={{
-                    title: "General Information",
-                    onDataUpdate: (updates) => openConfirmDialog({
-                        title: 'Confirm Update Event',
-                        content: `Are you sure that you want to update event ${event.title}?`,
-                        onConfirm: () => {
-                            const request: BulkUpdateEventRequest = {};
-                            updates.forEach((row, _) => {
-                                row.forEach((col, c) => {
-                                    if(!col) return;
+                    }}
+                    tableHeader={{
+                        title: "General Information",
+                        onDataUpdate: (updates) => openConfirmDialog({
+                            title: 'Confirm Update Event',
+                            content: `Are you sure that you want to update event ${event.title}?`,
+                            onConfirm: () => {
+                                const request: BulkUpdateEventRequest = {};
+                                updates.forEach((row, _) => {
+                                    row.forEach((col, c) => {
+                                        if(!col) return;
 
-                                    const eventId = event.id;
-                                    if(!request[eventId]) request[eventId] = {};
-                                    
-                                    switch(c) {
-                                        case 1:
-                                            request[eventId].eventTypeId = col as string;
-                                            break;
-                                        case 2:
-                                            request[eventId].title = col as string;
-                                            break;
-                                        case 3:
-                                            request[eventId].startDate = (col as Date).toISOString();
-                                            break;
-                                        case 4:
-                                            request[eventId].value = col as number;
-                                            break;
-                                        case 6:
-                                            request[eventId].sourceUri = col as string;
-                                            break;
-                                        default:
-                                            break;
+                                        const eventId = event.id;
+                                        if(!request[eventId]) request[eventId] = {};
+                                        
+                                        switch(c) {
+                                            case 1:
+                                                request[eventId].eventTypeId = col as string;
+                                                break;
+                                            case 2:
+                                                request[eventId].title = col as string;
+                                                break;
+                                            case 3:
+                                                request[eventId].startDate = (col as Date).toISOString();
+                                                break;
+                                            case 4:
+                                                request[eventId].value = col as number;
+                                                break;
+                                            case 6:
+                                                request[eventId].sourceUri = col as string;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                });
+                                return updateEvents(request);
+                            },
+                        }),
+                    }}
+                    loading={loading}
+                    useDataWhileLoading={true} 
+                />
+                <Table
+                    tableData={{
+                        columns: [
+                            {
+                                title: 'Field ID',
+                                type: 'string!',
+                                disableUpdate: true,
+                            },
+                            {
+                                title: 'Field',
+                                type: 'string?',
+                                disableUpdate: true,
+                            },
+                            {
+                                title: 'Property',
+                                type: 'string?',
+                            }
+                        ],
+                        data: fieldPropMap,
+                        validateData: (data, _, c) => {
+                            if(c == 2 
+                                && data !== null 
+                                && data !== "" 
+                                && !((data as string) in troupe!.memberPropertyTypes)
+                            ) {
+                                return false;
+                            }
+                            return true;
+                        }
+                    }}
+                    tableHeader={{
+                        title: 'Field to Property Map',
+                        onDataUpdate: (updates) => openConfirmDialog({
+                            title: 'Confirm Update Field to Property Map',
+                            content: `Are you sure that you want to update the field to property map for event ${event.title}?`,
+                            onConfirm: () => {
+                                const updateProperties: BulkUpdateEventRequest[string]['updateProperties'] = {};
+                                const removeProperties: BulkUpdateEventRequest[string]['removeProperties'] = [];
+                                updates.forEach((row, r) => {
+                                    if(row[2] === null) {
+                                        removeProperties.push(fieldPropMap[r][0]! as string);
+                                    } else if(row[2] !== undefined) {
+                                        updateProperties[fieldPropMap[r][0]!] = row[2] as string;
                                     }
                                 });
-                            });
-                            return updateEvents(request);
-                        },
-                    }),
-                }}
-                loading={loading}
-                useDataWhileLoading={true} 
-            />
-            <Table
-                tableData={{
-                    columns: [
-                        {
-                            title: 'Field ID',
-                            type: 'string!',
-                            disableUpdate: true,
-                        },
-                        {
-                            title: 'Field',
-                            type: 'string?',
-                            disableUpdate: true,
-                        },
-                        {
-                            title: 'Property',
-                            type: 'string?',
-                        }
-                    ],
-                    data: fieldPropMap,
-                    validateData: (data, _, c) => {
-                        if(c == 2 
-                            && data !== null 
-                            && data !== "" 
-                            && !((data as string) in troupe!.memberPropertyTypes)
-                        ) {
-                            return false;
-                        }
-                        return true;
-                    }
-                }}
-                tableHeader={{
-                    title: 'Field to Property Map',
-                    onDataUpdate: (updates) => openConfirmDialog({
-                        title: 'Confirm Update Field to Property Map',
-                        content: `Are you sure that you want to update the field to property map for event ${event.title}?`,
-                        onConfirm: () => {
-                            const updateProperties: BulkUpdateEventRequest[string]['updateProperties'] = {};
-                            const removeProperties: BulkUpdateEventRequest[string]['removeProperties'] = [];
-                            updates.forEach((row, r) => {
-                                if(row[2] === null) {
-                                    removeProperties.push(fieldPropMap[r][0]! as string);
-                                } else if(row[2] !== undefined) {
-                                    updateProperties[fieldPropMap[r][0]!] = row[2] as string;
-                                }
-                            });
 
-                            return updateEvents({
-                                [eventId]: {
-                                    updateProperties,
-                                    removeProperties,
-                                }
-                            });
-                        },
-                    }) 
-                }}
-                loading={loading}
-                useDataWhileLoading={true}
-            />
+                                return updateEvents({
+                                    [eventId]: {
+                                        updateProperties,
+                                        removeProperties,
+                                    }
+                                });
+                            },
+                        }) 
+                    }}
+                    loading={loading}
+                    useDataWhileLoading={true}
+                />
+            </div>
         </div>
     )
 }
