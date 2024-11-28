@@ -32,22 +32,24 @@ const meta = {
   },
   decorators: [
     (story) => (
-      <AppContext>
-        <div style={{height:'fit-content', width:'1200px'}}>
-          <RouterProvider 
-            router={createMemoryRouter([
-              {
-                path: "/",
-                element: story(),
-              },
-              {
-                path: "/login",
-                element: story(),
-              },
-            ])} 
-          />
-        </div>
-      </AppContext>
+      <div style={{height:'fit-content', width:'1200px'}}>
+        <RouterProvider 
+          router={createMemoryRouter([
+            {
+              path: "/",
+              element: AppContext({ children: story() }),
+            },
+            {
+              path: "/login",
+              element: AppContext({ children: story() }),
+            },
+            {
+              path: "/no-service",
+              element: AppContext({ children: story() }),
+            },
+          ])} 
+        />
+      </div>
     ),
   ],
   component: Console,

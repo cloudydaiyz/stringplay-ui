@@ -72,7 +72,7 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
         const username = e.currentTarget.elements.namedItem('username') as HTMLInputElement;
         const password = e.currentTarget.elements.namedItem('password') as HTMLInputElement;
         const confirmPassword = e.currentTarget.elements.namedItem('confirm-password') as HTMLInputElement;
-        // const inviteCode = e.currentTarget.elements.namedItem('invite-code') as HTMLInputElement;
+        const inviteCode = e.currentTarget.elements.namedItem('invite-code') as HTMLInputElement;
 
         let currentError = 0;
         if(!email.checkValidity()) currentError = currentError | emptyEmail;
@@ -94,7 +94,7 @@ const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
 
         setError(0);
         setStatusCode(1);
-        register(username.value, email.value, password.value)
+        register(username.value, email.value, password.value, inviteCode.value == "" ? undefined : inviteCode.value)
             .then(d => {
                 if(!d || !d.status) {
                     console.log("An error has occurred. Data received:", d);

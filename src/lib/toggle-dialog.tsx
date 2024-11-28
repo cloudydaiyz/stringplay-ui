@@ -71,7 +71,7 @@ export function useDialogToggle() {
                 },
                 {
                     label: 'CONFIRM',
-                    color: 'var(--success)',
+                    color: 'var(--success-dark)',
                     onClick: async () => {
                         closeDialog();
                         onConfirm();

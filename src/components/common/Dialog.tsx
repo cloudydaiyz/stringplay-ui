@@ -12,7 +12,9 @@ export const ContextDialog = () => {
 
     const actionButtons = actions.map((action, i) => (
         <Button 
-            style={{backgroundColor: action.color}}
+            style={{
+                "--color": action.color,
+            } as React.CSSProperties}
             onClick={() => action.onClick()}
             text={action.label}
             key={i}

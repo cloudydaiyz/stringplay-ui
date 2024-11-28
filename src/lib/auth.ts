@@ -29,8 +29,8 @@ export function useAuth() {
             });
     }
 
-    const register = async (username: string, email: string, password: string, troupe?: string) => {
-        return api.register(username, email, password, troupe || username + "'s Troupe")
+    const register = async (username: string, email: string, password: string, inviteCode?: string, troupe?: string) => {
+        return api.register(username, email, password, troupe || username + "'s Troupe", inviteCode)
             .then(d => {
                 return d;
             }).catch(e => {

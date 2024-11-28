@@ -5,9 +5,10 @@ import { useDialogToggle } from "../../../../lib/toggle-dialog";
 import { SetEventLogSubview } from "../../../../types/view-types";
 import ContentHeader from "../../layout/ContentHeader";
 import Table from "../../Table";
-import { useEventLogNotifications } from "../../../../lib/notifications";
+import { useConsoleNotifications, useEventLogNotifications } from "../../../../lib/notifications";
 import Notification from '../../Notification';
 import { visitedPages } from "../../../../lib/global";
+import { useState } from "react";
 
 function EventTypesTable({ setSubview }: SetEventLogSubview) {
     const { loading } = useMetadata();
@@ -225,21 +226,56 @@ function EventsTable({ setSubview }: SetEventLogSubview) {
 
 /** Subview that shows an overview of events and event types */
 export const EventLog = ({ setSubview }: SetEventLogSubview) => {
+    const { consoleNotif, removeConsoleNotif } = useConsoleNotifications();
     const { eventLogNotif, removeEventLogNotif } = useEventLogNotifications();
+    const { loading } = useMetadata();
+    const { events } = useEvents();
+    const { openDialog, closeDialog } = useDialogToggle();
+    const [ acknowledgedFailure, setAcknowledgedFailure ] = useState(false);
+
+    if(!loading && !events && !acknowledgedFailure) {
+        openDialog({
+            title: "Unable to load data",
+            content: "We are unable to load event data for this troupe at the moment. "
+                + "Please try navigating to another view or refreshing your page.",
+            actions: [{
+                label: "OKAY",
+                color: 'var(--g2)',
+                onClick: async () => { closeDialog(); setAcknowledgedFailure(true) },
+            }],
+        })
+    }
 
     return (
         <div className='content-inner-view'>
             <ContentHeader title='Event Log' />
-            <div className='content-notifications' style={eventLogNotif.length == 0 ? {display: 'none'} : {}}>
-                { 
-                    eventLogNotif.map((props, i) => (
-                        <Notification 
-                            {...props} 
-                            onClick={() => { setTimeout(() => removeEventLogNotif(i), 1000) }}
-                        />
-                    )) 
-                }
-            </div>
+                <div 
+                    className='content-notifications' 
+                    style={
+                        (consoleNotif.length + eventLogNotif.length) == 0 ? 
+                            {display: 'none'} : 
+                            {}
+                    }
+                >
+                    { 
+                        consoleNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => removeConsoleNotif(i)}
+                                key={i * Date.now()}
+                            />
+                        )) 
+                    }
+                    { 
+                        eventLogNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => removeEventLogNotif(i)}
+                                key={(i + consoleNotif.length) * Date.now()}
+                            />
+                        )) 
+                    }
+                </div>
             <div 
                 className={
                     'content-stats '

@@ -329,7 +329,7 @@ th, td, tr
 
 .app-table-body
 {
-    margin-bottom: 16px;
+    margin-bottom: 8px;
     overflow-x: scroll;
     max-height: calc(var(--max-rows) * 28px);
     border-bottom: 1px solid var(--g2);

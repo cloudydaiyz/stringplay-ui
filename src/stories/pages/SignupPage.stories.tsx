@@ -4,6 +4,7 @@ import { SignupPage } from '../../pages/SignupPage';
 import { fn } from '@storybook/test';
 import { mockRegister } from '../../lib/auth.mock';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { AppContext } from '../../app/context';
 
 const meta = {
   tags: ['autodocs'],
@@ -31,11 +32,11 @@ const meta = {
             router={createMemoryRouter([
               {
                 path: "/",
-                element: story(),
+                element: AppContext({ children: story() }),
               },
               {
                 path: "/login",
-                element: story(),
+                element: AppContext({ children: story() }),
               },
             ])} 
           />

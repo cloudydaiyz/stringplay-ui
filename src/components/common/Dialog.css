@@ -59,6 +59,10 @@
     justify-content: space-between;
 }
 
+.app-dialog-actions button:only-child {
+    margin: 0 auto;
+}
+
 .app-dialog-actions button
 {
     font-size: 0.9rem;
@@ -67,6 +71,12 @@
     border: none;
     color: white;
     font-family: var(--font-1);
+    background-color: var(--color);
+}
+
+.app-dialog-actions button:hover
+{
+    background-color: rgb(from var(--color) calc(r - 20) calc(g - 20) calc(b - 20)) !important;
 }
 
 @keyframes fade-in {

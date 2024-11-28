@@ -31,6 +31,10 @@ const meta = {
               path: "/console",
               element: story(),
             },
+            {
+              path: "/no-service",
+              element: story(),
+            },
           ])} 
         />
       );

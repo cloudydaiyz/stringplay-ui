@@ -7,22 +7,24 @@ import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 const meta = {
   component: DashboardView,
   decorators: [(story) => (
-    <AppContext>
-      <div style={{width:'800px', minHeight:'100vh'}}>
-        <RouterProvider 
-          router={createMemoryRouter([
-            {
-              path: "/",
-              element: story(),
-            },
-            {
-              path: "/login",
-              element: story(),
-            },
-          ])} 
-        />
-      </div>
-    </AppContext>
+    <div style={{width:'800px', minHeight:'100vh'}}>
+      <RouterProvider 
+        router={createMemoryRouter([
+          {
+            path: "/",
+            element: AppContext({ children: story() }),
+          },
+          {
+            path: "/login",
+            element: AppContext({ children: story() }),
+          },
+          {
+            path: "/no-service",
+            element: AppContext({ children: story() }),
+          },
+        ])} 
+      />
+    </div>
   )],
   tags: ['autodocs'],
   parameters: {

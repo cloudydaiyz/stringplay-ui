@@ -38,6 +38,9 @@ body
   --info: #2CAAFF;
   --warning: #F8A134;
 
+  --success-dark: #4CAF50;
+  --error-dark: #F44336;
+
   --sh1: 0px 0px 5px rgb(0, 0, 0, .7);
   --sh2: 0px 0px 16px rgba(0, 0, 0, .2);
   --sh3: 0px 0px 8px rgba(0, 0, 0, .2);

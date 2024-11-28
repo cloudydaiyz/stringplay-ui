@@ -8,7 +8,7 @@ function notificationsDispatch(
     notifications: NotificationProps[], 
     action: NotificationsDispatchAction
 ) {
-    const newNotifications = [ ...notifications ];
+    const newNotifications = structuredClone(notifications);
     if(action.action == 'add') {
         return newNotifications.concat(action.notif);
     } else {
@@ -19,12 +19,14 @@ function notificationsDispatch(
 
 // Notifications for each view and the corresponding Context for all notifications
 export function useNotifications() {
+    const [consoleNotif, consoleNotifDispatch] = useReducer(notificationsDispatch, []);
     const [dashboardNotif, dashboardNotifDispatch] = useReducer(notificationsDispatch, []);
     const [troupeNotif, troupeNotifDispatch] = useReducer(notificationsDispatch, []);
     const [eventLogNotif, eventLogNotifDispatch] = useReducer(notificationsDispatch, []);
     const [memberLogNotif, memberLogNotifDispatch] = useReducer(notificationsDispatch, []);
 
     return {
+        consoleNotif, consoleNotifDispatch,
         dashboardNotif, dashboardNotifDispatch,
         troupeNotif, troupeNotifDispatch,
         eventLogNotif, eventLogNotifDispatch,
@@ -49,6 +51,15 @@ export function useNotificationsContext(): ReturnType<typeof useNotifications> {
         throw new Error("Invalid state. Make sure that you're using `NotificationsProvider` correctly.");
     }
     return client;
+}
+
+export function useConsoleNotifications() {
+    const { consoleNotif, consoleNotifDispatch } = useNotificationsContext();
+    return {
+        consoleNotif,
+        addConsoleNotif: (notif: NotificationProps) => consoleNotifDispatch({ action: 'add', notif }),
+        removeConsoleNotif: (index: number) => consoleNotifDispatch({ action: 'remove', index }),
+    }
 }
 
 export function useDashboardNotifications() {

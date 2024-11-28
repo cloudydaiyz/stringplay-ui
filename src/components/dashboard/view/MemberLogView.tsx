@@ -11,7 +11,7 @@ import { useDialogToggle } from '../../../lib/toggle-dialog';
 import { BulkUpdateMemberRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import { TableData } from '../../../types/table-types';
 import { arrayToObject } from '../../../lib/helper';
-import { useMemberLogNotifications } from '../../../lib/notifications';
+import { useConsoleNotifications, useMemberLogNotifications } from '../../../lib/notifications';
 import Notification from '../Notification';
 import { visitedPages } from '../../../lib/global';
 
@@ -247,18 +247,53 @@ const EventsAttendedTable = () => {
 
 const MemberLogView = () => {
     const [ table, setTable ] = useState<MemberLogTable>('membership-info');
+    const { consoleNotif, removeConsoleNotif } = useConsoleNotifications();
     const { memberLogNotif, removeMemberLogNotif } = useMemberLogNotifications();
+    const { loading } = useMetadata();
+    const { attendees } = useAttendees();
+    const { openDialog, closeDialog } = useDialogToggle();
+    const [ acknowledgedFailure, setAcknowledgedFailure ] = useState(false);
+
+    if(!loading && !attendees && !acknowledgedFailure) {
+        openDialog({
+            title: "Unable to load data",
+            content: "We are unable to load member data for this troupe at the moment. "
+                + "Please try navigating to another view or refreshing your page.",
+            actions: [{
+                label: "OKAY",
+                color: 'var(--g2)',
+                onClick: async () => { closeDialog(); setAcknowledgedFailure(true) },
+            }],
+        })
+    }
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
                 <ContentHeader title='Member Log' />
-                <div className='content-notifications' style={memberLogNotif.length == 0 ? {display: 'none'} : {}}>
+                <div 
+                    className='content-notifications' 
+                    style={
+                        (consoleNotif.length + memberLogNotif.length) == 0 ? 
+                            {display: 'none'} : 
+                            {}
+                    }
+                >
+                    { 
+                        consoleNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => removeConsoleNotif(i)}
+                                key={i * Date.now()}
+                            />
+                        )) 
+                    }
                     { 
                         memberLogNotif.map((props, i) => (
                             <Notification 
                                 {...props} 
-                                onClick={() => { setTimeout(() => removeMemberLogNotif(i), 1000) }}
+                                onClick={() => removeMemberLogNotif(i)}
+                                key={(i + consoleNotif.length) * Date.now()}
                             />
                         )) 
                     }

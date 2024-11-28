@@ -27,6 +27,10 @@ const meta = {
               path: "/login",
               element: story(),
             },
+            {
+              path: "/no-service",
+              element: story(),
+            },
           ])} 
         />
       );

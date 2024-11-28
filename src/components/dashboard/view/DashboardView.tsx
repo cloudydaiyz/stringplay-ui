@@ -10,9 +10,11 @@ import UpcomingBirthdays from '../UpcomingBirthdays';
 import { useMetadata, useTroupe } from '../../../lib/api-client';
 import { defaultConfig } from '../../../lib/mock-data';
 import { TroupeDashboard } from '@cloudydaiyz/stringplay-core/types/api';
-import { useDashboardNotifications } from '../../../lib/notifications';
+import { useConsoleNotifications, useDashboardNotifications } from '../../../lib/notifications';
 import Notification from '../Notification';
 import { visitedPages } from '../../../lib/global';
+import { useDialogToggle } from '../../../lib/toggle-dialog';
+import { useState } from 'react';
 
 /** Converts entity data to data parsable by the `CategoricalStatistics` component */
 function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercentageByEventType'] | undefined) {
@@ -171,7 +173,23 @@ function DashboardCategoricalStatistics() {
 const DashboardView = () => {
     const { loading } = useMetadata();
     const { dashboard } = useTroupe();
+    const { consoleNotif, removeConsoleNotif } = useConsoleNotifications();
     const { dashboardNotif, removeDashboardNotif } = useDashboardNotifications();
+    const { openDialog, closeDialog } = useDialogToggle();
+    const [ acknowledgedFailure, setAcknowledgedFailure ] = useState(false);
+
+    if(!loading && !dashboard && !acknowledgedFailure) {
+        openDialog({
+            title: "Unable to load data",
+            content: "We are unable to load dashboard data for this troupe at the moment. "
+                + "Please try navigating to another view or refreshing your page.",
+            actions: [{
+                label: "OKAY",
+                color: 'var(--g2)',
+                onClick: async () => { closeDialog(); setAcknowledgedFailure(true) },
+            }],
+        })
+    }
 
     const upcomingBirthdays = <UpcomingBirthdays 
         birthdays={
@@ -195,14 +213,31 @@ const DashboardView = () => {
         <div className='content-view'>
             <div className='content-inner-view'>
                 <ContentHeader title="Dashboard" />
-                <div className='content-notifications' style={dashboardNotif.length == 0 ? {display: 'none'} : {}}>
+                <div 
+                    className='content-notifications' 
+                    style={
+                        (consoleNotif.length + dashboardNotif.length) == 0 ? 
+                            {display: 'none'} : 
+                            {}
+                    }
+                >
+                    { 
+                        consoleNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => removeConsoleNotif(i)}
+                                key={i * Date.now()}
+                            />
+                        )) 
+                    }
                     { 
                         dashboardNotif.map((props, i) => (
                             <Notification 
                                 {...props} 
-                                onClick={() => { setTimeout(() => removeDashboardNotif(i), 1000) }}
+                                onClick={() => removeDashboardNotif(i)}
+                                key={(i + consoleNotif.length) * Date.now()}
                             />
-                        )) 
+                        ))
                     }
                 </div>
                 <div 

@@ -1,4 +1,4 @@
-import { UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
+import { Troupe, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import '../../../app/shared.css';
 import { useEvents, useMetadata, useTroupe } from '../../../lib/api-client';
 import { arrayToObject } from '../../../lib/helper';
@@ -9,9 +9,10 @@ import { PROPERTY_TYPES } from '../../../types/table-types';
 import ContentFooter from '../layout/ContentFooter';
 import ContentHeader from '../layout/ContentHeader';
 import Table from '../Table';
-import { useTroupeNotifications } from '../../../lib/notifications';
+import { useConsoleNotifications, useTroupeNotifications } from '../../../lib/notifications';
 import Notification from '../Notification';
 import { visitedPages } from '../../../lib/global';
+import { useState } from 'react';
 
 const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
 const basePointTypes = ["Total"] as const;
@@ -254,6 +255,101 @@ const PointTypesTable = () => {
     );
 }
 
+const FieldMatchersTable = () => {
+    const { loading } = useMetadata();
+    const { troupe, updateTroupe } = useTroupe();
+    const { openConfirmDialog } = useDialogToggle();
+
+    const fieldMatchers = troupe 
+        ? troupe.fieldMatchers
+        : [];
+
+    const data = !loading && !troupe 
+        ? [
+            ...defaultConfig.troupe.fieldMatchers.map(fm => [
+                fm.priority,
+                fm.fieldExpression,
+                fm.filters.join(", "),
+                fm.matchCondition,
+                fm.memberProperty,
+            ]),
+        ]
+        : troupe 
+            ? [
+                ...troupe.fieldMatchers.map(fm => [
+                    fm.priority,
+                    fm.fieldExpression,
+                    fm.filters.join(","),
+                    fm.matchCondition,
+                    fm.memberProperty,
+                ]),
+            ]
+            : [];
+
+    return (
+        <Table
+            tableData={{
+                columns: [
+                    {
+                        title: "Priority",
+                        type: "number!",
+                    },
+                    {
+                        title: "Field Expression",
+                        type: "string!",
+                    },
+                    {
+                        title: "Filters",
+                        type: "string!",
+                    },
+                    {
+                        title: "Match Condition",
+                        type: "string!",
+                    },
+                    {
+                        title: "Member Property",
+                        type: "string!",
+                    },
+                ],
+                data,
+            }}
+            tableHeader={{
+                title: "Field Matchers",
+                onDataCreate: (newRows) => openConfirmDialog({
+                    title: 'Confirm Create New Field Matchers',
+                    content: `Are you sure that you want to create the(se) field matcher(s) for this troupe?`,
+                    onConfirm: () => {
+                        const request: UpdateTroupeRequest = {};
+                        request.updateFieldMatchers = [
+                            ...fieldMatchers.map(() => null),
+                            ...newRows.map<Troupe["fieldMatchers"][number]>((row) => ({
+                                priority: row[0] as number,
+                                fieldExpression: row[1] as string,
+                                matchCondition: row[2] as Troupe["fieldMatchers"][number]["matchCondition"],
+                                filters: (row[3] as string).split(",") as Troupe["fieldMatchers"][number]["filters"],
+                                memberProperty: row[4] as string,
+                            })),
+                        ];
+                        return updateTroupe(request);
+                    }
+                }),
+                onDataDelete: (deleteIndicies) => openConfirmDialog({
+                    title: 'Confirm Delete Source Folder URIs',
+                    content: `Are you sure that you want to delete the(se) field matcher(s) for this troupe?`,
+                    onConfirm: () => {
+                        const request: UpdateTroupeRequest = {};
+                        request.removeFieldMatchers = deleteIndicies.map((_, i) => i)
+                            .filter((_, i) => deleteIndicies[i]);
+                        return updateTroupe(request);
+                    }
+                }),
+            }}
+            loading={loading}
+            useDataWhileLoading={troupe && loading} 
+        />
+    );
+}
+
 const SettingsTable = () => {
     const { loading } = useMetadata();
     const { events } = useEvents();
@@ -323,19 +419,138 @@ const SettingsTable = () => {
     );
 }
 
+const LimitsTable = () => {
+    const { loading } = useMetadata();
+    const { limits } = useTroupe();
+
+    return (
+        <Table
+            tableData={{
+                columns: [
+                    {
+                        title: "Get Operations Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Modify Operations Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Manual Syncs Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Property Types Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Point Types Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Field Matchers Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Event Types Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Source Folder URI Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Events Left",
+                        type: "number!",
+                    },
+                    {
+                        title: "Members Left",
+                        type: "number!",
+                    },
+                ],
+                data: !loading && !limits 
+                    ? [[
+                        defaultConfig.limits.getOperationsLeft,
+                        defaultConfig.limits.modifyOperationsLeft,
+                        defaultConfig.limits.manualSyncsLeft,
+                        defaultConfig.limits.memberPropertyTypesLeft,
+                        defaultConfig.limits.pointTypesLeft,
+                        defaultConfig.limits.fieldMatchersLeft,
+                        defaultConfig.limits.eventTypesLeft,
+                        defaultConfig.limits.sourceFolderUrisLeft,
+                        defaultConfig.limits.eventsLeft,
+                        defaultConfig.limits.membersLeft,
+                    ]] 
+                    : [[
+                        limits?.getOperationsLeft || -1,
+                        limits?.modifyOperationsLeft || -1,
+                        limits?.manualSyncsLeft || -1,
+                        limits?.memberPropertyTypesLeft || -1,
+                        limits?.pointTypesLeft || -1,
+                        limits?.fieldMatchersLeft || -1,
+                        limits?.eventTypesLeft || -1,
+                        limits?.sourceFolderUrisLeft || -1,
+                        limits?.eventsLeft || -1,
+                        limits?.membersLeft || -1,
+                    ]],
+            }}
+            tableHeader={{
+                title: "Limits",
+            }}
+            loading={loading}
+            useDataWhileLoading={limits && loading}
+        />
+    );
+}
+
 const TroupeView = () => {
+    const { consoleNotif, removeConsoleNotif } = useConsoleNotifications();
     const { troupeNotif, removeTroupeNotif } = useTroupeNotifications();
+    const { loading } = useMetadata();
+    const { troupe } = useTroupe();
+    const { openDialog, closeDialog } = useDialogToggle();
+    const [ acknowledgedFailure, setAcknowledgedFailure ] = useState(false);
+
+    if(!loading && !troupe && !acknowledgedFailure) {
+        openDialog({
+            title: "Unable to load data",
+            content: "We are unable to load the data for this troupe at the moment. "
+                + "Please try navigating to another view or refreshing your page.",
+            actions: [{
+                label: "OKAY",
+                color: 'var(--g2)',
+                onClick: async () => { closeDialog(); setAcknowledgedFailure(true) },
+            }],
+        })
+    }
 
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
                 <ContentHeader title='Troupe' />
-                <div className='content-notifications' style={troupeNotif.length == 0 ? {display: 'none'} : {}}>
+                <div 
+                    className='content-notifications' 
+                    style={
+                        (consoleNotif.length + troupeNotif.length) == 0 ? 
+                            {display: 'none'} : 
+                            {}
+                    }
+                >
+                    { 
+                        consoleNotif.map((props, i) => (
+                            <Notification 
+                                {...props} 
+                                onClick={() => removeConsoleNotif(i)}
+                                key={i * Date.now()}
+                            />
+                        )) 
+                    }
                     { 
                         troupeNotif.map((props, i) => (
                             <Notification 
                                 {...props} 
-                                onClick={() => { setTimeout(() => removeTroupeNotif(i), 1000) }}
+                                onClick={() => removeTroupeNotif(i)}
+                                key={(i + consoleNotif.length) * Date.now()}
                             />
                         )) 
                     }
@@ -349,7 +564,9 @@ const TroupeView = () => {
                 >
                     <MemberPropertyTypesTable />
                     <PointTypesTable />
+                    <FieldMatchersTable />
                     <SettingsTable />
+                    <LimitsTable />
                 </div>
             </div>
             <ContentFooter />

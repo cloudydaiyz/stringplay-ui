@@ -2,7 +2,7 @@ import { BulkUpdateEventTypeRequest, EventType } from "@cloudydaiyz/stringplay-c
 import { useMetadata, useEventTypes } from "../../../../lib/api-client";
 import { useDialogToggle } from "../../../../lib/toggle-dialog";
 import { EventTypeInformationProps, SetEventLogSubview } from "../../../../types/view-types";
-import { useEventLogNotifications } from "../../../../lib/notifications";
+import { useConsoleNotifications, useEventLogNotifications } from "../../../../lib/notifications";
 import Notification from '../../Notification';
 import Button from "../../../common/Button";
 import LeftArrow from "../../../svg/LeftArrow";
@@ -124,18 +124,36 @@ function SourceFolderUrisTable({ eventType, eventTypeId }: EventTypeInformationT
 
 export const EventTypeInformation = ({ eventTypeId, setSubview }: EventTypeInformationProps & SetEventLogSubview) => {
     const { eventTypes } = useEventTypes();
+    const { consoleNotif, removeConsoleNotif } = useConsoleNotifications();
     const { eventLogNotif, removeEventLogNotif } = useEventLogNotifications();
     const eventType = eventTypes!.find(et => et.id == eventTypeId)!;    
 
     return (
         <div className='event-information content-inner-view'>
             <ContentHeader title='Event Log' />
-            <div className='content-notifications' style={eventLogNotif.length == 0 ? {display: 'none'} : {}}>
+            <div 
+                className='content-notifications' 
+                style={
+                    (consoleNotif.length + eventLogNotif.length) == 0 ? 
+                        {display: 'none'} : 
+                        {}
+                }
+            >
+                { 
+                    consoleNotif.map((props, i) => (
+                        <Notification 
+                            {...props} 
+                            onClick={() => removeConsoleNotif(i)}
+                            key={i * Date.now()}
+                        />
+                    )) 
+                }
                 { 
                     eventLogNotif.map((props, i) => (
                         <Notification 
                             {...props} 
-                            onClick={() => { setTimeout(() => removeEventLogNotif(i), 1000) }}
+                            onClick={() => removeEventLogNotif(i)}
+                            key={(i + consoleNotif.length) * Date.now()}
                         />
                     )) 
                 }

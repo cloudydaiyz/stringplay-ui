@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { LoginPage } from '../../pages/LoginPage';
 import { mockLogin } from '../../lib/auth.mock';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import { AppContext } from '../../app/context';
 
 const meta = {
   tags: ['autodocs'],
@@ -30,15 +31,15 @@ const meta = {
             router={createMemoryRouter([
               {
                 path: "/",
-                element: story(),
+                element: AppContext({ children: story() }),
               },
               {
-                path: "/register",
-                element: story(),
+                path: "/login",
+                element: AppContext({ children: story() }),
               },
               {
-                path: "/console",
-                element: story(),
+                path: "/no-service",
+                element: AppContext({ children: story() }),
               },
             ])} 
           />

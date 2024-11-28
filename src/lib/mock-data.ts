@@ -2,7 +2,7 @@ import type { ConsoleData } from "@cloudydaiyz/stringplay-core/types/api";
 
 export const defaultConfig: ConsoleData = {
     "troupe": {
-        "lastUpdated": "2024-11-15T15:22:23.506Z",
+        "lastUpdated": "2024-11-27T23:16:09.498Z",
         "name": "test troupe",
         "logSheetUri": "https://example.com",
         "syncLock": false,
@@ -37,11 +37,48 @@ export const defaultConfig: ConsoleData = {
                 "endDate": "2065-01-24T05:20:00.000Z"
             }
         },
-        "id": "6737672f53f6f996b8c58429"
+        "fieldMatchers": [
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "ID",
+                "memberProperty": "Member ID",
+                "filters": [],
+                "priority": 0
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "First Name",
+                "memberProperty": "First Name",
+                "filters": [],
+                "priority": 1
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Last Name",
+                "memberProperty": "Last Name",
+                "filters": [],
+                "priority": 2
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Email",
+                "memberProperty": "Email",
+                "filters": [],
+                "priority": 3
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Birthday",
+                "memberProperty": "Birthday",
+                "filters": [],
+                "priority": 4
+            }
+        ],
+        "id": "6747a839ed7f1593c8b1d36a"
     },
     "dashboard": {
-        "troupeId": "6737672f53f6f996b8c58429",
-        "lastUpdated": "2024-11-15T15:22:23.506Z",
+        "troupeId": "6747a839ed7f1593c8b1d36a",
+        "lastUpdated": "2024-11-27T23:16:09.498Z",
         "upcomingBirthdays": {
             "frequency": "monthly",
             "desiredFrequency": "monthly",
@@ -57,156 +94,150 @@ export const defaultConfig: ConsoleData = {
         "eventPercentageByEventType": {},
         "totalAttendeesByEventType": {},
         "totalEventsByEventType": {},
-        "id": "6737672f53f6f996b8c58429"
+        "id": "6747a839ed7f1593c8b1d36b"
     },
     "eventTypes": [
         {
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "lastUpdated": "2024-11-27T23:16:09.498Z",
             "title": "Test Event Type - cool events",
             "value": 10,
-            "sourceFolderUris": ["https://google.com","https://google.com/something","https://google.com/something2",],
+            "sourceFolderUris": [],
             "synchronizedSourceFolderUris": [],
-            "id": "6737672f53f6f996b8c5842b"
+            "id": "6747a839ed7f1593c8b1d36d"
         },
         {
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "lastUpdated": "2024-11-27T23:16:09.498Z",
             "title": "Test Event Type - alright events",
             "value": 3,
             "sourceFolderUris": [],
             "synchronizedSourceFolderUris": [],
-            "id": "6737672f53f6f996b8c5842c"
+            "id": "6747a839ed7f1593c8b1d36e"
         },
         {
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "lastUpdated": "2024-11-27T23:16:09.498Z",
             "title": "Test Event Type - uncool events",
             "value": -7,
-            "sourceFolderUris": ["https://google.com","https://google.com/something"],
+            "sourceFolderUris": [],
             "synchronizedSourceFolderUris": [],
-            "id": "6737672f53f6f996b8c5842d"
+            "id": "6747a839ed7f1593c8b1d36f"
         }
     ],
     "events": [
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.498Z",
             "title": "test event 1",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/first",
             "synchronizedSourceUri": "https://example.com/first",
-            "startDate": "2024-11-15T15:22:23.506Z",
-            "eventTypeId": "6737672f53f6f996b8c5842b",
+            "startDate": "2024-11-27T23:16:09.498Z",
+            "eventTypeId": "6747a839ed7f1593c8b1d36d",
             "eventTypeTitle": "Test Event Type - cool events",
             "value": 10,
-            "fieldToPropertyMap": {
-                "6737672f53f6f996b8c5842f": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                }
-            },
-            "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c5842f": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                }
-            },
-            "id": "6737672f53f6f996b8c5842e"
+            "fieldToPropertyMap": {},
+            "synchronizedFieldToPropertyMap": {},
+            "id": "6747a839ed7f1593c8b1d370"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "title": "test event 2",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/second",
             "synchronizedSourceUri": "https://example.com/second",
             "startDate": "2024-10-14T04:29:01.961Z",
-            "eventTypeId": "6737672f53f6f996b8c5842c",
+            "eventTypeId": "6747a839ed7f1593c8b1d36e",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {
-                "6737672f53f6f996b8c58431": {
+                "6747a839ed7f1593c8b1d372": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
-                },
-                "6737672f53f6f996b8c58432": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                },
-                "6737672f53f6f996b8c58433": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
-                },
-                "6737672f53f6f996b8c58434": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c58431": {
+                "6747a839ed7f1593c8b1d372": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
-                },
-                "6737672f53f6f996b8c58432": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                },
-                "6737672f53f6f996b8c58433": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
-                },
-                "6737672f53f6f996b8c58434": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "6737672f53f6f996b8c58430"
+            "id": "6747a839ed7f1593c8b1d371"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "title": "test event 3",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/third",
             "synchronizedSourceUri": "https://example.com/third",
-            "startDate": "2024-11-15T15:22:23.506Z",
-            "eventTypeId": "6737672f53f6f996b8c5842d",
+            "startDate": "2024-11-27T23:16:09.499Z",
+            "eventTypeId": "6747a839ed7f1593c8b1d36f",
             "eventTypeTitle": "Test Event Type - uncool events",
             "value": -7,
             "fieldToPropertyMap": {
-                "6737672f53f6f996b8c58436": {
+                "6747a839ed7f1593c8b1d374": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58437": {
+                "6747a839ed7f1593c8b1d375": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58438": {
+                "6747a839ed7f1593c8b1d376": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "First Name"
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d377": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c58436": {
+                "6747a839ed7f1593c8b1d374": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58437": {
+                "6747a839ed7f1593c8b1d375": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58438": {
+                "6747a839ed7f1593c8b1d376": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "First Name"
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d377": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "6737672f53f6f996b8c58435"
+            "id": "6747a839ed7f1593c8b1d373"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
@@ -215,138 +246,196 @@ export const defaultConfig: ConsoleData = {
             "startDate": "2024-10-13T20:09:01.961Z",
             "value": 4,
             "fieldToPropertyMap": {
-                "6737672f53f6f996b8c5843a": {
+                "6747a839ed7f1593c8b1d379": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d37a": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d37b": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c5843a": {
+                "6747a839ed7f1593c8b1d379": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d37a": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d37b": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "6737672f53f6f996b8c58439"
+            "id": "6747a839ed7f1593c8b1d378"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "title": "test event 5",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/fifth",
             "synchronizedSourceUri": "https://example.com/fifth",
             "startDate": "2024-10-13T20:09:01.961Z",
-            "eventTypeId": "6737672f53f6f996b8c5842c",
+            "eventTypeId": "6747a839ed7f1593c8b1d36e",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
-            "fieldToPropertyMap": {
-                "6737672f53f6f996b8c5843c": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
-                }
-            },
-            "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c5843c": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
-                }
-            },
-            "id": "6737672f53f6f996b8c5843b"
+            "fieldToPropertyMap": {},
+            "synchronizedFieldToPropertyMap": {},
+            "id": "6747a839ed7f1593c8b1d37c"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/sixth",
             "synchronizedSourceUri": "https://example.com/sixth",
-            "startDate": "2024-11-15T15:22:23.506Z",
+            "startDate": "2024-11-27T23:16:09.499Z",
             "value": -2,
             "fieldToPropertyMap": {
-                "6737672f53f6f996b8c5843e": {
+                "6747a839ed7f1593c8b1d37e": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c5843f": {
+                "6747a839ed7f1593c8b1d37f": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58440": {
+                "6747a839ed7f1593c8b1d380": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d381": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c5843e": {
+                "6747a839ed7f1593c8b1d37e": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Birthday"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c5843f": {
+                "6747a839ed7f1593c8b1d37f": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58440": {
+                "6747a839ed7f1593c8b1d380": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a839ed7f1593c8b1d381": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "6737672f53f6f996b8c5843d"
+            "id": "6747a839ed7f1593c8b1d37d"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/seventh",
             "synchronizedSourceUri": "https://example.com/seventh",
-            "startDate": "2024-11-15T15:22:23.506Z",
+            "startDate": "2024-11-27T23:16:09.499Z",
             "value": 7,
             "fieldToPropertyMap": {
-                "6737672f53f6f996b8c58442": {
+                "6747a839ed7f1593c8b1d383": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58443": {
+                "6747a839ed7f1593c8b1d384": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58444": {
+                "6747a839ed7f1593c8b1d385": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58445": {
+                "6747a839ed7f1593c8b1d386": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "First Name"
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "6737672f53f6f996b8c58442": {
+                "6747a839ed7f1593c8b1d383": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58443": {
+                "6747a839ed7f1593c8b1d384": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58444": {
+                "6747a839ed7f1593c8b1d385": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 },
-                "6737672f53f6f996b8c58445": {
+                "6747a839ed7f1593c8b1d386": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "First Name"
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "6737672f53f6f996b8c58441"
+            "id": "6747a839ed7f1593c8b1d382"
         }
     ],
     "attendees": [
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "properties": {
                 "First Name": {
                     "value": "John",
@@ -365,7 +454,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Fri Nov 15 2024 09:22:23 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 27 2024 17:16:09 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -378,14 +467,14 @@ export const defaultConfig: ConsoleData = {
                 "Fall": 3
             },
             "eventsAttended": [
-                "6737672f53f6f996b8c5842e",
-                "6737672f53f6f996b8c58435"
+                "6747a839ed7f1593c8b1d370",
+                "6747a839ed7f1593c8b1d373"
             ],
-            "id": "6737672f53f6f996b8c58446"
+            "id": "6747a839ed7f1593c8b1d387"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.506Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -404,7 +493,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Fri Nov 15 2024 09:22:23 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 27 2024 17:16:09 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -417,17 +506,17 @@ export const defaultConfig: ConsoleData = {
                 "Fall": 6
             },
             "eventsAttended": [
-                "6737672f53f6f996b8c5842e",
-                "6737672f53f6f996b8c58430",
-                "6737672f53f6f996b8c58435",
-                "6737672f53f6f996b8c58439",
-                "6737672f53f6f996b8c5843b"
+                "6747a839ed7f1593c8b1d370",
+                "6747a839ed7f1593c8b1d371",
+                "6747a839ed7f1593c8b1d373",
+                "6747a839ed7f1593c8b1d378",
+                "6747a839ed7f1593c8b1d37c"
             ],
-            "id": "6737672f53f6f996b8c58448"
+            "id": "6747a839ed7f1593c8b1d389"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.507Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -446,7 +535,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Fri Nov 15 2024 09:22:23 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 27 2024 17:16:09 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -459,15 +548,15 @@ export const defaultConfig: ConsoleData = {
                 "Fall": 10
             },
             "eventsAttended": [
-                "6737672f53f6f996b8c58430",
-                "6737672f53f6f996b8c58439",
-                "6737672f53f6f996b8c58441"
+                "6747a839ed7f1593c8b1d371",
+                "6747a839ed7f1593c8b1d378",
+                "6747a839ed7f1593c8b1d382"
             ],
-            "id": "6737672f53f6f996b8c5844a"
+            "id": "6747a839ed7f1593c8b1d38b"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.507Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -486,7 +575,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Fri Nov 15 2024 09:22:23 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 27 2024 17:16:09 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -499,16 +588,16 @@ export const defaultConfig: ConsoleData = {
                 "Fall": -9
             },
             "eventsAttended": [
-                "6737672f53f6f996b8c58435",
-                "6737672f53f6f996b8c58439",
-                "6737672f53f6f996b8c5843b",
-                "6737672f53f6f996b8c5843d"
+                "6747a839ed7f1593c8b1d373",
+                "6747a839ed7f1593c8b1d378",
+                "6747a839ed7f1593c8b1d37c",
+                "6747a839ed7f1593c8b1d37d"
             ],
-            "id": "6737672f53f6f996b8c5844c"
+            "id": "6747a839ed7f1593c8b1d38d"
         },
         {
-            "troupeId": "6737672f53f6f996b8c58429",
-            "lastUpdated": "2024-11-15T15:22:23.507Z",
+            "troupeId": "6747a839ed7f1593c8b1d36a",
+            "lastUpdated": "2024-11-27T23:16:09.499Z",
             "properties": {
                 "First Name": {
                     "value": "Hello",
@@ -527,7 +616,7 @@ export const defaultConfig: ConsoleData = {
                     "override": false
                 },
                 "Birthday": {
-                    "value": "Fri Nov 15 2024 09:22:23 GMT-0600 (Central Standard Time)",
+                    "value": "Wed Nov 27 2024 17:16:09 GMT-0600 (Central Standard Time)",
                     "override": false
                 },
                 "New Prop": {
@@ -540,22 +629,34 @@ export const defaultConfig: ConsoleData = {
                 "Fall": 11
             },
             "eventsAttended": [
-                "6737672f53f6f996b8c5842e",
-                "6737672f53f6f996b8c58430",
-                "6737672f53f6f996b8c58435",
-                "6737672f53f6f996b8c58439",
-                "6737672f53f6f996b8c5843b",
-                "6737672f53f6f996b8c5843d",
-                "6737672f53f6f996b8c58441"
+                "6747a839ed7f1593c8b1d370",
+                "6747a839ed7f1593c8b1d371",
+                "6747a839ed7f1593c8b1d373",
+                "6747a839ed7f1593c8b1d378",
+                "6747a839ed7f1593c8b1d37c",
+                "6747a839ed7f1593c8b1d37d",
+                "6747a839ed7f1593c8b1d382"
             ],
-            "id": "6737672f53f6f996b8c5844e"
+            "id": "6747a839ed7f1593c8b1d38f"
         }
-    ]
+    ],
+    "limits": {
+        "getOperationsLeft": 30,
+        "modifyOperationsLeft": 30,
+        "manualSyncsLeft": 5,
+        "memberPropertyTypesLeft": 10,
+        "pointTypesLeft": 5,
+        "fieldMatchersLeft": 15,
+        "eventTypesLeft": 10,
+        "sourceFolderUrisLeft": 20,
+        "eventsLeft": 100,
+        "membersLeft": 200
+    }
 }
 
 export const noMembersConfig: ConsoleData = {
     "troupe": {
-        "lastUpdated": "2024-11-15T15:24:23.190Z",
+        "lastUpdated": "2024-11-27T23:18:03.800Z",
         "name": "test troupe",
         "logSheetUri": "https://example.com",
         "syncLock": false,
@@ -590,11 +691,48 @@ export const noMembersConfig: ConsoleData = {
                 "endDate": "2065-01-24T05:20:00.000Z"
             }
         },
-        "id": "673767a7ebda6da204741366"
+        "fieldMatchers": [
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "ID",
+                "memberProperty": "Member ID",
+                "filters": [],
+                "priority": 0
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "First Name",
+                "memberProperty": "First Name",
+                "filters": [],
+                "priority": 1
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Last Name",
+                "memberProperty": "Last Name",
+                "filters": [],
+                "priority": 2
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Email",
+                "memberProperty": "Email",
+                "filters": [],
+                "priority": 3
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Birthday",
+                "memberProperty": "Birthday",
+                "filters": [],
+                "priority": 4
+            }
+        ],
+        "id": "6747a8ab035f835f16076417"
     },
     "dashboard": {
-        "troupeId": "673767a7ebda6da204741366",
-        "lastUpdated": "2024-11-15T15:24:23.190Z",
+        "troupeId": "6747a8ab035f835f16076417",
+        "lastUpdated": "2024-11-27T23:18:03.800Z",
         "upcomingBirthdays": {
             "frequency": "monthly",
             "desiredFrequency": "monthly",
@@ -610,140 +748,162 @@ export const noMembersConfig: ConsoleData = {
         "eventPercentageByEventType": {},
         "totalAttendeesByEventType": {},
         "totalEventsByEventType": {},
-        "id": "673767a7ebda6da204741366"
+        "id": "6747a8ab035f835f16076418"
     },
     "eventTypes": [
         {
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "Test Event Type - cool events",
             "value": 10,
             "sourceFolderUris": [],
             "synchronizedSourceFolderUris": [],
-            "id": "673767a7ebda6da204741368"
+            "id": "6747a8ab035f835f1607641a"
         },
         {
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "Test Event Type - alright events",
             "value": 3,
             "sourceFolderUris": [],
             "synchronizedSourceFolderUris": [],
-            "id": "673767a7ebda6da204741369"
+            "id": "6747a8ab035f835f1607641b"
         },
         {
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "Test Event Type - uncool events",
             "value": -7,
             "sourceFolderUris": [],
             "synchronizedSourceFolderUris": [],
-            "id": "673767a7ebda6da20474136a"
+            "id": "6747a8ab035f835f1607641c"
         }
     ],
     "events": [
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "test event 1",
             "source": "Google Forms",
             "synchronizedSource": "",
             "sourceUri": "https://docs.google.com/forms/d/1zmXsG53ymMTY16OoPR0VD7mqqP94HcPILskiOA7lOA4",
             "synchronizedSourceUri": "https://example.com/first",
-            "startDate": "2024-11-15T15:24:23.190Z",
-            "eventTypeId": "673767a7ebda6da204741368",
+            "startDate": "2024-11-27T23:18:03.800Z",
+            "eventTypeId": "6747a8ab035f835f1607641a",
             "eventTypeTitle": "Test Event Type - cool events",
             "value": 10,
             "fieldToPropertyMap": {
-                "673767a7ebda6da20474136c": {
+                "6747a8ab035f835f1607641e": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
                 },
-                "673767a7ebda6da20474136d": {
+                "6747a8ab035f835f1607641f": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                },
-                "673767a7ebda6da20474136e": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "673767a7ebda6da20474136c": {
+                "6747a8ab035f835f1607641e": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
                 },
-                "673767a7ebda6da20474136d": {
+                "6747a8ab035f835f1607641f": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                },
-                "673767a7ebda6da20474136e": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "673767a7ebda6da20474136b"
+            "id": "6747a8ab035f835f1607641d"
         },
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "test event 2",
             "source": "Google Sheets",
             "synchronizedSource": "",
             "sourceUri": "https://docs.google.com/spreadsheets/d/1Ita-QOxFBd37i-_7xxKtTOh4FghBknFY5WO9Yrqc2nE/edit",
             "synchronizedSourceUri": "https://example.com/second",
             "startDate": "2024-10-14T04:29:01.961Z",
-            "eventTypeId": "673767a7ebda6da204741369",
+            "eventTypeId": "6747a8ab035f835f1607641b",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {
-                "673767a7ebda6da204741370": {
+                "6747a8ab035f835f16076421": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f16076422": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f16076423": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f16076424": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "673767a7ebda6da204741370": {
+                "6747a8ab035f835f16076421": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f16076422": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f16076423": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f16076424": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "673767a7ebda6da20474136f"
+            "id": "6747a8ab035f835f16076420"
         },
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "test event 3",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/third",
             "synchronizedSourceUri": "https://example.com/third",
-            "startDate": "2024-11-15T15:24:23.190Z",
-            "eventTypeId": "673767a7ebda6da20474136a",
+            "startDate": "2024-11-27T23:18:03.800Z",
+            "eventTypeId": "6747a8ab035f835f1607641c",
             "eventTypeTitle": "Test Event Type - uncool events",
             "value": -7,
-            "fieldToPropertyMap": {
-                "673767a7ebda6da204741372": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
-                },
-                "673767a7ebda6da204741373": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                }
-            },
-            "synchronizedFieldToPropertyMap": {
-                "673767a7ebda6da204741372": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Email"
-                },
-                "673767a7ebda6da204741373": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                }
-            },
-            "id": "673767a7ebda6da204741371"
+            "fieldToPropertyMap": {},
+            "synchronizedFieldToPropertyMap": {},
+            "id": "6747a8ab035f835f16076425"
         },
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.800Z",
             "title": "test event 4 (special)",
             "source": "",
             "synchronizedSource": "",
@@ -753,77 +913,149 @@ export const noMembersConfig: ConsoleData = {
             "value": 4,
             "fieldToPropertyMap": {},
             "synchronizedFieldToPropertyMap": {},
-            "id": "673767a7ebda6da204741374"
+            "id": "6747a8ab035f835f16076426"
         },
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.801Z",
             "title": "test event 5",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/fifth",
             "synchronizedSourceUri": "https://example.com/fifth",
             "startDate": "2024-10-13T20:09:01.961Z",
-            "eventTypeId": "673767a7ebda6da204741369",
+            "eventTypeId": "6747a8ab035f835f1607641b",
             "eventTypeTitle": "Test Event Type - alright events",
             "value": 3,
             "fieldToPropertyMap": {
-                "673767a7ebda6da204741376": {
+                "6747a8ab035f835f16076428": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                },
-                "673767a7ebda6da204741377": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 }
             },
             "synchronizedFieldToPropertyMap": {
-                "673767a7ebda6da204741376": {
+                "6747a8ab035f835f16076428": {
                     "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Member ID"
-                },
-                "673767a7ebda6da204741377": {
-                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
-                    "property": "Last Name"
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
                 }
             },
-            "id": "673767a7ebda6da204741375"
+            "id": "6747a8ab035f835f16076427"
         },
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.801Z",
             "title": "test event 6 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/sixth",
             "synchronizedSourceUri": "https://example.com/sixth",
-            "startDate": "2024-11-15T15:24:23.190Z",
+            "startDate": "2024-11-27T23:18:03.801Z",
             "value": -2,
-            "fieldToPropertyMap": {},
-            "synchronizedFieldToPropertyMap": {},
-            "id": "673767a7ebda6da204741378"
+            "fieldToPropertyMap": {
+                "6747a8ab035f835f1607642a": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
+                }
+            },
+            "synchronizedFieldToPropertyMap": {
+                "6747a8ab035f835f1607642a": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "First Name",
+                    "matcherId": null,
+                    "override": false
+                }
+            },
+            "id": "6747a8ab035f835f16076429"
         },
         {
-            "troupeId": "673767a7ebda6da204741366",
-            "lastUpdated": "2024-11-15T15:24:23.190Z",
+            "troupeId": "6747a8ab035f835f16076417",
+            "lastUpdated": "2024-11-27T23:18:03.801Z",
             "title": "test event 7 (special)",
             "source": "",
             "synchronizedSource": "",
             "sourceUri": "https://example.com/seventh",
             "synchronizedSourceUri": "https://example.com/seventh",
-            "startDate": "2024-11-15T15:24:23.190Z",
+            "startDate": "2024-11-27T23:18:03.801Z",
             "value": 7,
-            "fieldToPropertyMap": {},
-            "synchronizedFieldToPropertyMap": {},
-            "id": "673767a7ebda6da204741379"
+            "fieldToPropertyMap": {
+                "6747a8ab035f835f1607642c": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f1607642d": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f1607642e": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f1607642f": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
+                }
+            },
+            "synchronizedFieldToPropertyMap": {
+                "6747a8ab035f835f1607642c": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Member ID",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f1607642d": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Last Name",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f1607642e": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Birthday",
+                    "matcherId": null,
+                    "override": false
+                },
+                "6747a8ab035f835f1607642f": {
+                    "field": "How much wood can a woodchuck chuck if a woodchuck could chuck would?",
+                    "property": "Email",
+                    "matcherId": null,
+                    "override": false
+                }
+            },
+            "id": "6747a8ab035f835f1607642b"
         }
     ],
-    "attendees": []
+    "attendees": [],
+    "limits": {
+        "getOperationsLeft": 30,
+        "modifyOperationsLeft": 30,
+        "manualSyncsLeft": 5,
+        "memberPropertyTypesLeft": 10,
+        "pointTypesLeft": 5,
+        "fieldMatchersLeft": 15,
+        "eventTypesLeft": 10,
+        "sourceFolderUrisLeft": 20,
+        "eventsLeft": 100,
+        "membersLeft": 200
+    }
 }
 
 export const onlyEventTypesConfig: ConsoleData = {
     "troupe": {
-        "lastUpdated": "2024-11-15T15:25:19.596Z",
+        "lastUpdated": "2024-11-27T23:18:58.952Z",
         "name": "test troupe",
         "logSheetUri": "https://example.com",
         "syncLock": false,
@@ -858,11 +1090,48 @@ export const onlyEventTypesConfig: ConsoleData = {
                 "endDate": "2065-01-24T05:20:00.000Z"
             }
         },
-        "id": "673767df1bf0e5af4e094096"
+        "fieldMatchers": [
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "ID",
+                "memberProperty": "Member ID",
+                "filters": [],
+                "priority": 0
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "First Name",
+                "memberProperty": "First Name",
+                "filters": [],
+                "priority": 1
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Last Name",
+                "memberProperty": "Last Name",
+                "filters": [],
+                "priority": 2
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Email",
+                "memberProperty": "Email",
+                "filters": [],
+                "priority": 3
+            },
+            {
+                "matchCondition": "contains",
+                "fieldExpression": "Birthday",
+                "memberProperty": "Birthday",
+                "filters": [],
+                "priority": 4
+            }
+        ],
+        "id": "6747a8e2d5267cdb963a73f6"
     },
     "dashboard": {
-        "troupeId": "673767df1bf0e5af4e094096",
-        "lastUpdated": "2024-11-15T15:25:19.596Z",
+        "troupeId": "6747a8e2d5267cdb963a73f6",
+        "lastUpdated": "2024-11-27T23:18:58.952Z",
         "upcomingBirthdays": {
             "frequency": "monthly",
             "desiredFrequency": "monthly",
@@ -878,22 +1147,34 @@ export const onlyEventTypesConfig: ConsoleData = {
         "eventPercentageByEventType": {},
         "totalAttendeesByEventType": {},
         "totalEventsByEventType": {},
-        "id": "673767df1bf0e5af4e094096"
+        "id": "6747a8e2d5267cdb963a73f7"
     },
     "eventTypes": [
         {
-            "lastUpdated": "2024-11-15T15:25:19.596Z",
+            "lastUpdated": "2024-11-27T23:18:58.952Z",
             "title": "Test Event Type - cool events",
             "value": 10,
             "sourceFolderUris": [
                 "https://drive.google.com/drive/folders/1gQAhRgA7RzOPe_7YWdjniBiK8Q97yV8D"
             ],
             "synchronizedSourceFolderUris": [],
-            "id": "673767df1bf0e5af4e094098"
+            "id": "6747a8e2d5267cdb963a73f9"
         }
     ],
     "events": [],
-    "attendees": []
+    "attendees": [],
+    "limits": {
+        "getOperationsLeft": 30,
+        "modifyOperationsLeft": 30,
+        "manualSyncsLeft": 5,
+        "memberPropertyTypesLeft": 10,
+        "pointTypesLeft": 5,
+        "fieldMatchersLeft": 15,
+        "eventTypesLeft": 10,
+        "sourceFolderUrisLeft": 20,
+        "eventsLeft": 100,
+        "membersLeft": 200
+    }
 }
 
 export const mockUpcomingBirthdays = [

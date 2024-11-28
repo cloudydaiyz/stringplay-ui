@@ -2,9 +2,11 @@ import { StringplayApiClient } from '@cloudydaiyz/stringplay-client';
 import type { Attendee, BulkUpdateEventRequest, BulkUpdateEventTypeRequest, BulkUpdateMemberRequest, CreateEventRequest, CreateEventTypeRequest, CreateMemberRequest, EventType, PublicEvent, Troupe, TroupeDashboard, UpdateTroupeRequest } from '@cloudydaiyz/stringplay-core/types/api';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { API_CLIENT_URL, DEFAULT_TROUPE_ID } from './constants';
-import { useEventLogNotifications, useMemberLogNotifications, useTroupeNotifications } from './notifications';
+import { useConsoleNotifications, useEventLogNotifications, useMemberLogNotifications, useTroupeNotifications } from './notifications';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { TroupeLimit } from '@cloudydaiyz/stringplay-core/types';
+import { ApiError } from '../types/api-types';
 
 export const api = new StringplayApiClient(API_CLIENT_URL);
 export const rt = localStorage.getItem("rt");
@@ -16,15 +18,21 @@ if(rt) {
 }
 
 export function useClient() {
-    // Invariant: `dashboard`, `troupe`, `eventTypes`, `attendees`, `events`, and `lastUpdated` are only undefined on initial page load.
+
+    // Invariant: `dashboard`, `limits`, `troupe`, `eventTypes`, `attendees`, `events`, and `lastUpdated` 
+    // are only undefined on initial page load.
     const [dashboard, setDashboard] = useState<TroupeDashboard | undefined>(undefined);
+    const [limits, setLimits] = useState<TroupeLimit | undefined>(undefined);
     const [troupe, setTroupe] = useState<Troupe | undefined>(undefined);
     const [eventTypes, setEventTypes] = useState<EventType[] | undefined>(undefined);
     const [attendees, setAttendees] = useState<Attendee[] | undefined>(undefined);
     const [events, setEvents] = useState<PublicEvent[] | undefined>(undefined);
 
     const [lastUpdated, setLastUpdated] = useState<Date | undefined>(undefined);
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const navigate = useNavigate();
+    const { addConsoleNotif } = useConsoleNotifications();
 
     /** Wrapper over calls to the API client for standardized parameters */
     async function apiCall<T>(call: Promise<T>) {
@@ -38,16 +46,29 @@ export function useClient() {
 
     const getConsoleData = () => apiCall(
         api.getConsoleData(DEFAULT_TROUPE_ID).then(d => { 
-            console.log('getting console data');
-            console.log(d.data);
             setDashboard(d.data.dashboard);
             setTroupe(d.data.troupe);
             setEventTypes(d.data.eventTypes);
             setAttendees(d.data.attendees);
             setEvents(d.data.events);
+            setLimits(d.data.limits);
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
+            if(err.status == 503) {
+                navigate("/no-service");
+                return;
+            }
+
+            addConsoleNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details." 
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -59,6 +80,7 @@ export function useClient() {
         loading,
         getConsoleData,
         dashboard, setDashboard,
+        limits, setLimits,
         troupe, setTroupe,
         eventTypes, setEventTypes,
         attendees, setAttendees,
@@ -91,7 +113,7 @@ export function useMetadata() {
 }
 
 export function useTroupe() {
-    const { apiCall, troupe, dashboard, setTroupe } = useClientContext();
+    const { apiCall, troupe, dashboard, limits, setTroupe } = useClientContext();
     const { addTroupeNotif } = useTroupeNotifications();
     const navigate = useNavigate();
 
@@ -100,7 +122,7 @@ export function useTroupe() {
             setTroupe(d.data);
         }).catch(e => {
             const err = e as AxiosError;
-            console.log(err);
+            
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
@@ -113,13 +135,22 @@ export function useTroupe() {
         api.updateTroupe(DEFAULT_TROUPE_ID, request).then(d => {
             setTroupe(d.data);
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addTroupeNotif({ notificationType: "error", text: err.message });
+
+            addTroupeNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -131,17 +162,26 @@ export function useTroupe() {
                 setTroupe(newTroupe);
             }
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addTroupeNotif({ notificationType: "error", text: err.message });
+
+            addTroupeNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
-    return { troupe, dashboard, getTroupe, updateTroupe, initiateSync };
+    return { troupe, dashboard, limits, getTroupe, updateTroupe, initiateSync };
 }
 
 export function useEvents() {
@@ -149,39 +189,50 @@ export function useEvents() {
     const { addEventLogNotif } = useEventLogNotifications();
     const navigate = useNavigate();
 
-    const createEvents = (requests: CreateEventRequest[]) => {
-        console.log('creating events');
-        console.log(api);
-        return apiCall(
-            api.createEvents(DEFAULT_TROUPE_ID, requests).then(d => {
-                console.log('create');
-                setEvents(events?.concat(d.data));
-            }).catch(e => {
-                console.log('create failed');
+    const createEvents = (requests: CreateEventRequest[]) => apiCall(
+        api.createEvents(DEFAULT_TROUPE_ID, requests).then(d => {
+            console.log('create');
+            setEvents(events?.concat(d.data));
+        }).catch(e => {
+            const err = e as AxiosError<ApiError>;
+            if(err.status == 503) {
+                navigate("/no-service");
+                return;
+            }
 
-                // show error notification 
-                const err = e as AxiosError;
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
                 console.log(err);
-                if(err.status == 503) {
-                    navigate("/no-service");
-                    return;
-                }
-                addEventLogNotif({ notificationType: "error", text: err.message });
-            })
-        )
-    };
+            }
+        })
+    );
 
     const getEvents = () => apiCall(
         api.getEvents(DEFAULT_TROUPE_ID).then(d => {
             setEvents(d.data);
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -189,13 +240,22 @@ export function useEvents() {
         api.updateEvents(DEFAULT_TROUPE_ID, request).then(d => {
             setEvents(events?.map(e => e.id in d.data ? d.data[e.id] : e));
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -203,13 +263,22 @@ export function useEvents() {
         api.deleteEvents(DEFAULT_TROUPE_ID, eventIds).then(() => {
             setEvents(events?.filter(e => !eventIds.includes(e.id)));
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -225,13 +294,22 @@ export function useEventTypes() {
         api.createEventTypes(DEFAULT_TROUPE_ID, requests).then(d => {
             setEventTypes(eventTypes?.concat(d.data))
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -239,13 +317,21 @@ export function useEventTypes() {
         api.getEventTypes(DEFAULT_TROUPE_ID).then(d => {
             setEventTypes(d.data);
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -254,13 +340,22 @@ export function useEventTypes() {
             console.log('setting event types');
             setEventTypes(eventTypes?.map(et => et.id in d.data ? d.data[et.id] : et));
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -268,13 +363,22 @@ export function useEventTypes() {
         api.deleteEventTypes(DEFAULT_TROUPE_ID, eventTypeIds).then(() => {
             setEventTypes(eventTypes?.filter(et => !eventTypeIds.includes(et.id)));
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addEventLogNotif({ notificationType: "error", text: err.message });
+
+            addEventLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -292,13 +396,22 @@ export function useAttendees() {
                 d.data.map(m => ({ ...m, eventsAttended: [] })))
             );
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addMemberLogNotif({ notificationType: "error", text: err.message });
+
+            addMemberLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -306,13 +419,22 @@ export function useAttendees() {
         api.getAttendees(DEFAULT_TROUPE_ID).then(d => {
             setAttendees(d.data)
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addMemberLogNotif({ notificationType: "error", text: err.message });
+
+            addMemberLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -322,13 +444,21 @@ export function useAttendees() {
                 ? { ...d.data[a.id], eventsAttended: a.eventsAttended } : a
             ));
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addMemberLogNotif({ notificationType: "error", text: err.message });
+
+            addMemberLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 
@@ -336,13 +466,22 @@ export function useAttendees() {
         api.deleteMembers(DEFAULT_TROUPE_ID, memberIds).then(() => {
             setAttendees(attendees?.filter(a => !memberIds.includes(a.id)));
         }).catch(e => {
-            const err = e as AxiosError;
-            console.log(err);
+            const err = e as AxiosError<ApiError>;
             if(err.status == 503) {
                 navigate("/no-service");
                 return;
             }
-            addMemberLogNotif({ notificationType: "error", text: err.message });
+
+            addMemberLogNotif({ 
+                notificationType: "error", 
+                text: err.response?.data?.error || 
+                    "An unexpected error has occurred. Check the browser console for details."
+            });
+
+            if(!err.response?.data?.error) {
+                console.log("An unexpected error has occurred. Details:");
+                console.log(err);
+            }
         })
     );
 

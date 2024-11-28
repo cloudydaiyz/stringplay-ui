@@ -129,7 +129,9 @@ export const mockUpdateEvents = (mockData: ConsoleData = defaultMockConsole) => 
             if(body[id].updateProperties) {
                 for(const field in body[id].updateProperties) {
                     if(field in event.fieldToPropertyMap) {
-                        event.fieldToPropertyMap[field].property = body[id].updateProperties[field];
+                        if(body[id].updateProperties[field].property) {
+                            event.fieldToPropertyMap[field].property = body[id].updateProperties[field].property;
+                        }
                     }
                 }
             }
