@@ -37,6 +37,7 @@
 .app-dialog
 {
     display: none;
+    z-index: 210;
 }
 
 .app-dialog h3

@@ -1,5 +1,5 @@
 import { BulkUpdateEventRequest, BulkUpdateEventTypeRequest } from "@cloudydaiyz/stringplay-core/types/api";
-import { useMetadata, useEvents, useEventTypes } from "../../../lib/api-client";
+import { useMetadata, useEvents, useEventTypes, useAttendees } from "../../../lib/api-client";
 import { defaultConfig } from "../../../lib/mock-data";
 import { useDialogToggle } from "../../../lib/toggle-dialog";
 import ContentHeader from "../layout/ContentHeader";
@@ -14,7 +14,16 @@ import ContentFooter from "../layout/ContentFooter";
 const SourceFilesTable = () => {
     const { loading } = useMetadata();
     const { events, createEvents, updateEvents, deleteEvents, } = useEvents();
+    const { attendees } = useAttendees();
     const { openConfirmDialog } = useDialogToggle();
+
+    const attendeeCount = events?.map(e => {
+        return attendees?.reduce(
+            (prev, attendee) => attendee.eventsAttended.includes(e.id) ? 
+                prev + 1 : prev, 
+            0
+        ) || 0;
+    });
 
     return (
         <Table 
@@ -40,10 +49,16 @@ const SourceFilesTable = () => {
                         disableCreate: true,
                         disableUpdate: true,
                     },
+                    {
+                        title: "# of attendees",
+                        type: "number!",
+                        disableCreate: true,
+                        disableUpdate: true,
+                    },
                 ],
                 data: !loading && !events 
-                    ? defaultConfig.events.map(e => [e.sourceUri, new Date(e.startDate), e.source, e.id])
-                    : events?.map(e => [e.sourceUri, new Date(e.startDate), e.source, e.id]) || [],
+                    ? defaultConfig.events.map(e => [e.sourceUri, new Date(e.startDate), e.source, e.id, 0])
+                    : events?.map((e, i) => [e.sourceUri, new Date(e.startDate), e.source, e.id, attendeeCount![i]]) || [],
                 validateData: (data, _, c) => {
                     if(c == 0 && data && events?.find(e => e.sourceUri == data)) {
                         return false;
