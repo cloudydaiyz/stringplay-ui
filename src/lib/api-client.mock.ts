@@ -6,7 +6,7 @@ import { API_CLIENT_URL } from './constants';
 import { defaultConfig } from './mock-data';
 import { api } from './api-client';
 
-function getUrl(uri: string, path: string) {
+export function getUrl(uri: string, path: string) {
     return (new URL(path, uri)).href;
 }
 
@@ -84,8 +84,8 @@ export const mockCreateEvents = (mockData: ConsoleData = defaultMockConsole) => 
                 eventTypeTitle: item.eventTypeId 
                     ? mockData.eventTypes.find(et => et.id == item.eventTypeId)?.title 
                     : undefined,
-                source: '',
-                synchronizedSource: '',
+                source: 'Google Forms',
+                synchronizedSource: 'Google Forms',
                 sourceUri: item.sourceUri,
                 synchronizedSourceUri: '',
                 startDate: item.startDate,

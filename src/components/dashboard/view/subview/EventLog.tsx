@@ -105,6 +105,10 @@ function EventsTable({ setSubview }: SetEventLogSubview) {
     const { events, createEvents, updateEvents, deleteEvents, } = useEvents();
     const { openConfirmDialog } = useDialogToggle();
 
+    const data = !loading && !events
+        ? defaultConfig.events.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri, null])
+        : events?.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri, null]) || [];
+
     return (
         <Table
             tableData={{
@@ -124,7 +128,7 @@ function EventsTable({ setSubview }: SetEventLogSubview) {
                         type: "string!",
                     },
                     {
-                        title: "Start Date",
+                        title: "Event Date",
                         type: "date!",
                     },
                     {
@@ -146,9 +150,7 @@ function EventsTable({ setSubview }: SetEventLogSubview) {
                         type: "action",
                     }
                 ],
-                data: !loading && !events
-                    ? defaultConfig.events.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri, null])
-                    : events?.map(e => [e.id, e.eventTypeId || null, e.title, new Date(e.startDate), e.value, e.source, e.sourceUri, null]) || [],
+                data,
                 validateData: (data, _, c) => {
                     if(c == 1 && data && !eventTypes?.find(et => et.id == data)) {
                         return false;
@@ -249,33 +251,33 @@ export const EventLog = ({ setSubview }: SetEventLogSubview) => {
     return (
         <div className='content-inner-view'>
             <ContentHeader title='Event Log' />
-                <div 
-                    className='content-notifications' 
-                    style={
-                        (consoleNotif.length + eventLogNotif.length) == 0 ? 
-                            {display: 'none'} : 
-                            {}
-                    }
-                >
-                    { 
-                        consoleNotif.map((props, i) => (
-                            <Notification 
-                                {...props} 
-                                onClick={() => removeConsoleNotif(i)}
-                                key={i * Date.now()}
-                            />
-                        )) 
-                    }
-                    { 
-                        eventLogNotif.map((props, i) => (
-                            <Notification 
-                                {...props} 
-                                onClick={() => removeEventLogNotif(i)}
-                                key={(i + consoleNotif.length) * Date.now()}
-                            />
-                        )) 
-                    }
-                </div>
+            <div 
+                className='content-notifications' 
+                style={
+                    (consoleNotif.length + eventLogNotif.length) == 0 ? 
+                        {display: 'none'} : 
+                        {}
+                }
+            >
+                { 
+                    consoleNotif.map((props, i) => (
+                        <Notification 
+                            {...props} 
+                            onClick={() => removeConsoleNotif(i)}
+                            key={i * Date.now()}
+                        />
+                    )) 
+                }
+                { 
+                    eventLogNotif.map((props, i) => (
+                        <Notification 
+                            {...props} 
+                            onClick={() => removeEventLogNotif(i)}
+                            key={(i + consoleNotif.length) * Date.now()}
+                        />
+                    )) 
+                }
+            </div>
             <div 
                 className={
                     'content-stats '

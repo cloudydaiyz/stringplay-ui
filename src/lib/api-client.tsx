@@ -30,9 +30,15 @@ export function useClient() {
 
     const [lastUpdated, setLastUpdated] = useState<Date | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
+    const [eventsSortedOnce, setEventsSortedOnce] = useState<boolean>(false);
 
     const navigate = useNavigate();
     const { addConsoleNotif } = useConsoleNotifications();
+
+    if(!eventsSortedOnce && events) {
+        events.sort((a, b) => b.startDate.localeCompare(a.startDate));
+        setEventsSortedOnce(true);
+    }
 
     /** Wrapper over calls to the API client for standardized parameters */
     async function apiCall<T>(call: Promise<T>) {

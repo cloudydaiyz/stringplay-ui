@@ -251,8 +251,14 @@ const MemberLogView = () => {
     const { memberLogNotif, removeMemberLogNotif } = useMemberLogNotifications();
     const { loading } = useMetadata();
     const { attendees } = useAttendees();
+    const { events } = useEvents();
     const { openDialog, closeDialog } = useDialogToggle();
     const [ acknowledgedFailure, setAcknowledgedFailure ] = useState(false);
+
+    const eventWithPointsExists = events?.find(e => e.value !== 0) !== undefined;
+    if(!eventWithPointsExists && table == "membership-points") {
+        setTable("membership-info");
+    }
 
     if(!loading && !attendees && !acknowledgedFailure) {
         openDialog({
@@ -299,20 +305,32 @@ const MemberLogView = () => {
                     }
                 </div>
                 <ContentNav
-                    pageIdToTitleMap={[
-                        {
-                            key: 'membership-info',
-                            title: 'Membership Information'
-                        },
-                        {
-                            key: 'membership-points',
-                            title: 'Membership Points'
-                        },
-                        {
-                            key: 'events-attended',
-                            title: 'Events Attended'
-                        },
-                    ]}
+                    pageIdToTitleMap={
+                        eventWithPointsExists ? [
+                            {
+                                key: 'membership-info',
+                                title: 'Membership Information'
+                            },
+                            {
+                                key: 'membership-points',
+                                title: 'Membership Points'
+                            },
+                            {
+                                key: 'events-attended',
+                                title: 'Events Attended'
+                            },
+                        ]
+                        : [
+                            {
+                                key: 'membership-info',
+                                title: 'Membership Information'
+                            },
+                            {
+                                key: 'events-attended',
+                                title: 'Events Attended'
+                            },
+                        ]
+                    }
                     initialPageId='membership-info'
                     onClick={(key) => setTable(key as MemberLogTable)}
                 />

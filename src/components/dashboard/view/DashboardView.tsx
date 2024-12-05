@@ -212,7 +212,7 @@ const DashboardView = () => {
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title="Dashboard" />
+                <ContentHeader title="Content at a glance" />
                 <div 
                     className='content-notifications' 
                     style={

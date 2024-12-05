@@ -15,7 +15,7 @@ import { visitedPages } from '../../../lib/global';
 import { useState } from 'react';
 
 const baseMemberProperties = ["Member ID", "First Name", "Last Name", "Email", "Birthday"] as const;
-const basePointTypes = ["Total"] as const;
+const basePointTypes = [] as const;
 
 const MemberPropertyTypesTable = () => {
     const { loading } = useMetadata();
@@ -265,25 +265,21 @@ const FieldMatchersTable = () => {
         : [];
 
     const data = !loading && !troupe 
-        ? [
-            ...defaultConfig.troupe.fieldMatchers.map(fm => [
+        ? defaultConfig.troupe.fieldMatchers.map(fm => [
+            fm.priority,
+            fm.fieldExpression,
+            fm.filters.join(", "),
+            fm.matchCondition,
+            fm.memberProperty,
+        ])
+        : troupe 
+            ? troupe.fieldMatchers.map(fm => [
                 fm.priority,
                 fm.fieldExpression,
-                fm.filters.join(", "),
+                fm.filters.join(","),
                 fm.matchCondition,
                 fm.memberProperty,
-            ]),
-        ]
-        : troupe 
-            ? [
-                ...troupe.fieldMatchers.map(fm => [
-                    fm.priority,
-                    fm.fieldExpression,
-                    fm.filters.join(","),
-                    fm.matchCondition,
-                    fm.memberProperty,
-                ]),
-            ]
+            ])
             : [];
 
     return (
@@ -300,7 +296,7 @@ const FieldMatchersTable = () => {
                     },
                     {
                         title: "Filters",
-                        type: "string!",
+                        type: "string?",
                     },
                     {
                         title: "Match Condition",
@@ -325,8 +321,8 @@ const FieldMatchersTable = () => {
                             ...newRows.map<Troupe["fieldMatchers"][number]>((row) => ({
                                 priority: row[0] as number,
                                 fieldExpression: row[1] as string,
-                                matchCondition: row[2] as Troupe["fieldMatchers"][number]["matchCondition"],
-                                filters: (row[3] as string).split(",") as Troupe["fieldMatchers"][number]["filters"],
+                                filters: ((row[2] as string | null)?.split(",") || []) as Troupe["fieldMatchers"][number]["filters"],
+                                matchCondition: row[3] as Troupe["fieldMatchers"][number]["matchCondition"],
                                 memberProperty: row[4] as string,
                             })),
                         ];
@@ -428,10 +424,6 @@ const LimitsTable = () => {
             tableData={{
                 columns: [
                     {
-                        title: "Get Operations Left",
-                        type: "number!",
-                    },
-                    {
                         title: "Modify Operations Left",
                         type: "number!",
                     },
@@ -470,7 +462,6 @@ const LimitsTable = () => {
                 ],
                 data: !loading && !limits 
                     ? [[
-                        defaultConfig.limits.getOperationsLeft,
                         defaultConfig.limits.modifyOperationsLeft,
                         defaultConfig.limits.manualSyncsLeft,
                         defaultConfig.limits.memberPropertyTypesLeft,
@@ -482,16 +473,15 @@ const LimitsTable = () => {
                         defaultConfig.limits.membersLeft,
                     ]] 
                     : [[
-                        limits?.getOperationsLeft || -1,
-                        limits?.modifyOperationsLeft || -1,
-                        limits?.manualSyncsLeft || -1,
-                        limits?.memberPropertyTypesLeft || -1,
-                        limits?.pointTypesLeft || -1,
-                        limits?.fieldMatchersLeft || -1,
-                        limits?.eventTypesLeft || -1,
-                        limits?.sourceFolderUrisLeft || -1,
-                        limits?.eventsLeft || -1,
-                        limits?.membersLeft || -1,
+                        limits?.modifyOperationsLeft !== undefined ? limits?.modifyOperationsLeft : -1,
+                        limits?.manualSyncsLeft !== undefined ? limits?.manualSyncsLeft : -1,
+                        limits?.memberPropertyTypesLeft !== undefined ? limits?.memberPropertyTypesLeft : -1,
+                        limits?.pointTypesLeft !== undefined ? limits?.pointTypesLeft : -1,
+                        limits?.fieldMatchersLeft !== undefined ? limits?.fieldMatchersLeft : -1,
+                        limits?.eventTypesLeft !== undefined ? limits?.eventTypesLeft : -1,
+                        limits?.sourceFolderUrisLeft !== undefined ? limits?.sourceFolderUrisLeft : -1,
+                        limits?.eventsLeft !== undefined ? limits?.eventsLeft : -1,
+                        limits?.membersLeft !== undefined ? limits?.membersLeft : -1,
                     ]],
             }}
             tableHeader={{
@@ -527,7 +517,7 @@ const TroupeView = () => {
     return (
         <div className='content-view'>
             <div className='content-inner-view'>
-                <ContentHeader title='Troupe' />
+                <ContentHeader title='Troupe Overview' />
                 <div 
                     className='content-notifications' 
                     style={
@@ -562,9 +552,9 @@ const TroupeView = () => {
                     }
                     onAnimationStart={() => visitedPages.push("TroupeView")}
                 >
+                    <FieldMatchersTable />
                     <MemberPropertyTypesTable />
                     <PointTypesTable />
-                    <FieldMatchersTable />
                     <SettingsTable />
                     <LimitsTable />
                 </div>

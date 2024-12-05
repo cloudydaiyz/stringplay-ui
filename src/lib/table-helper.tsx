@@ -4,7 +4,7 @@ import Check from '../components/svg/Check';
 /** Converts the data to the corresponding element for the table based on its type */
 export function tableDataToElement(data: TableDataType): string | JSX.Element {
     return data instanceof Date
-      ? `${data.getMonth() + 1}/${data.getDate()}/${data.getFullYear()}`
+      ? `${data.getUTCMonth() + 1}/${data.getUTCDate()}/${data.getUTCFullYear()}`
       : data === null 
       ? '\u00A0'
       : typeof data == 'boolean'

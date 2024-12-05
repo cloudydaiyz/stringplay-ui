@@ -3,6 +3,7 @@ import MemberLogView from '../../../../components/dashboard/view/MemberLogView';
 import { mockCreateMembers, mockDeleteMembers, mockGetAttendees, mockGetConsoleData, mockUpdateMembers } from '../../../../lib/api-client.mock';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { AppContext } from '../../../../app/context';
+import { defaultConfig } from '../../../../lib/mock-data';
 
 const meta = {
   component: MemberLogView,
@@ -28,7 +29,6 @@ const meta = {
   parameters: {
     msw: {
       handlers: [
-        mockGetConsoleData(),
         mockCreateMembers(),
         mockGetAttendees(),
         mockUpdateMembers(),
@@ -41,4 +41,25 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {};
+export const Primary: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        mockGetConsoleData(),
+      ],
+    }
+  },
+};
+
+const mockConsoleNoEvents = structuredClone(defaultConfig);
+mockConsoleNoEvents.events = [];
+
+export const NoEvents: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        mockGetConsoleData(mockConsoleNoEvents),
+      ],
+    }
+  },
+};

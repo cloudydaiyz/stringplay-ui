@@ -27,7 +27,7 @@
 
 .content-nav .content-nav-btn:not(:disabled):hover
 {
-    color: var(--c2);
+    color: var(--c1);
     /* color: rgb(from var(--c1) r g b / 50%); */
 }
 
@@ -37,5 +37,5 @@
     opacity: 1;
     /* color: var(--c1); */
     color: var(--white);
-    background-color: var(--c2);
+    background-color: var(--c1);
 }

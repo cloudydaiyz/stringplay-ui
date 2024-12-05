@@ -121,6 +121,9 @@ body
     display: flex;
     flex-direction: column;
     gap: 8px;
+    top: 8px;
+    position: sticky;
+    z-index: 200;
 }
 
 .content-stats

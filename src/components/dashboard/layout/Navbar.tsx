@@ -6,8 +6,9 @@ import Calendar from '../../svg/Calendar';
 import Group from '../../svg/Group';
 import Home from '../../svg/Home';
 import User from '../../svg/User';
+import DocumentIcon from '../../svg/DocumentIcon';
 
-export type NavPage = 'dashboard' | 'troupe' | 'event-log' | 'member-log';
+export type NavPage = 'dashboard' | 'troupe' | 'event-log' | 'member-log' | 'sources';
 
 interface NavbarProps {
     initialPage: NavPage,
@@ -19,9 +20,10 @@ const Navbar = ({ initialPage = 'dashboard', onNavigate }: NavbarProps) => {
 
   const sections: Record<NavPage, JSX.Element> = {
     dashboard: <><Home />Dashboard</>,
-    troupe: <><Group />Troupe</>,
+    sources: <><DocumentIcon />Sources</>,
     'event-log': <><Calendar />Event Log</>,
     'member-log': <><User />Member Log</>,
+    troupe: <><Group />Troupe</>,
   };
 
   const menuItems: JSX.Element[] = [];

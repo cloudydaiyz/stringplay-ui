@@ -3,11 +3,13 @@
     display: flex;
     gap: 8px;
     max-width: 1000px;
+    width: calc(100% + 16px);
+    transform: translateX(-8px);
     color: var(--white);
     fill: var(--white);
-    box-shadow: var(--sh3);
+    box-shadow: var(--sh2);
     border-color: transparent;
-    border-radius: 16px;
+    border-radius: 8px;
 }
 
 .app-notification-icon

@@ -13,6 +13,7 @@ import LoadingBackground from '../components/LoadingBackground';
 import { api, useMetadata, useTroupe } from '../lib/api-client';
 import Logo from '../components/svg/Logo';
 import { useNavigate } from 'react-router-dom';
+import SourcesView from '../components/dashboard/view/SourcesView';
 
 export const Console = () => {
     const [ view, setView ] = useState<NavPage>('dashboard');
@@ -62,6 +63,8 @@ export const Console = () => {
                         ? <EventLogView />
                         : view == 'member-log'
                         ? <MemberLogView />
+                        : view == 'sources'
+                        ? <SourcesView />
                         : <DashboardView />
                 }
             </div>

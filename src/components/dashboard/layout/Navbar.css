@@ -3,10 +3,11 @@
     padding-top: 64px;
     padding-bottom: 16px;
     padding-left: 16px;
+    padding-right: 16px;
     min-width: 256px;
     height: 100%;
-    border-right: 1px solid var(--c1);
     align-self: flex-start;
+    background-color: var(--c1);
 }
 
 .app-nav menu 
@@ -16,7 +17,7 @@
 
 .app-nav button
 {
-    padding: 12px 0px;
+    padding: 8px 0px;
     padding-left: 16px;
     padding-right: 32px;
     width: 100%;
@@ -25,8 +26,7 @@
     align-items: center;
     /* margin-bottom: 8px; */
 
-    border-top-left-radius: 16px;
-    border-bottom-left-radius: 16px;
+    border-radius: 8px;
 
     font-family: var(--font-2);
     font-weight: 500;
@@ -34,8 +34,8 @@
     border: none;
     background: none;
 
-    fill: var(--c1);
-    color: var(--c1);
+    fill: var(--white);
+    color: var(--white);
 
     transition: all .3s;
 }
@@ -51,9 +51,10 @@
     /* color: var(--white);
     fill: var(--white);
     background-color: rgb(from var(--c2) r g b / 50%); */
-    color: var(--c2);
-    fill: var(--c2);
+    fill: var(--white);
+    color: var(--white);
     background-color: transparent;
+    background-color: rgb(from var(--white) r g b / 50%);
     cursor: pointer;
 }
 
@@ -61,14 +62,14 @@
 {
     fill: var(--white);
     color: var(--white);
-    background-color: rgb(from var(--c2) r g b / 45%);
+    background-color: rgb(from var(--white) r g b / 75%);
     cursor: initial;
 }
 
 .app-nav button.current
 {
     /* background-color: var(--c1); */
-    background-color: var(--c2);
-    fill: white;
-    color: white;
+    background-color: var(--g1);
+    fill: var(--c1);
+    color: var(--c1);
 }
