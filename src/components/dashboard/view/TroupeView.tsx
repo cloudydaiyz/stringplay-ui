@@ -141,7 +141,7 @@ const PointTypesTable = () => {
 
     const pointTypes = troupe 
         ? Object.keys(troupe?.pointTypes)
-            .filter(t => !basePointTypes.includes(t as typeof basePointTypes[number])) 
+            .filter(t => !basePointTypes.includes(t as typeof basePointTypes[number]) && t != "Total") 
         : [];
 
     const data = !loading && !troupe 

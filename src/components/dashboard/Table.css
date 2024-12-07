@@ -192,7 +192,7 @@ th, td, tr
 .app-table .edit-cell button,
 .app-table .delete-cell button
 {
-    fill: var(--c2);
+    fill: var(--c1);
     background: none;
     border: none;
     opacity: .25;

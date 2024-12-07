@@ -21,7 +21,7 @@ function convertCategoricalData(percentagesObj: TroupeDashboard['attendeePercent
     if(!percentagesObj) return undefined;
 
     const data: CategoricalStatisticProps['data'] = [];
-    for(const id in data) {
+    for(const id in percentagesObj) {
         data.push({
             name: percentagesObj[id].title,
             value: percentagesObj[id].value,
@@ -38,6 +38,8 @@ function getDashboardTableData(dashboard: TroupeDashboard | undefined) {
         dashboard.totalEventsByEventType[key].value,
         dashboard.totalAttendeesByEventType[key].value,
         dashboard.avgAttendeesByEventType[key].value,
+        dashboard.attendeePercentageByEventType[key].percent * 100 + '%',
+        dashboard.eventPercentageByEventType[key].percent * 100 + '%',
     ])
     : [];
 }
@@ -54,17 +56,6 @@ function DashboardCumulativeStatistics() {
                     !loading && !dashboard
                     ? defaultConfig.dashboard.totalMembers
                     : dashboard?.totalMembers
-                } 
-                loading={loading} 
-                useDataWhileLoading={dashboard && loading} 
-            />
-            <CumulativeStatistic 
-                accumulator='total' 
-                statistic='attendees' 
-                value={
-                    !loading && !dashboard
-                    ? defaultConfig.dashboard.totalAttendees
-                    : dashboard?.totalAttendees
                 } 
                 loading={loading} 
                 useDataWhileLoading={dashboard && loading} 
@@ -106,6 +97,38 @@ function DashboardCumulativeStatistics() {
     );
 }
 
+function DashboardCategoricalStatistics() {
+    const { loading } = useMetadata();
+    const { dashboard } = useTroupe();
+
+    const data1 = !loading && !dashboard
+        ? convertCategoricalData(defaultConfig.dashboard.attendeePercentageByEventType)!
+        : convertCategoricalData(dashboard?.attendeePercentageByEventType);
+
+    const data2 = !loading && !dashboard
+        ? convertCategoricalData(defaultConfig.dashboard.eventPercentageByEventType)!
+        : convertCategoricalData(dashboard?.eventPercentageByEventType);
+
+    console.log(dashboard);
+    console.log("data1", data1);
+    console.log("data2", data2);
+
+    return (
+        <div className="dashboard-categorical">
+            <CategoricalStatistic
+                data={data1}
+                title='% of attendees by Event Type'
+                loading={loading}
+            />
+            <CategoricalStatistic
+                data={data2}
+                title='% of events by Event Type'
+                loading={loading}
+            />
+        </div>
+    );
+}
+
 function EventTypeStatsTable() {
     const { loading } = useMetadata();
     const { dashboard } = useTroupe();
@@ -129,44 +152,22 @@ function EventTypeStatsTable() {
                         title: 'Average Attendees',
                         type: 'number!',
                     },
+                    {
+                        title: '% of attendees',
+                        type: 'string!',
+                    },
+                    {
+                        title: '% of events',
+                        type: 'string!',
+                    },
                 ],
                 data: !loading && !dashboard
                     ? getDashboardTableData(defaultConfig.dashboard)
-                    // : mockEventTypeTable
                     : getDashboardTableData(dashboard),
             }}
             loading={loading}
             useDataWhileLoading={dashboard && loading} 
         />
-    );
-}
-
-function DashboardCategoricalStatistics() {
-    const { loading } = useMetadata();
-    const { dashboard } = useTroupe();
-    return (
-        <div className="dashboard-categorical">
-            <CategoricalStatistic
-                data={
-                    !loading && !dashboard
-                    ? convertCategoricalData(defaultConfig.dashboard.attendeePercentageByEventType)!
-                    // : mockCategoricalStatistics1
-                    : convertCategoricalData(dashboard?.attendeePercentageByEventType)
-                }
-                title='% of attendees by Event Type'
-                loading={loading}
-            />
-            <CategoricalStatistic
-                data={
-                    !loading && !dashboard
-                    ? convertCategoricalData(defaultConfig.dashboard.eventPercentageByEventType)!
-                    // : mockCategoricalStatistics2
-                    : convertCategoricalData(dashboard?.eventPercentageByEventType)
-                }
-                title='% of events by Event Type'
-                loading={loading}
-            />
-        </div>
     );
 }
 
