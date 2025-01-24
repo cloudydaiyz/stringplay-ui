@@ -7,7 +7,7 @@
 </h1>
 
 <p align="center">
-<strong>stringplay</strong> is an event analytics service that collects aggregate membership data from your events, allowing you to effectively track event and membership data. Based on <a href="https://github.com/cloudydaiyz/membership-logger">membership-logger</a>.
+<strong>stringplay</strong> is a data collection service that aggregates attendee information from your online spreadsheets and surveys, allowing you to effectively track event and membership data. Based on <a href="https://github.com/cloudydaiyz/membership-logger">membership-logger</a>.
 </p>
 
 ## Overview
@@ -28,6 +28,8 @@ Make sure that Node.js version 20.0.0 or higher is installed on your device.
 ## Environment Variables
 
 - `VITE_STRINGPLAY_CORE_URL` - URL for the backend
+
+If using this repository for automation, the preferred environment variable name for the absolute path to the root of this repository is `STRINGPLAY_UI_PATH`.
 
 ## Commands
 

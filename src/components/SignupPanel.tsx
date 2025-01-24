@@ -27,39 +27,59 @@ interface SignupPanelProps {
     inactive?: boolean,
 }
 
+type LoginStatus = '' | 'signingUp' | 'signedUp' | 'failed' | 'server-error';
+
 const SignupPanel = ({ inactive = false }: SignupPanelProps) => {
     const { register } = useAuth();
     const [ statusCode, setStatusCode ] = useState(0);
     const [ error, setError ] = useState(0);
+    const [ signUpStatus, setSignUpStatus ] = useState<LoginStatus>('');
+    const [ signUpStatusUpdated, setSignUpStatusUpdated ] = useState<number>(0);
     const navigate = useNavigate();
     
     const signingUp = statusCode == 1;
     const signedUp = checkStatus(statusCode, 200);
     const disableInput = signingUp || signedUp;
 
-    let statusEle: JSX.Element = <p key={`${Date.now()}`} className="signup-status"></p>;
+    let statusEle: JSX.Element = <p className="signup-status"></p>;
     if(signingUp) {
+        if(signUpStatus != 'signingUp') {
+            setSignUpStatus('signingUp');
+            setSignUpStatusUpdated(Date.now());
+        }
         statusEle = (
-            <p key={`${Date.now()}`} className="signup-status">
+            <p key={signUpStatusUpdated} className="signup-status">
                 Verifying your information...
             </p>
         );
     } else if(signedUp) {
+        if(signUpStatus != 'signedUp') {
+            setSignUpStatus('signedUp');
+            setSignUpStatusUpdated(Date.now());
+        }
         statusEle = (
-            <p key={`${Date.now()}`} className="signup-status">
+            <p key={signUpStatusUpdated} className="signup-status">
                 Sign up successful!
             </p>
         );
     } else if(checkStatus(statusCode, 400)) {
+        if(signUpStatus != 'failed') {
+            setSignUpStatus('failed');
+            setSignUpStatusUpdated(Date.now());
+        }
         statusEle = (
-            <p key={`${Date.now()}`} className="signup-status error">
+            <p key={signUpStatusUpdated} className="signup-status error">
                 Sign up failed.
                 {/* Sign up failed.<br/>Username already exists. */}
             </p>
         );
     } else if(checkStatus(statusCode, 500)) {
+        if(signUpStatus != 'server-error') {
+            setSignUpStatus('server-error');
+            setSignUpStatusUpdated(Date.now());
+        }
         statusEle = (
-            <p key={`${Date.now()}`} className="signup-status error">
+            <p key={signUpStatusUpdated} className="signup-status error">
                 A server error has occurred.
             </p>
         );

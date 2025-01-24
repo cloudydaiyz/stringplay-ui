@@ -17,39 +17,59 @@ interface LoginPanelProps {
     inactive?: boolean,
 }
 
+type LoginStatus = '' | 'loggingIn' | 'loggedIn' | 'failed' | 'server-error';
+
 const LoginPanel = ({ inactive = false }: LoginPanelProps) => {
     const { login } = useAuth();
     const [ statusCode, setStatusCode ] = useState(0);
     const [ error, setError ] = useState(0);
+    const [ loginStatus, setLoginStatus ] = useState<LoginStatus>('');
+    const [ loginStatusUpdated, setLoginStatusUpdated ] = useState<number>(0);
     const navigate = useNavigate();
 
     const loggingIn = statusCode == 1;
     const loggedIn = statusCode == 200;
     const disableInput = loggingIn || loggedIn;
 
-    let statusElement: JSX.Element = <p key={`${Date.now()}`} className="login-status"></p>;
+    let statusElement: JSX.Element = <p className="login-status"></p>;
     if(loggingIn) {
+        if(loginStatus != 'loggingIn') {
+            setLoginStatus('loggingIn');
+            setLoginStatusUpdated(Date.now());
+        }
         statusElement = (
-            <p key={`${Date.now()}`} className="login-status">
+            <p key={loginStatusUpdated} className="login-status">
                 Verifying your information...
             </p>
         );
     } else if(loggedIn) {
+        if(loginStatus != 'loggedIn') {
+            setLoginStatus('loggedIn');
+            setLoginStatusUpdated(Date.now());
+        }
         statusElement = (
-            <p key={`${Date.now()}`} className="login-status">
+            <p key={loginStatusUpdated} className="login-status">
                 Log in successful!
             </p>
         );
     } else if(statusCode == 400) {
+        if(loginStatus != 'failed') {
+            setLoginStatus('failed');
+            setLoginStatusUpdated(Date.now());
+        }
         statusElement = (
-            <p key={`${Date.now()}`} className="login-status error">
+            <p key={loginStatusUpdated} className="login-status error">
                 Login failed.
                 {/* Login failed.<br/>Your username or password is invalid. */}
             </p>
         );
     } else if(statusCode == 500) {
+        if(loginStatus != 'server-error') {
+            setLoginStatus('server-error');
+            setLoginStatusUpdated(Date.now());
+        }
         statusElement = (
-            <p key={`${Date.now()}`} className="login-status error">
+            <p key={loginStatusUpdated} className="login-status error">
                 A server error has occurred.
             </p>
         );
