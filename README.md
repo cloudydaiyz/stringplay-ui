@@ -29,7 +29,7 @@ Make sure that Node.js version 20.0.0 or higher is installed on your device.
 
 - `VITE_STRINGPLAY_CORE_URL` - URL for the backend
 
-If using this repository for automation, the preferred environment variable name for the absolute path to the root of this repository is `STRINGPLAY_UI_PATH`.
+The canonical environment variable name for the absolute path to the root of this repository is `STRINGPLAY_UI_PATH`.
 
 ## Commands
 
