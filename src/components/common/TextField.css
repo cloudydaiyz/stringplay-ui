@@ -23,7 +23,7 @@
     border: 1px solid var(--black);
 }
 
-.springplay-text-container::before 
+.stringplay-text-container::before 
 {
     content: attr(data-title);
     font-family: var(--font-1);
@@ -40,7 +40,7 @@
     color: var(--c1);
 }
 
-.springplay-text-container:has(input:valid)::before
+.stringplay-text-container:has(input:valid)::before
 {
     transform: translate(4px, -50%);
     opacity: 1;

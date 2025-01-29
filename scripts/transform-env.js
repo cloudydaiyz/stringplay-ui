@@ -2,9 +2,9 @@
 // exec `node scripts/transform-env.js`
 
 // Prefixes all environment variables with VITE_ before building client code
-// using converter in @cloudydaiyz/springplay-shared
+// using converter in @cloudydaiyz/stringplay-shared
 
-// View @cloudydaiyz/springplay-core/src/util/env.ts for more context
+// View @cloudydaiyz/stringplay-core/src/util/env.ts for more context
 
 // import { useState } from 'react';
 // console.log(useState);

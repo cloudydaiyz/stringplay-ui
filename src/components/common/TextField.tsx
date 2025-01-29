@@ -12,7 +12,7 @@ interface TextFieldProps {
 
 const TextField = ({title, type="text", disabled=false, onSubmit, name}: TextFieldProps) => {
   return (
-    <div className="springplay-text-container" data-title={title}>
+    <div className="stringplay-text-container" data-title={title}>
         <input 
           className="stringplay-text-field"
           type={type} 
