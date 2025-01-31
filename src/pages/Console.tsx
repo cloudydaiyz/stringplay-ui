@@ -45,7 +45,7 @@ export const Console = () => {
                 </div>
             </LoadingBackground>
             <Header 
-                username='blahblah' 
+                username={''}
                 onLogOut={() => { api.credentials = undefined; navigate("/login") }} 
             />
             <div className='console-hori'>
