@@ -1,6 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Manrope:wght@200..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap'); */
 /* @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Manrope:wght@200..800&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Manrope:wght@200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Manrope:wght@200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap");
 
 #root {
     width: 100%;
@@ -8,60 +8,64 @@
 }
 
 #root,
-body
-{
+body {
     position: relative;
+    display: block;
+    width: 100vw;
+    min-height: 100vh;
     z-index: -20;
+    overflow-x: hidden;
 }
 
 :root {
-  /* --font-1: "Rubik", sans-serif;
+    /* --font-1: "Rubik", sans-serif;
   --font-1: "IBM Plex Sans", sans-serif;
   --font-1: "Manrope", sans-serif; */
-  --font-1: "Noto Sans", sans-serif;
-  /* --font-2: 'Manrope', sans-serif; */
-  --font-2: "Noto Sans", sans-serif;
-  --font-3: 'Barlow Condensed', sans-serif;
+    --font-1: "Noto Sans", sans-serif;
+    /* --font-2: 'Manrope', sans-serif; */
+    --font-2: "Noto Sans", sans-serif;
+    --font-3: "Barlow Condensed", sans-serif;
 
-  --c1: #243659;
-  /* --c2: #F27457; */
-  --c2: #8C1B2F;
-  --c3: #04BF9D;
-  --c4: #03A696;
-  --c5: #BF665E;
+    --c1: #243659;
+    /* --c2: #F27457; */
+    --c2: #8c1b2f;
+    --c3: #04bf9d;
+    --c4: #03a696;
+    --c5: #bf665e;
 
-  --c2-text: #FFFFFF;
+    --c2-text: #ffffff;
 
-  --g1: #F9FBFA;
-  --g2: #889397;
-  --g3: #afbbbf;
+    --g1: #f9fbfa;
+    --g2: #889397;
+    --g3: #afbbbf;
 
-  --black: #222222;
-  --white: #FFFFFF;
+    --black: #222222;
+    --white: #ffffff;
 
-  --success: #24D57A;
-  --error: #F3655A;
-  --info: #2CAAFF;
-  --warning: #F8A134;
+    --success: #24d57a;
+    --error: #f3655a;
+    --info: #2caaff;
+    --warning: #f8a134;
 
-  --success-dark: #4CAF50;
-  --error-dark: #F44336;
+    --success-dark: #4caf50;
+    --error-dark: #f44336;
 
-  --sh1: 0px 0px 5px rgb(0, 0, 0, .7);
-  --sh2: 0px 0px 16px rgba(0, 0, 0, .2);
-  --sh3: 0px 0px 8px rgba(0, 0, 0, .2);
+    --sh1: 0px 0px 5px rgb(0, 0, 0, 0.7);
+    --sh2: 0px 0px 16px rgba(0, 0, 0, 0.2);
+    --sh3: 0px 0px 8px rgba(0, 0, 0, 0.2);
 
-  font-family: var(--font-2);
+    font-family: var(--font-2);
 }
 
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.loading span
-{
+.loading span {
     background-color: rgba(0, 0, 0, 0.1);
     animation: glow 1.5s ease-in-out infinite;
     max-width: 300px;
@@ -71,15 +75,14 @@ body
 }
 
 .content-unit {
-  padding: 16px;
-  box-shadow: var(--sh3); 
-  border: 1px solid var(--g2);
-  border-radius: 8px;
-  background-color: var(--white);
+    padding: 16px;
+    box-shadow: var(--sh3);
+    border: 1px solid var(--g2);
+    border-radius: 8px;
+    background-color: var(--white);
 }
 
-.content-view
-{
+.content-view {
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -91,15 +94,14 @@ body
     --reg: var(--g1);
     --dark: rgb(from var(--g1) calc(r - 15) calc(g - 15) calc(b - 15));
     background-color: var(--g1);
-    background: 
-    linear-gradient(
-        to right, 
+    background: linear-gradient(
+        to right,
         var(--reg) 0%,
-        var(--dark) 12.5%, 
+        var(--dark) 12.5%,
         var(--reg) 25%,
         var(--dark) 37.5%,
         var(--reg) 50%,
-        var(--dark) 62.5%, 
+        var(--dark) 62.5%,
         var(--reg) 75%,
         var(--dark) 87.5%,
         var(--reg) 100%
@@ -109,12 +111,15 @@ body
 }
 
 @keyframes content-view-anim {
-    from { background-position: left; }
-    to { background-position: right; }
+    from {
+        background-position: left;
+    }
+    to {
+        background-position: right;
+    }
 }
 
-.content-inner-view
-{
+.content-inner-view {
     padding: 16px;
     display: flex;
     flex-direction: column;
@@ -122,8 +127,7 @@ body
     gap: 20px;
 }
 
-.content-notifications
-{
+.content-notifications {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -132,20 +136,17 @@ body
     z-index: 5;
 }
 
-.content-stats
-{
+.content-stats {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-.content-stats.init
-{
-    animation: panel-slide-in-with-display .7s ease-out 1 forwards;
+.content-stats.init {
+    animation: panel-slide-in-with-display 0.7s ease-out 1 forwards;
 }
 
-.auth-page
-{
+.auth-page {
     /* padding: 10rem; */
     width: 100%;
     height: 100%;
@@ -159,140 +160,121 @@ body
 .auth-page .login-panel,
 .auth-page .signup-panel,
 .auth-page .no-service-panel,
-.auth-page .auth-page-loading
-{
+.auth-page .auth-page-loading {
     position: absolute;
     top: 50%;
     left: 50%;
     translate: -50% -50%;
 }
 
-.auth-page-loading
-{
+.auth-page-loading {
     display: flex;
     flex-direction: column;
     place-items: center;
     gap: 16px;
     /* z-index: 10; */
-    transition: opacity .2s linear, transform .2s linear;
+    transition: opacity 0.2s linear, transform 0.2s linear;
 }
 
-.auth-page-loading.inactive
-{
+.auth-page-loading.inactive {
     opacity: 0;
     transform: translateY(16px);
     /* z-index: -10; */
 }
 
-.auth-page-loading h3
-{
+.auth-page-loading h3 {
     color: black;
     font-family: var(--font-1);
 }
 
-.auth-page-loading.done-loading h3
-{
+.auth-page-loading.done-loading h3 {
     opacity: 0;
 }
 
-.auth-page-loading.done-loading
-{
+.auth-page-loading.done-loading {
     opacity: 0;
     transform: translateY(16px);
 }
 
-.auth-panel-nav
-{
+.auth-panel-nav {
     display: flex;
     align-items: center;
     gap: 4px;
 }
 
-.auth-panel-nav button.auth-panel-nav-btn
-{
+.auth-panel-nav button.auth-panel-nav-btn {
     padding: 4px 2px;
     border-radius: 4px;
     color: var(--c2);
     background-color: transparent !important;
 }
 
-.auth-panel-nav button.auth-panel-nav-btn:disabled
-{
+.auth-panel-nav button.auth-panel-nav-btn:disabled {
     color: var(--g2);
     opacity: 1;
 }
 
-.auth-panel-nav button.auth-panel-nav-btn:not(:disabled):hover
-{
+.auth-panel-nav button.auth-panel-nav-btn:not(:disabled):hover {
     color: rgb(from var(--c2) r g b / 75%);
 }
 
-.auth-panel-nav button.auth-panel-nav-btn:not(:disabled):active
-{
+.auth-panel-nav button.auth-panel-nav-btn:not(:disabled):active {
     color: rgb(from var(--c2) r g b / 50%);
 }
 
-.auth-panel .auth-submit-btn:not(:disabled)
-{
+.auth-panel .auth-submit-btn:not(:disabled) {
     padding: 8px 48px;
     border-radius: 12px;
     color: var(--c2-text);
-    background: 
-    linear-gradient(
-        to bottom, 
-        var(--c2) 30%, 
+    background: linear-gradient(
+        to bottom,
+        var(--c2) 30%,
         rgb(from var(--c2) calc(r - 40) calc(g - 40) calc(b - 40))
     );
 }
 
-.auth-panel .auth-submit-btn:disabled
-{
+.auth-panel .auth-submit-btn:disabled {
     padding: 8px 48px;
     border-radius: 12px;
     color: var(--c2-text);
-    background: 
-    linear-gradient(
-        to bottom, 
-        var(--g2) 30%, 
+    background: linear-gradient(
+        to bottom,
+        var(--g2) 30%,
         rgb(from var(--g2) calc(r - 40) calc(g - 40) calc(b - 40))
     );
 }
 
-.auth-panel .auth-submit-btn:not(:disabled):hover
-{
-    background: 
-    linear-gradient(
-        to bottom, 
+.auth-panel .auth-submit-btn:not(:disabled):hover {
+    background: linear-gradient(
+        to bottom,
         rgb(from var(--c2) calc(r + 20) calc(g + 20) calc(b + 20)) 30%,
         rgb(from var(--c2) calc(r - 20) calc(g - 20) calc(b - 20))
     );
     transform: scale(1.05);
 }
 
-.auth-panel .auth-submit-btn:not(:disabled):active
-{
-    transform: scale(.95);
+.auth-panel .auth-submit-btn:not(:disabled):active {
+    transform: scale(0.95);
 }
 
-.auth-error-msg
-{
+.auth-error-msg {
     text-align: left;
     margin-top: -12px;
     margin-left: 8px;
     width: 392px;
     color: var(--error);
-    animation: panel-slide-in .5s ease-in 1 forwards;
+    animation: panel-slide-in 0.5s ease-in 1 forwards;
 }
 
 @keyframes glow {
-  0%,
-  100% {
-    opacity: 1;
-  }
+    0%,
+    100% {
+        opacity: 1;
+    }
 
-  50% {
-    opacity: 0.5;
-  }
+    50% {
+        opacity: 0.5;
+    }
 }
 
 @keyframes panel-slide-in {
